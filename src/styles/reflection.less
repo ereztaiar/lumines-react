@@ -1,0 +1,8 @@
+@rotation: -70deg;
+.reflection{
+  transform: scaleY(-1) rotateX(@rotation);
+  -webkit-transform: scaleX(1.1) scaleY(-1) perspective(45rem) rotateX(@rotation) ;
+  -webkit-mask-image: -webkit-gradient(linear, left top, left bottom,
+  from(rgba(0,0,0,0)), to(rgba(0,0,0,1)));
+  padding-bottom: 5px;
+}
