@@ -31,8 +31,7 @@
 }
 
 body {
-  background: rgb(88,69,34);
-  background: linear-gradient(27deg, rgba(88,69,34,1) 0%, rgba(148,51,90,1) 32%, rgba(187,160,251,1) 67%, rgba(101,57,247,1) 100%);
+
   margin: 0;
   font-family: 'Exo 2', sans-serif;
 
@@ -46,11 +45,6 @@ body {
       grid-template-columns: auto @center-width auto;
       grid-template-rows: minmax(2 * @grid-item-height, auto) @center-height auto;
       align-items: center;
-
-      .next {
-        grid-column-start: 1;
-        grid-row-start: 2;
-      }
 
       .board {
         grid-column-start: 2;
@@ -75,11 +69,44 @@ body {
 
         .cube {
           margin-bottom: @grid-item-height;
+          position: relative;
 
           &:after {
             clear: both;
             content: '';
             display: block;
+          }
+
+          @-webkit-keyframes inside {
+            from {
+              -webkit-transform: rotate(0deg);
+              top: ~"calc(-310% - 2px)";
+              left: ~"calc(-310% - 2px)";
+              width: ~"calc(600%)";
+              height: ~"calc(600%)";
+              border: 2px solid rgba(0, 166, 251, 50%);
+            }
+            to {
+              -webkit-transform: rotate(360deg);
+              top: ~"calc(-10% - 2px)";
+              left: ~"calc(-10% - 2px)";
+              width: ~"calc(120%)";
+              height: ~"calc(120%)";
+
+              border: 2px solid rgba(240, 255, 6, 100%);
+            }
+          }
+
+          &:before {
+            border: 2px solid rgba(0, 166, 251, 50%);
+            position: absolute;
+            content: ' ';
+            display: block;
+            top: ~"calc(-10% - 2px)";
+            left: ~"calc(-10% - 2px)";
+            width: ~"calc(120%)";
+            height: ~"calc(120%)";
+            -webkit-animation: inside 3s ease infinite;
           }
 
           .grid-item {
@@ -99,6 +126,7 @@ body {
         .row-1 {
           .grid-item {
             border: 0;
+            background: none;
 
             &:first-child {
               border-left: 0px;
@@ -128,7 +156,7 @@ body {
           border-bottom: 1px solid gray;
           border-right: 1px solid gray;
           position: relative;
-
+          background: #403fab59;
 
           &:first-child {
             border-left: 1px solid gray;

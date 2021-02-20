@@ -1,12 +1,3 @@
-.background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transform: scale(1.5);
-}
-
 @-webkit-keyframes rotate-right {
   from {
     -webkit-transform: rotate(0deg);
@@ -25,6 +16,58 @@
   }
 }
 
+@-webkit-keyframes BackgroundMove {
+  0% {
+    background-position: 0% 50%
+  }
+  50% {
+    background-position: 100% 51%
+  }
+  100% {
+    background-position: 0% 50%
+  }
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(1.5);
+
+  &:before, &:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    display: block;
+  }
+
+
+  &:before {
+    background: linear-gradient(45deg,
+              rgb(0, 166, 251) 0%,
+              rgb(5, 130, 202) 32%,
+              rgb(90, 24, 154) 67%,
+              rgb(60, 9, 108) 100%);
+    background-size: 400% 400%;
+    -webkit-animation: BackgroundMove 8s ease infinite;
+    z-index: -20;
+  }
+
+  &:after {
+    z-index: -10;
+    background: url('../../assets/images/scan-mask.png') repeat;
+  }
+
+  svg {
+    transform: translateY(-15%);
+  }
+}
+
 
 #outer {
   -webkit-transform: translate3d(0, 0, 0);
@@ -32,6 +75,7 @@
   -webkit-transform: translate3d(0, 0, 0);
   -webkit-animation: rotate-right 30s linear 0s infinite;
 }
+
 /**
  if condition not working right
  **/

@@ -24,6 +24,8 @@ function nop() {
 
 const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
 
+    const [pause, togglePause] = useState(false);
+
     const [currentCube, setCurrentCube] = useState(initialCube);
     const [newCube, setNewCube] = useState(CUBE_STATES.WAITING);
     const [grid, setGrid] = useState(initialGrid);
@@ -33,7 +35,7 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
     const [playRotate] = useSound(sounds.lazer1);
     const [playDrop] = useSound(sounds.lazer2);
     const [playMove] = useSound(sounds.punch);
-    const [currentDeleted, setCurrentDeleted] = useState(0)
+    const [currentDeleted, setCurrentDeleted] = useState(0);
 
 
     const [tick, setTick] = useState(INITIAL_TICK);
@@ -70,6 +72,9 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
     }
 
     useTimer(async () => {
+        if(pause){
+            return;
+        }
 
         setTick(tick + 1 === MAX_TICK ? INITIAL_TICK : tick + 1);
         if (tick === 1) {
@@ -97,6 +102,12 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
     }, speed);
 
     useKey(async (key) => {
+        if(key === 'p' || key === 'p'){
+            togglePause(!pause);
+        }
+        if(pause){
+            return;
+        }
         try {
             if (isSplit) {
                 return;
@@ -140,10 +151,10 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
             // console.log(ex);
         }
     }, async (key) => {
-        if (isSplit) {
+
+        if (isSplit || pause) {
             return;
         }
-        let newGrid = grid;
         try {
             let src, dest;
             switch (key) {
