@@ -73,6 +73,7 @@ function clearColumn(array, x) {
         let count = 0;
         const newColumn = new Array(column.length).fill(0);
         for (; column[i] !== 0; i--) {
+            if (i <= 1) break;
             if (column[i] === 5 || column[i] === 6) {
                 count++;
                 continue;

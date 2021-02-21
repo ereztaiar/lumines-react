@@ -56,8 +56,8 @@ const Grid = ({grid, rowStart = 0, showSwiper = true, tick = 0, deleted}) => {
         <div className="board">
             <div className="grid">
                 {blocks}
-                {showSwiper && <Swiper tick={tick} score={true} deleted={deleted}/>}
             </div>
+                {showSwiper && <Swiper tick={tick} score={true} deleted={deleted}/>}
         </div>
     );
 }

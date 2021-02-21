@@ -16,7 +16,6 @@ const Score = ({score, highScore, deleted}) => {
 
     const displayClock = (time) => {
         const date = new Date(time * 10);
-        // const hours = new Intl.DateTimeFormat('en', { hour: '2-digit' ,hour12: false}).format(date);
         let minutes = new Intl.DateTimeFormat('en', {minute: '2-digit'}).format(date);
         let seconds = new Intl.DateTimeFormat('en', {second: '2-digit'}).format(date);
         if (minutes < 10) {

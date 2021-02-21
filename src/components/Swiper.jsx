@@ -36,7 +36,7 @@ const Swiper = ({tick, deleted, score = false}) => {
                 <div className={"score"}>{deleted}</div>
                 <svg version="1.1" id={"arrow"} xmlns="http://www.w3.org/2000/svg"
                      xmlnsXlink="http://www.w3.org/1999/xlink" height={"25"} width={"15"}>
-                    <polygon points={"0,0 15,12.5 0,25"} style={{fill: "black", stroke: "yellow", strokeWidth: 2}}/>
+                    <polygon points={"0,0 15,12.5 0,25"} style={{fill: "black", stroke: "#fa7f03", strokeWidth: 2}}/>
                 </svg>
             </div>}
         </div>

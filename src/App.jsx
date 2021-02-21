@@ -8,6 +8,7 @@ import {Grid} from "./components/Board";
 import GameView from "./components/GameView";
 import Reflection from "./components/Reflection";
 import {Score, useScore} from "./components/Score";
+import Character from "./components/Charecter";
 
 const App = () => {
     const store = Store();
@@ -27,6 +28,7 @@ const App = () => {
                                 <Grid currentCube={currentCube} grid={grid} rowStart={8} showSwiper={false}/>
                             </Reflection>}
                             <Dispenser setCurrentCube={setCurrentCube} newCube={newCube} setNewCube={setNewCube}/>
+                            <Character/>
                         </>
                     )}
                 </GameView>
