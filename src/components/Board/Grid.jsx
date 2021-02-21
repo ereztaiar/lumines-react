@@ -7,7 +7,7 @@ import {BLOCK_ASSOCIATION} from "../Dispenser";
 
 const Grid = ({grid, rowStart = 0, showSwiper = true, tick = 0, deleted}) => {
 
-
+    //todo: block are regenerated on every grid array change, need to change only the blocks that has been changed and remember the others states
     const [blocks, setBlocks] = useState([]);
     const render = () => {
 
