@@ -1,0 +1,57 @@
+{
+  "name": "lumines",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "css-loader": "^5.0.0",
+    "less": "^3.12.2",
+    "less-loader": "^7.0.2",
+    "parallax-js": "^3.1.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-icons": "^4.2.0",
+    "style-loader": "^2.0.0",
+    "use-sound": "^2.0.1",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.1",
+    "babel-jest": "^26.6.3",
+    "babel-loader": "^8.1.0",
+    "babel-polyfill": "^6.26.0",
+    "dotenv-webpack": "^5.0.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^4.5.0",
+    "jest": "^26.6.3",
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.1.0",
+    "webpack-merge": "^5.3.0"
+  },
+  "scripts": {
+    "start": "webpack serve --config webpack.config.js --mode development  --hot --history-api-fallback --progress --disable-host-check --port 3030",
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "testEnvironment": "jest-environment-node"
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "plugins": [
+          "@babel/plugin-transform-modules-commonjs"
+        ]
+      }
+    },
+    "presets": [
+      "@babel/preset-env"
+    ]
+  }
+}
