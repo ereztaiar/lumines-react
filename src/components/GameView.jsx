@@ -30,7 +30,7 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
     const [newCube, setNewCube] = useState(CUBE_STATES.WAITING);
     const [grid, setGrid] = useState(initialGrid);
     const [isSplit, setIsSplit] = useState(false);
-    const [speed, setSpeed] = useState(40);
+    const [speed, setSpeed] = useState(35);
     const [dropCount, setDropCount] = useState(0);
     const [playRotate] = useSound(sounds.lazer1);
     const [playDrop] = useSound(sounds.lazer2);
