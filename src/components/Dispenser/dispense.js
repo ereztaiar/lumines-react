@@ -25,14 +25,25 @@ const CUBE_WIDTH = 2;
 const CUBE_HEIGHT = CUBE_WIDTH;
 
 const dispenseOrder = ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'];
-const types = [BLOCKS_TYPES.TYPE_A, BLOCKS_TYPES.TYPE_B]; // todo: add support for spical
+
+let randomBlockCount = 1;
+let nextSpecialBlock = BLOCKS_TYPES.TYPE_A_SPECIAL;
 
 const randomBlock = () => {
-    return Math.floor(Math.random() * types.length + 1);
+    let block = Math.floor(Math.random() * 2 + 1);
+    if (randomBlockCount % 25 === 0) {
+        block = nextSpecialBlock;
+        if(nextSpecialBlock === BLOCKS_TYPES.TYPE_A_SPECIAL){
+            nextSpecialBlock = BLOCKS_TYPES.TYPE_B_SPECIAL;
+        }else{
+            nextSpecialBlock = BLOCKS_TYPES.TYPE_A_SPECIAL;
+        }
+    }
+    randomBlockCount++;
+    return block;
 }
 
 function* generateCube() {
-    const keys = Object.keys(BLOCKS);
     const initialPosition = 16 / 2 - 1;
 
     while (true) {

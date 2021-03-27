@@ -3,44 +3,44 @@ import Swiper from "../Swiper";
 import {COLUMNS, READY_GRID, ROWS, BLOCKS_TYPES} from "./index";
 import GridItem from "./GridItem";
 import {BLOCK_ASSOCIATION} from "../Dispenser";
+import {paths} from '../../assets';
 
 
 const Grid = ({grid, rowStart = 0, showSwiper = true, tick = 0, deleted}) => {
 
-    //todo: block are regenerated on every grid array change, need to change only the blocks that has been changed and remember the others states
-    const [blocks, setBlocks] = useState([]);
+    const [blocks, setBlocks] = useState("");
     const render = () => {
 
-
-        const tickRows = [];
+        let gridHtml = '';
         for (let y = rowStart; y < ROWS + READY_GRID; y++) {
-            const tickColumns = [];
+
+            let gridColumns = '';
             for (let x = 0; x < COLUMNS; x++) {
-                const key = `${x}-${y}`;
 
                 let className = BLOCK_ASSOCIATION[BLOCKS_TYPES.EMPTY];
                 if (grid[x][y] === BLOCKS_TYPES.TYPE_A) {
-                    className = BLOCK_ASSOCIATION[BLOCKS_TYPES.TYPE_A];
-                    tickColumns.push( <GridItem key={key} className={className}/>)
+                    gridColumns += `<div class="grid-item"><img src="${paths.greyBlock}"/></div>`;
                 } else if (grid[x][y] === BLOCKS_TYPES.TYPE_B) {
-                    className = BLOCK_ASSOCIATION[BLOCKS_TYPES.TYPE_B];
-                    tickColumns.push( <GridItem key={key} className={className}/>)
-                }else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_A) {
+                    gridColumns += `<div class="grid-item"><img src="${paths.orangeBlock}"/></div>`;
+                } else if (grid[x][y] === BLOCKS_TYPES.TYPE_A_SPECIAL) {
+                    gridColumns += `<div class="grid-item"><img src="${paths.greySpecialBlock}"/></div>`;
+                } else if (grid[x][y] === BLOCKS_TYPES.TYPE_B_SPECIAL) {
+                    gridColumns += `<div class="grid-item"><img src="${paths.orangeSpecialBlock}"/></div>`;
+                } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_A) {
                     className = BLOCK_ASSOCIATION[BLOCKS_TYPES.DELETION_TYPE_A];
-                    tickColumns.push( <GridItem key={key} className={className}/>)
-                }
-                else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B) {
+                    gridColumns += `<div class="grid-item ${className}"></div>`;
+                } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B) {
                     className = BLOCK_ASSOCIATION[BLOCKS_TYPES.DELETION_TYPE_B];
-                    tickColumns.push( <GridItem key={key} className={className}/>)
-                }else {
-                    tickColumns.push(<GridItem key={key} className={className}/>)
+                    gridColumns += `<div class="grid-item ${className}"></div>`;
+                } else {
+                    gridColumns += `<div class="grid-item"></div>`;
                 }
             }
-            tickRows.push(<div key={`row-${y}`} className={`row-${y}`}>{tickColumns}</div>);
+            gridHtml += `<div class="row-${y}">${gridColumns}</div>`;
 
         }
 
-        setBlocks(tickRows);
+        setBlocks(gridHtml);
     };
 
 
@@ -54,10 +54,8 @@ const Grid = ({grid, rowStart = 0, showSwiper = true, tick = 0, deleted}) => {
 
     return (
         <div className="board">
-            <div className="grid">
-                {blocks}
-            </div>
-                {showSwiper && <Swiper tick={tick} score={true} deleted={deleted}/>}
+            <div className="grid" dangerouslySetInnerHTML={{__html: blocks}}/>
+            {showSwiper && <Swiper tick={tick} score={true} deleted={deleted}/>}
         </div>
     );
 }

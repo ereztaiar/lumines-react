@@ -38,7 +38,7 @@ module.exports = {
             },
 
             {
-                test: /\.png|jpg|wav$/,
+                test: /\.png|jpg|wav|svg$/,
                 use: ['file-loader'],
             },
             {
@@ -59,7 +59,7 @@ module.exports = {
     plugins: [
         new HtmlPlugin({
             title: 'Lumines React',
-            favicon: './src/assets/favicon.ico',
+            favicon: './src/assets/paths/favicon.svg',
         }),
 
     ],
