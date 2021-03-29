@@ -169,6 +169,13 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
                     await nop();
                     break;
                 case "ArrowDown":
+                    playDrop();
+                    [src, dest] = await swap.moveDown(grid, currentCube);
+                    for (const block of swap.downOrder) {
+                        await swap.swap(grid, src[block], dest[block]);
+                    }
+                    addOne();
+                    await nop();
                     break;
                 default:
                     break;

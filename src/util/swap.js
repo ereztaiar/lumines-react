@@ -22,7 +22,7 @@ function swap(array, src, dest) {
 }
 
 function rotate(array, cube) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {// todo: make single swap
         await swap(array, cube.topLeft, cube.bottomLeft);
         await swap(array, cube.topRight, cube.bottomRight);
         await swap(array, cube.topLeft, cube.bottomRight);

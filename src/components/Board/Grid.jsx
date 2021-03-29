@@ -49,7 +49,7 @@ const Grid = ({grid, rowStart = 0, showSwiper = true, tick = 0, deleted}) => {
         return () => {
 
         }
-    }, [grid])
+    }, [tick])
 
 
     return (
