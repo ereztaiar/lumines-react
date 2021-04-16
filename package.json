@@ -35,7 +35,8 @@
   },
   "scripts": {
     "start": "webpack serve --config webpack.config.js --mode development  --hot --history-api-fallback --progress --disable-host-check --port 3030",
-    "test": "jest"
+    "test": "jest",
+    "buildWasm": "emcc adder.c -Os -s WASM=1 -s SIDE_MODULE=0 -s EXPORTED_FUNCTIONS='[\"_adder\",\"_arraySum\"]'  -o adder.wasm -s EXPORTED_RUNTIME_METHODS='[\"ccall\",\"cwrap\",\"malloc\"]' --no-entry"
   },
   "jest": {
     "transform": {
