@@ -72,7 +72,7 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
     }
 
     useTimer(async () => {
-        if(pause){
+        if (pause) {
             return;
         }
 
@@ -102,10 +102,10 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
     }, speed);
 
     useKey(async (key) => {
-        if(key === 'p' || key === 'p'){
+        if (key === 'p' || key === 'p') {
             togglePause(!pause);
         }
-        if(pause){
+        if (pause) {
             return;
         }
         try {
@@ -116,26 +116,26 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
             switch (key) {
                 case "ArrowLeft":
                     playMove();
-                    [src, dest] = await swap.moveLeft(grid, currentCube);
-                    for (const block of swap.leftOrder) {
-                        await swap.swap(grid, src[block], dest[block]);
-                    }
+                    [ dest] = await swap.moveLeft(grid, currentCube);
+                    // for (const block of swap.leftOrder) {//todo:fix this reduce swaps
+                    //     await swap.swap(grid, src[block], dest[block]);
+                    // }
                     await nop();
                     break;
                 case "ArrowRight":
                     playMove();
-                    [src, dest] = await swap.moveRight(grid, currentCube);
-                    for (const block of swap.rightOrder) {
-                        await swap.swap(grid, src[block], dest[block]);
-                    }
+                    [ dest] = await swap.moveRight(grid, currentCube);
+                    // for (const block of swap.rightOrder) {//todo:fix this reduce swaps
+                    //     await swap.swap(grid, src[block], dest[block]);
+                    // }
                     await nop();
                     break;
                 case "ArrowDown":
-                    playDrop();
-                    [src, dest] = await swap.moveDown(grid, currentCube);
-                    for (const block of swap.downOrder) {
-                        await swap.swap(grid, src[block], dest[block]);
-                    }
+
+                    [ dest] = await swap.moveDown(grid, currentCube);
+                    // for (const block of swap.downOrder) {
+                    //     await swap.swap(grid, src[block], dest[block]);
+                    // }
                     addOne();
                     await nop();
                     break;
@@ -156,7 +156,7 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
             return;
         }
         try {
-            let src, dest;
+            let dest;
             switch (key) {
                 case "ArrowLeft":
                     break;
@@ -169,11 +169,11 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
                     await nop();
                     break;
                 case "ArrowDown":
-                    playDrop();
-                    [src, dest] = await swap.moveDown(grid, currentCube);
-                    for (const block of swap.downOrder) {
-                        await swap.swap(grid, src[block], dest[block]);
-                    }
+
+                    [ dest] = await swap.moveDown(grid, currentCube);
+                    // for (const block of swap.downOrder) {
+                    //     await swap.swap(grid, src[block], dest[block]);
+                    // }
                     addOne();
                     await nop();
                     break;
@@ -182,6 +182,9 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
             }
 
             setGrid([...grid]);
+            if (typeof dest !== 'undefined') {
+                setCurrentCube({...dest});
+            }
         } catch (ex) {
             // console.log(ex);
         }

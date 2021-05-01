@@ -37,7 +37,9 @@ function prepareForDeletion(array) {
             }
         }
         setToClear([1, 5]);
+        setToClear([3, 5]);//todo fix special
         setToClear([2, 6]);
+        setToClear([4, 6]);//todo fix special
 
         resolve([...array]);
     });
