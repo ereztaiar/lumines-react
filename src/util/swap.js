@@ -23,9 +23,16 @@ function swap(array, src, dest) {
 
 function rotate(array, cube) {
     return new Promise(async (resolve, reject) => {// todo: make single swap
-        await swap(array, cube.topLeft, cube.bottomLeft);
-        await swap(array, cube.topRight, cube.bottomRight);
-        await swap(array, cube.topLeft, cube.bottomRight);
+
+        const tmp = array[cube.topLeft.x][cube.topLeft.y];
+        array[cube.topLeft.x][cube.topLeft.y] =
+            array[cube.topRight.x][cube.topRight.y];
+        array[cube.topRight.x][cube.topRight.y] =
+            array[cube.bottomRight.x][cube.bottomRight.y];
+        array[cube.bottomRight.x][cube.bottomRight.y] =
+            array[cube.bottomLeft.x][cube.bottomLeft.y];
+        array[cube.bottomLeft.x][cube.bottomLeft.y] =
+            tmp;
 
         resolve();
     });
@@ -37,16 +44,24 @@ function moveLeft(array, cube) {
     return new Promise((resolve, reject) => {
         if (typeof array[cube.topLeft.x - 1] === 'undefined' || typeof array[cube.topLeft.x - 1][cube.topLeft.y] === 'undefined') {
             reject(OUT_OF_BOUNDS);
+            return;
         }
-        if (array[cube.topLeft.x - 1][cube.topLeft.y] !== 0) {
+        if (array[cube.topLeft.x - 1][cube.topLeft.y] !== 0 || array[cube.bottomLeft.x - 1][cube.bottomLeft.y] !== 0) {
             reject(WALL);
+            return;
         }
         dest.topLeft = {x: cube.topLeft.x - 1, y: cube.topLeft.y};
         dest.bottomLeft = {x: cube.bottomLeft.x - 1, y: cube.bottomLeft.y};
         dest.topRight = {x: cube.topRight.x - 1, y: cube.topRight.y};
         dest.bottomRight = {x: cube.bottomRight.x - 1, y: cube.bottomRight.y};
 
-        resolve([src, dest]);
+        for (const block of leftOrder) {
+            const tmp = array[src[block].x][src[block].y];
+            array[src[block].x][src[block].y] = array[dest[block].x][dest[block].y];
+            array[dest[block].x][dest[block].y] = tmp;
+        }
+
+        resolve([dest]);
     });
 }
 
@@ -56,16 +71,24 @@ function moveRight(array, cube) {
     return new Promise((resolve, reject) => {
         if (typeof array[cube.topRight.x + 1] === 'undefined' || typeof array[cube.topRight.x + 1][cube.topRight.y] === 'undefined') {
             reject(OUT_OF_BOUNDS);
+            return;
         }
         if (array[cube.topRight.x + 1][cube.topRight.y] !== 0) {
             reject(WALL);
+            return;
         }
         dest.topLeft = {x: cube.topLeft.x + 1, y: cube.topLeft.y};
         dest.bottomLeft = {x: cube.bottomLeft.x + 1, y: cube.bottomLeft.y};
         dest.topRight = {x: cube.topRight.x + 1, y: cube.topRight.y};
         dest.bottomRight = {x: cube.bottomRight.x + 1, y: cube.bottomRight.y};
 
-        resolve([src, dest]);
+        for (const block of rightOrder) {
+            const tmp = array[src[block].x][src[block].y];
+            array[src[block].x][src[block].y] = array[dest[block].x][dest[block].y];
+            array[dest[block].x][dest[block].y] = tmp;
+        }
+
+        resolve([dest]);
     });
 }
 
@@ -75,6 +98,7 @@ function moveDown(array, cube) {
     return new Promise((resolve, reject) => {
         if (typeof array[cube.bottomLeft.x] === 'undefined' || typeof array[cube.bottomLeft.x][cube.bottomLeft.y + 1] === 'undefined') {
             resolve([src, dest, OUT_OF_BOUNDS]);
+            return;
         }
         try {
             const right = array[cube.bottomRight.x][cube.bottomRight.y + 1] !== 0;
@@ -97,13 +121,21 @@ function moveDown(array, cube) {
 
         } catch (ex) {
             reject(ex);
+            return;
+        }
+
+        for (const block of downOrder) {
+            const tmp = array[src[block].x][src[block].y];
+            array[src[block].x][src[block].y] = array[dest[block].x][dest[block].y];
+            array[dest[block].x][dest[block].y] = tmp;
         }
 
         if(src.bottomLeft.y === dest.bottomLeft.y && src.bottomRight.y === dest.bottomRight.y){
-            resolve([src, dest, OUT_OF_BOUNDS]);
+            resolve([ dest, OUT_OF_BOUNDS]);
+            return;
         }
 
-        resolve([src, dest]);
+        resolve([dest]);
     });
 }
 
