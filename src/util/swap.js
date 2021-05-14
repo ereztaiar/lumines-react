@@ -1,11 +1,18 @@
 // todo: change to wasm component
 const WALL = 'wall';
 const OUT_OF_BOUNDS = 'out_of_bounds';
+const DROP_DEFAULT = 1;
+const DROP_FAST = 2;
 
 const errors = {
     WALL,
     OUT_OF_BOUNDS
-}
+};
+
+const DROP_RATE = {
+  DROP_DEFAULT,
+  DROP_FAST
+};
 
 const leftOrder = ['topLeft', 'bottomLeft', 'topRight', 'bottomRight'];
 const rightOrder = ['topRight', 'bottomRight', 'topLeft', 'bottomLeft'];
@@ -92,31 +99,35 @@ function moveRight(array, cube) {
     });
 }
 
-function moveDown(array, cube) {
+function moveDown(array, cube, rate = DROP_DEFAULT) {
     const src = {...cube};
     const dest = {};
     return new Promise((resolve, reject) => {
-        if (typeof array[cube.bottomLeft.x] === 'undefined' || typeof array[cube.bottomLeft.x][cube.bottomLeft.y + 1] === 'undefined') {
-            resolve([src, dest, OUT_OF_BOUNDS]);
-            return;
+        if (typeof array[cube.bottomLeft.x] === 'undefined' || typeof array[cube.bottomLeft.x][cube.bottomLeft.y + 2] === 'undefined') {
+            if (typeof array[cube.bottomLeft.x][cube.bottomLeft.y + 1] !== 'undefined') {
+                rate = DROP_DEFAULT;
+            } else {
+                resolve([src, dest, OUT_OF_BOUNDS]);
+                return;
+            }
         }
         try {
-            const right = array[cube.bottomRight.x][cube.bottomRight.y + 1] !== 0;
-            const left = array[cube.bottomLeft.x][cube.bottomLeft.y + 1] !== 0;
+            const right = array[cube.bottomRight.x][cube.bottomRight.y + rate] !== 0;
+            const left = array[cube.bottomLeft.x][cube.bottomLeft.y + rate] !== 0;
             if (right) {
                 dest.topRight = {x: cube.topRight.x, y: cube.topRight.y};
                 dest.bottomRight = {x: cube.bottomRight.x, y: cube.bottomRight.y};
             } else {
-                dest.topRight = {x: cube.topRight.x, y: cube.topRight.y + 1};
-                dest.bottomRight = {x: cube.bottomRight.x, y: cube.bottomRight.y + 1};
+                dest.topRight = {x: cube.topRight.x, y: cube.topRight.y + rate};
+                dest.bottomRight = {x: cube.bottomRight.x, y: cube.bottomRight.y + rate};
             }
 
             if (left) {
                 dest.topLeft = {x: cube.topLeft.x, y: cube.topLeft.y};
                 dest.bottomLeft = {x: cube.bottomLeft.x, y: cube.bottomLeft.y};
             } else {
-                dest.topLeft = {x: cube.topLeft.x, y: cube.topLeft.y + 1};
-                dest.bottomLeft = {x: cube.bottomLeft.x, y: cube.bottomLeft.y + 1};
+                dest.topLeft = {x: cube.topLeft.x, y: cube.topLeft.y + rate};
+                dest.bottomLeft = {x: cube.bottomLeft.x, y: cube.bottomLeft.y + rate};
             }
 
         } catch (ex) {
@@ -130,8 +141,8 @@ function moveDown(array, cube) {
             array[dest[block].x][dest[block].y] = tmp;
         }
 
-        if(src.bottomLeft.y === dest.bottomLeft.y && src.bottomRight.y === dest.bottomRight.y){
-            resolve([ dest, OUT_OF_BOUNDS]);
+        if (src.bottomLeft.y === dest.bottomLeft.y && src.bottomRight.y === dest.bottomRight.y) {
+            resolve([dest, OUT_OF_BOUNDS]);
             return;
         }
 
@@ -148,5 +159,6 @@ export {
     leftOrder,
     rightOrder,
     downOrder,
-    errors
+    errors,
+    DROP_RATE
 };

@@ -2,10 +2,7 @@ import {useEffect, useContext} from 'react';
 import context from "../context";
 
 
-const useTimer = (
-    callback = () => {
-    }, timeout
-) => {
+const useTimer = (callback = () => null, timeout) => {
 
 
     const {paused} = useContext(context);
