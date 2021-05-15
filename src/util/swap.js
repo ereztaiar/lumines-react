@@ -10,8 +10,8 @@ const errors = {
 };
 
 const DROP_RATE = {
-  DROP_DEFAULT,
-  DROP_FAST
+    DROP_DEFAULT,
+    DROP_FAST
 };
 
 const leftOrder = ['topLeft', 'bottomLeft', 'topRight', 'bottomRight'];
@@ -24,7 +24,7 @@ function swap(array, src, dest) {
         const tmp = array[src.x][src.y];
         array[src.x][src.y] = array[dest.x][dest.y];
         array[dest.x][dest.y] = tmp;
-        resolve();
+        resolve([array, dest]);
     });
 }
 
@@ -41,7 +41,7 @@ function rotate(array, cube) {
         array[cube.bottomLeft.x][cube.bottomLeft.y] =
             tmp;
 
-        resolve();
+        resolve([array]);
     });
 }
 
@@ -68,7 +68,7 @@ function moveLeft(array, cube) {
             array[dest[block].x][dest[block].y] = tmp;
         }
 
-        resolve([dest]);
+        resolve([array, dest]);
     });
 }
 
@@ -95,7 +95,7 @@ function moveRight(array, cube) {
             array[dest[block].x][dest[block].y] = tmp;
         }
 
-        resolve([dest]);
+        resolve([array, dest]);
     });
 }
 
@@ -107,7 +107,7 @@ function moveDown(array, cube, rate = DROP_DEFAULT) {
             if (typeof array[cube.bottomLeft.x][cube.bottomLeft.y + 1] !== 'undefined') {
                 rate = DROP_DEFAULT;
             } else {
-                resolve([src, dest, OUT_OF_BOUNDS]);
+                resolve([array, dest, OUT_OF_BOUNDS]);
                 return;
             }
         }
@@ -142,11 +142,11 @@ function moveDown(array, cube, rate = DROP_DEFAULT) {
         }
 
         if (src.bottomLeft.y === dest.bottomLeft.y && src.bottomRight.y === dest.bottomRight.y) {
-            resolve([dest, OUT_OF_BOUNDS]);
+            resolve([array, dest, OUT_OF_BOUNDS]);
             return;
         }
 
-        resolve([dest]);
+        resolve([array, dest]);
     });
 }
 

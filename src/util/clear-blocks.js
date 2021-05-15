@@ -66,7 +66,6 @@ function clearFromDeletion(array) {
     });
 }
 
-
 function clearColumn(array, x) {
     const column = array[x];
     return new Promise(((resolve, reject) => {

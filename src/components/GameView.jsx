@@ -50,21 +50,20 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
             return;
         }
         try {
-            const [src, dest, outOfBounds] = await swap.moveDown(grid, currentCube);
+            const [updatedGrid, dest, outOfBounds] = await swap.moveDown(grid, currentCube);
             if (outOfBounds === swap.errors.OUT_OF_BOUNDS) {
                 setNewCube(CUBE_STATES.NEW);
                 setDropCount(0);
                 return;
             }
-            for (const block of swap.downOrder) {
-                await swap.swap(grid, src[block], dest[block]);
-            }
+
             if (typeof dest !== 'undefined') {
                 if (Math.abs(dest?.bottomLeft?.y - dest?.bottomRight?.y) > 0) {
                     setIsSplit(true);
                 }
                 setCurrentCube({...dest});
             }
+            setGrid([...updatedGrid]);
             await nop();
         } catch (e) {
             // console.log(e)
@@ -112,43 +111,38 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
             if (isSplit) {
                 return;
             }
-            let src, dest;
+            let updatedGrid, dest, outOfBounds;
             switch (key) {
                 case "ArrowLeft":
                     playMove();
-                    [ dest] = await swap.moveLeft(grid, currentCube);
-                    // for (const block of swap.leftOrder) {//todo:fix this reduce swaps
-                    //     await swap.swap(grid, src[block], dest[block]);
-                    // }
+                    [updatedGrid, dest] = await swap.moveLeft(grid, currentCube);
                     await nop();
                     break;
                 case "ArrowRight":
                     playMove();
-                    [ dest] = await swap.moveRight(grid, currentCube);
-                    // for (const block of swap.rightOrder) {//todo:fix this reduce swaps
-                    //     await swap.swap(grid, src[block], dest[block]);
-                    // }
+                    [updatedGrid, dest] = await swap.moveRight(grid, currentCube);
                     await nop();
                     break;
                 case "ArrowDown":
-
-                    [ dest] = await swap.moveDown(grid, currentCube);
-                    // for (const block of swap.downOrder) {
-                    //     await swap.swap(grid, src[block], dest[block]);
-                    // }
+                    [updatedGrid, dest, outOfBounds] = await swap.moveDown(grid, currentCube);
                     addOne();
                     await nop();
                     break;
                 default:
                     break;
             }
-            setGrid([...grid]);
+            setGrid([...updatedGrid]);
+            if (outOfBounds === swap.errors.OUT_OF_BOUNDS) {
+                setNewCube(CUBE_STATES.NEW);
+                setDropCount(0);
+                return;
+            }
             if (typeof dest !== 'undefined') {
                 setCurrentCube({...dest});
             }
 
         } catch (ex) {
-            // console.log(ex);
+
         }
     }, async (key) => {
 
@@ -156,7 +150,7 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
             return;
         }
         try {
-            let dest;
+            let updatedGrid, dest, outOfBounds;
             switch (key) {
                 case "ArrowLeft":
                     break;
@@ -165,15 +159,11 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
                 case " ": // space
                 case "ArrowUp":
                     playRotate();
-                    await swap.rotate(grid, currentCube);
+                    [updatedGrid, dest] = await swap.rotate(grid, currentCube);
                     await nop();
                     break;
                 case "ArrowDown":
-
-                    [ dest] = await swap.moveDown(grid, currentCube);
-                    // for (const block of swap.downOrder) {
-                    //     await swap.swap(grid, src[block], dest[block]);
-                    // }
+                    [updatedGrid, dest, outOfBounds] = await swap.moveDown(grid, currentCube);
                     addOne();
                     await nop();
                     break;
@@ -181,12 +171,16 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
                     break;
             }
 
-            setGrid([...grid]);
+            setGrid([...updatedGrid]);
+            if (outOfBounds === swap.errors.OUT_OF_BOUNDS) {
+                setNewCube(CUBE_STATES.NEW);
+                setDropCount(0);
+                return;
+            }
             if (typeof dest !== 'undefined') {
                 setCurrentCube({...dest});
             }
         } catch (ex) {
-            // console.log(ex);
         }
     })
 
@@ -206,7 +200,6 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
     }, [newCube]);
 
     useEffect(() => {
-        // playBackground();
         setNewCube(CUBE_STATES.NEW);
         return () => {
 
