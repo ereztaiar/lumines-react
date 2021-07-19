@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300&display=swap');
+
+@grid-columns: 16;
+@grid-rows: 12;
+@ready-board-grid-columns: @grid-columns;
+@ready-board-grid-rows: 2;
+@grid-item-width: 6vh;
+@grid-item-height: @grid-item-width;
+@grid-item-width-max: 70px;
+@grid-item-height-max: @grid-item-width-max;
+
+@ready-board-width: @grid-item-width * @grid-columns;
+@ready-board-height: @grid-item-width * 2;
+@center-width: @grid-item-width * @grid-columns;
+@center-height: @grid-item-height * @grid-rows;
+
+
+:root {
+  --grid-columns: @grid-columns;
+  --grid-rows: @grid-rows;
+  --grid-item-width: @grid-item-width;
+  --grid-item-height: @grid-item-height;
+  --ready-grid-columns: @ready-board-grid-columns;
+  --ready-grid-rows: @ready-board-grid-rows;
+}
+
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+
+
+
+
+      .reflection {
+        grid-column-start: 2;
+        grid-row-start: 3;
+      }
+
+
+
+
+
+
+
+
+
+    }
+  }
+}

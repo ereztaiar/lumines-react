@@ -1,4 +1,5 @@
 const HtmlPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     devtool: 'source-map',
@@ -36,7 +37,6 @@ module.exports = {
                     ],
                 },
             },
-
             {
                 test: /\.png|jpg|wav|svg$/,
                 use: ['file-loader'],
@@ -44,11 +44,24 @@ module.exports = {
             {
                 test: /\.css|\.less$/i,
                 use: [
-                    'style-loader',
-                    'css-loader',
-                    'less-loader'
-                ],
+                    {
+                        loader: 'style-loader'
+                    },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                            modules: {
+                                localIdentName: '[name]_[local]_[hash:base64:5]'
+                            }
+                        }
+                    },
+                    {
+                        loader: 'less-loader'
+                    }
+                ]
             }
+
         ],
     },
 
@@ -57,10 +70,17 @@ module.exports = {
     },
 
     plugins: [
+        new MiniCssExtractPlugin(),
         new HtmlPlugin({
             title: 'Lumines React',
             favicon: './src/assets/paths/favicon.svg',
         }),
 
     ],
+    devServer: {
+        hot: true,
+        after: function (app, server, compiler) {
+            console.log('the server has started :)')
+        },
+    },
 };

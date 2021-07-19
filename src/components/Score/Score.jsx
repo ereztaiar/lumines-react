@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import useTimer from "../../hooks/useTimer";
 import useScore from "./useScore";
+import {default as Styles} from '../../skins/orange/score.less';
 
 const Score = ({score, highScore, deleted}) => {
     const [time, setTime] = useState(0);
@@ -29,26 +30,26 @@ const Score = ({score, highScore, deleted}) => {
     }
 
     return (
-        <section id={"score"}>
-            <div className={"data"}>
-                <div className={"title"}>LEVEL</div>
-                <div className={"info"}>1</div>
+        <section id={Styles.score}>
+            <div className={Styles.data}>
+                <div className={Styles.title}>LEVEL</div>
+                <div className={Styles.info}>1</div>
             </div>
-            <div className={"data"}>
-                <div className={"title"}>TIME</div>
-                <div className={"info"}>{displayClock(time)}</div>
+            <div className={Styles.data}>
+                <div className={Styles.title}>TIME</div>
+                <div className={Styles.info}>{displayClock(time)}</div>
             </div>
-            <div className={"data"}>
-                <div className={"title"}>SCORE</div>
-                <div className={"info"}>{score}</div>
+            <div className={Styles.data}>
+                <div className={Styles.title}>SCORE</div>
+                <div className={Styles.info}>{score}</div>
             </div>
-            <div className={"data"}>
-                <div className={"title"}>HI-SCORE</div>
-                <div className={"info"}>{highScore}</div>
+            <div className={Styles.data}>
+                <div className={Styles.title}>HI-SCORE</div>
+                <div className={Styles.info}>{highScore}</div>
             </div>
-            <div className={"data"}>
-                <div className={"title"}>DELETED</div>
-                <div className={"info"}>{deleted}</div>
+            <div className={Styles.data}>
+                <div className={Styles.title}>DELETED</div>
+                <div className={Styles.info}>{deleted}</div>
             </div>
         </section>
     );
