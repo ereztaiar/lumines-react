@@ -1,4 +1,5 @@
 const HtmlPlugin = require('html-webpack-plugin');
+const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
@@ -67,6 +68,14 @@ module.exports = {
 
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.css'],
+        alias: {
+            Assets: path.resolve(__dirname, "src", "assets"),
+            Components: path.resolve(__dirname, "src", "components"),
+            Hooks: path.resolve(__dirname, "src", "hooks"),
+            Skins: path.resolve(__dirname, "src", "skins"),
+            Styles: path.resolve(__dirname, "src", "styles"),
+            Util: path.resolve(__dirname, "src", "util"),
+        }
     },
 
     plugins: [

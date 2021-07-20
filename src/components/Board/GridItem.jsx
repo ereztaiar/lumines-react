@@ -1,8 +1,12 @@
 import React from 'react';
+import useSkin from "../../hooks/useSkin";
 
 const GridItem = ({className}) => {
+
+    const {skin: {grid: gridStyle}}  = useSkin();
+
     return (
-        <div className={`grid-item ${className}`}></div>
+        <div className={`${gridStyle.gridItem} ${className}`}></div>
     );
 };
 

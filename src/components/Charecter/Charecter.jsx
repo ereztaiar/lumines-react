@@ -1,10 +1,13 @@
 import React from 'react';
 import {FaRegGrinStars} from "react-icons/fa";
-import {default as Styles} from '../../skins/orange/character.less';
+import useSkin from "../../hooks/useSkin";
 
 const Character = () => {
+
+    const {skin: {character: characterStyle}} = useSkin();
+
     return (
-        <div className={Styles.character}>
+        <div className={characterStyle.character}>
             <FaRegGrinStars/>
         </div>
     )

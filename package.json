@@ -35,7 +35,7 @@
     "webpack-merge": "^5.3.0"
   },
   "scripts": {
-    "start": "webpack serve --config webpack.config.js --mode development  --hot --history-api-fallback --progress --disable-host-check --port 3030",
+    "watch": "webpack serve --config webpack.config.js --mode development  --hot --history-api-fallback --progress --disable-host-check --port 3030",
     "test": "jest"
   },
   "jest": {

@@ -6,8 +6,7 @@ import context from "../../context";
 import {BLOCKS_TYPES} from "../Board";
 import {paths} from "../../assets";
 
-import {default as DispenserStyles} from '../../skins/orange/dispenser.less';
-import {default as GridStyles} from '../../skins/orange/grid.less';
+import useSkin from "../../hooks/useSkin";
 
 const WELL_SIZE = 3;
 
@@ -28,25 +27,26 @@ const Dispenser = ({newCube, setNewCube, setCurrentCube}) => {
 
     const [cubes, setCubes] = useState(_cubes);
     const [blocks, setBlocks] = useState("");
+    const {skin: {dispenser: dispenserStyle, grid: gridStyle}} = useSkin();
 
     const render = () => {
         let html = '';
         for (let i = 0; i < cubes.length; i++) {
-            let htmlCubes = `<div class="${DispenserStyles.cube}">`;
+            let htmlCubes = `<div class="${dispenserStyle.cube}">`;
             for (let j = 0; j < dispenseOrder.length; j++) {
                 const order = dispenseOrder[j];
                 const Block = cubes[i][order].Block;
                 if (Block === BLOCKS_TYPES.TYPE_A) {
 
-                    htmlCubes += `<div class="${GridStyles.gridItem}"><img src="${paths.greyBlock}"/></div>`;
+                    htmlCubes += `<div class="${gridStyle.gridItem}"><img src="${paths.greyBlock}"/></div>`;
                 } else if (Block === BLOCKS_TYPES.TYPE_B) {
-                    htmlCubes += `<div class="${GridStyles.gridItem}"><img src="${paths.orangeBlock}"/></div>`;
-                }else if (Block === BLOCKS_TYPES.TYPE_A_SPECIAL) {
-                    htmlCubes += `<div class="${GridStyles.gridItem}"><img src="${paths.greySpecialBlock}"/></div>`;
-                }else if (Block === BLOCKS_TYPES.TYPE_B_SPECIAL) {
-                    htmlCubes += `<div class="${GridStyles.gridItem}"><img src="${paths.orangeSpecialBlock}"/></div>`;
+                    htmlCubes += `<div class="${gridStyle.gridItem}"><img src="${paths.orangeBlock}"/></div>`;
+                } else if (Block === BLOCKS_TYPES.TYPE_A_SPECIAL) {
+                    htmlCubes += `<div class="${gridStyle.gridItem}"><img src="${paths.greySpecialBlock}"/></div>`;
+                } else if (Block === BLOCKS_TYPES.TYPE_B_SPECIAL) {
+                    htmlCubes += `<div class="${gridStyle.gridItem}"><img src="${paths.orangeSpecialBlock}"/></div>`;
                 } else {
-                    htmlCubes += `<div class="${GridStyles.gridItem}"></div>`;
+                    htmlCubes += `<div class="${gridStyle.gridItem}"></div>`;
                 }
             }
             htmlCubes += '</div>';
@@ -74,10 +74,10 @@ const Dispenser = ({newCube, setNewCube, setCurrentCube}) => {
         return () => {
 
         }
-    }, [cubes]);
+    }, [cubes, dispenserStyle, gridStyle]);
 
     return (
-        <div className={`${DispenserStyles.dispenser} ${GridStyles.grid}`} dangerouslySetInnerHTML={{__html: blocks}}/>
+        <div className={`${dispenserStyle.dispenser} ${gridStyle.grid}`} dangerouslySetInnerHTML={{__html: blocks}}/>
     );
 };
 

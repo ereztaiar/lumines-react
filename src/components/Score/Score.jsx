@@ -1,10 +1,12 @@
 import React, {useState} from "react";
 import useTimer from "../../hooks/useTimer";
 import useScore from "./useScore";
-import {default as Styles} from '../../skins/orange/score.less';
+
+import useSkin from "../../hooks/useSkin";
 
 const Score = ({score, highScore, deleted}) => {
     const [time, setTime] = useState(0);
+    const {skin: {score: scoreStyle}} = useSkin();
 
     useTimer(() => {
 
@@ -30,26 +32,26 @@ const Score = ({score, highScore, deleted}) => {
     }
 
     return (
-        <section id={Styles.score}>
-            <div className={Styles.data}>
-                <div className={Styles.title}>LEVEL</div>
-                <div className={Styles.info}>1</div>
+        <section id={scoreStyle.score}>
+            <div className={scoreStyle.data}>
+                <div className={scoreStyle.title}>LEVEL</div>
+                <div className={scoreStyle.info}>1</div>
             </div>
-            <div className={Styles.data}>
-                <div className={Styles.title}>TIME</div>
-                <div className={Styles.info}>{displayClock(time)}</div>
+            <div className={scoreStyle.data}>
+                <div className={scoreStyle.title}>TIME</div>
+                <div className={scoreStyle.info}>{displayClock(time)}</div>
             </div>
-            <div className={Styles.data}>
-                <div className={Styles.title}>SCORE</div>
-                <div className={Styles.info}>{score}</div>
+            <div className={scoreStyle.data}>
+                <div className={scoreStyle.title}>SCORE</div>
+                <div className={scoreStyle.info}>{score}</div>
             </div>
-            <div className={Styles.data}>
-                <div className={Styles.title}>HI-SCORE</div>
-                <div className={Styles.info}>{highScore}</div>
+            <div className={scoreStyle.data}>
+                <div className={scoreStyle.title}>HI-SCORE</div>
+                <div className={scoreStyle.info}>{highScore}</div>
             </div>
-            <div className={Styles.data}>
-                <div className={Styles.title}>DELETED</div>
-                <div className={Styles.info}>{deleted}</div>
+            <div className={scoreStyle.data}>
+                <div className={scoreStyle.title}>DELETED</div>
+                <div className={scoreStyle.info}>{deleted}</div>
             </div>
         </section>
     );

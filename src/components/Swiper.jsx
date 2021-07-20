@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 // import swiper from './styles/swiper.less'
 import useTimer from "../hooks/useTimer";
+import useSkin from "../hooks/useSkin";
 // import {MAX_TICK} from "./GameView";
-import {default as Styles} from '../skins/orange/swiper.less';
+
 
 const MAX_WIDTH = 12.5;
 const MAX_TICK = 160; // todo: check why import from gameview brakes dispense
@@ -14,6 +15,7 @@ const Swiper = ({tick, deleted, score = false}) => {
         width: `${MAX_WIDTH}%`,
         transform: `translateX(-100%)`
     });
+    const {skin: {swiper: swiperStyle}} = useSkin();
 
     useEffect(() => {
         const left = (100 * tick) / MAX_TICK;
@@ -28,10 +30,10 @@ const Swiper = ({tick, deleted, score = false}) => {
     }, [tick]);
 
     return (
-        <div id={Styles.swiper} style={style}>
-            {score && <div className={Styles.deleted}>
-                <div className={Styles.score}>{deleted}</div>
-                <svg version="1.1" id={Styles.arrow} xmlns="http://www.w3.org/2000/svg"
+        <div id={swiperStyle.swiper} style={style}>
+            {score && <div className={swiperStyle.deleted}>
+                <div className={swiperStyle.score}>{deleted}</div>
+                <svg version="1.1" id={swiperStyle.arrow} xmlns="http://www.w3.org/2000/svg"
                      xmlnsXlink="http://www.w3.org/1999/xlink" height={"25"} width={"15"}>
                     <polygon points={"0,0 15,12.5 0,25"} style={{fill: "black", stroke: "#fa7f03", strokeWidth: 2}}/>
                 </svg>
