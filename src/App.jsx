@@ -1,24 +1,30 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Context from './context.js';
 import Store from './store.js';
-import {default as Classes} from './skins/common.less';
-import Background from "./components/Background";
-import Dispenser from "./components/Dispenser";
-import {Grid} from "./components/Board";
-import GameView from "./components/GameView";
-import Reflection from "./components/Reflection";
-import {Score, useScore} from "./components/Score";
-import Character from "./components/Charecter";
+import {default as Classes} from 'Skins/common.less';
+import Dispenser from "Components/Dispenser";
+import {Grid} from "Components/Board";
+import GameView from "Components/GameView";
+import Reflection from "Components/Reflection";
+import {Score, useScore} from "Components/Score";
+import Character from "Components/Charecter";
+import useSkin from "Hooks/useSkin";
 
 const App = () => {
     const store = Store();
     const reflection = false;
     const [score, addOne, multiplier, highScore, deletedBlocks, deleted] = useScore();
 
+    const {skin: {BackgroundComponent}} = useSkin();
+
+    useEffect(() =>{
+
+    },[BackgroundComponent])
+
     return (
         <div className={Classes.root}>
             <Context.Provider value={store}>
-                <Background/>
+                <BackgroundComponent/>
                 <div className={Classes.app + ' ' + Classes.container}>
                     <GameView scoring={{addOne, multiplier, deletedBlocks}}>
                         {({setCurrentCube, grid, currentCube, newCube, setNewCube, tick, currentDeleted}) => (

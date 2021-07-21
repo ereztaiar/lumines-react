@@ -1,6 +1,6 @@
 import React from 'react';
 import {FaRegGrinStars} from "react-icons/fa";
-import useSkin from "../../hooks/useSkin";
+import useSkin from "Hooks/useSkin";
 
 const Character = () => {
 

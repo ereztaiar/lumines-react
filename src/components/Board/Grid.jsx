@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import Swiper from "../Swiper";
-import {COLUMNS, READY_GRID, ROWS, BLOCKS_TYPES} from "./index";
-import GridItem from "./GridItem";
-import {BLOCK_ASSOCIATION} from "../Dispenser";
-import {paths} from '../../assets';
-import useSkin from "../../hooks/useSkin";
+import Swiper from "Components/Swiper";
+import {COLUMNS, READY_GRID, ROWS, BLOCKS_TYPES} from "Components/Board/index";
+import GridItem from "Components/Board/GridItem";
+import {BLOCK_ASSOCIATION} from "Components/Dispenser";
+import {paths} from 'Assets';
+import useSkin from "Hooks/useSkin";
 
 const Grid = ({grid, rowStart = 0, showSwiper = true, tick = 0, deleted}) => {
 

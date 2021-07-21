@@ -1,11 +1,13 @@
 import {useEffect, useState} from "react";
-import * as defaultSkin from '../skins/default';
-import * as purple from '../skins/purple';
+import * as defaultSkin from 'Skins/default';
+import * as purple from 'Skins/purple';
+import * as yellow from 'Skins/yellow';
 import useKey from "./useKey";
 
 const skins = [
     defaultSkin,
-    purple
+    purple,
+    yellow
 ];
 
 const useSkin = () => {

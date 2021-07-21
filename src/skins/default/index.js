@@ -1,9 +1,10 @@
-import {default as background} from './background.less';
-import {default as character} from './character.less';
-import {default as dispenser} from './dispenser.less';
-import {default as grid} from './grid.less';
-import {default as score} from './score.less';
-import {default as swiper} from './swiper.less';
+import {default as background} from 'Skins/default/background.less';
+import {default as character} from 'Skins/default/character.less';
+import {default as dispenser} from 'Skins/default/dispenser.less';
+import {default as grid} from 'Skins/default/grid.less';
+import {default as score} from 'Skins/default/score.less';
+import {default as swiper} from 'Skins/default/swiper.less';
+import {default as BackgroundComponent} from 'Skins/default/Background.jsx';
 
 export {
     background,
@@ -11,5 +12,6 @@ export {
     dispenser,
     grid,
     score,
-    swiper
+    swiper,
+    BackgroundComponent
 }

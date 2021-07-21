@@ -1,20 +1,11 @@
 import React, {useEffect, useRef} from 'react';
 // import Parallax from 'parallax-js';
 
-import useSkin from "Hooks/useSkin";
+import {background as BackgroundStyle} from "Skins/default";
 
 
 const Background = () => {
     const background = useRef(null);
-
-    const {skin: {background: BackgroundStyle}} = useSkin();
-
-    useEffect(() => {
-        // const parallax = new Parallax(background.current);
-        return () => {
-            // parallax.destroy();
-        }
-    }, []);
 
     return (
         <div className={BackgroundStyle.background} ref={background} data-relative-input="true">
