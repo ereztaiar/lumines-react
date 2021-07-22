@@ -5,6 +5,7 @@ import {default as grid} from 'Skins/purple/grid.less';
 import {default as score} from 'Skins/purple/score.less';
 import {default as swiper} from 'Skins/purple/swiper.less';
 import {default as BackgroundComponent} from 'Skins/purple/Background.jsx';
+import * as paths from 'Skins/purple/paths';
 
 export {
     background,
@@ -13,5 +14,6 @@ export {
     grid,
     score,
     swiper,
+    paths,
     BackgroundComponent
 }

@@ -4,9 +4,7 @@ import GridItem from "../Board/GridItem";
 
 import context from "../../context";
 import {BLOCKS_TYPES} from "../Board";
-import {paths} from "../../assets";
 
-import useSkin from "../../hooks/useSkin";
 
 const WELL_SIZE = 3;
 
@@ -23,11 +21,21 @@ for (let i = 0; i < WELL_SIZE; i++) {
     _cubes.push(cube);
 }
 
-const Dispenser = ({newCube, setNewCube, setCurrentCube}) => {
+const Dispenser = props => {
+
+    const {
+        newCube,
+        setNewCube,
+        setCurrentCube,
+        styles:{
+            dispenserStyle,
+            gridStyle
+        },
+        paths
+    } = props;
 
     const [cubes, setCubes] = useState(_cubes);
     const [blocks, setBlocks] = useState("");
-    const {skin: {dispenser: dispenserStyle, grid: gridStyle}} = useSkin();
 
     const render = () => {
         let html = '';
@@ -38,13 +46,13 @@ const Dispenser = ({newCube, setNewCube, setCurrentCube}) => {
                 const Block = cubes[i][order].Block;
                 if (Block === BLOCKS_TYPES.TYPE_A) {
 
-                    htmlCubes += `<div class="${gridStyle.gridItem}"><img src="${paths.greyBlock}"/></div>`;
+                    htmlCubes += `<div class="${gridStyle.gridItem}"><img src="${paths.aBlock}"/></div>`;
                 } else if (Block === BLOCKS_TYPES.TYPE_B) {
-                    htmlCubes += `<div class="${gridStyle.gridItem}"><img src="${paths.orangeBlock}"/></div>`;
+                    htmlCubes += `<div class="${gridStyle.gridItem}"><img src="${paths.bBlock}"/></div>`;
                 } else if (Block === BLOCKS_TYPES.TYPE_A_SPECIAL) {
-                    htmlCubes += `<div class="${gridStyle.gridItem}"><img src="${paths.greySpecialBlock}"/></div>`;
+                    htmlCubes += `<div class="${gridStyle.gridItem}"><img src="${paths.aBlockSpecial}"/></div>`;
                 } else if (Block === BLOCKS_TYPES.TYPE_B_SPECIAL) {
-                    htmlCubes += `<div class="${gridStyle.gridItem}"><img src="${paths.orangeSpecialBlock}"/></div>`;
+                    htmlCubes += `<div class="${gridStyle.gridItem}"><img src="${paths.bBlockSpecial}"/></div>`;
                 } else {
                     htmlCubes += `<div class="${gridStyle.gridItem}"></div>`;
                 }
@@ -74,7 +82,7 @@ const Dispenser = ({newCube, setNewCube, setCurrentCube}) => {
         return () => {
 
         }
-    }, [cubes, dispenserStyle, gridStyle]);
+    }, [cubes, dispenserStyle, gridStyle, paths]);
 
     return (
         <div className={`${dispenserStyle.dispenser} ${gridStyle.grid}`} dangerouslySetInnerHTML={{__html: blocks}}/>

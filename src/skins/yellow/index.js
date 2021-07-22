@@ -5,6 +5,7 @@ import {default as grid} from 'Skins/yellow/grid.less';
 import {default as score} from 'Skins/yellow/score.less';
 import {default as swiper} from 'Skins/yellow/swiper.less';
 import {default as BackgroundComponent} from 'Skins/yellow/Background.jsx';
+import * as paths from 'Skins/yellow/paths';
 
 export {
     background,
@@ -13,5 +14,6 @@ export {
     grid,
     score,
     swiper,
+    paths,
     BackgroundComponent
 }

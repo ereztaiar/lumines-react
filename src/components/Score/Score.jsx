@@ -2,11 +2,17 @@ import React, {useState} from "react";
 import useTimer from "../../hooks/useTimer";
 import useScore from "./useScore";
 
-import useSkin from "../../hooks/useSkin";
 
-const Score = ({score, highScore, deleted}) => {
+const Score = props => {
+    const {
+        score,
+        highScore,
+        deleted,
+        styles:{
+            scoreStyle
+        }
+    } = props;
     const [time, setTime] = useState(0);
-    const {skin: {score: scoreStyle}} = useSkin();
 
     useTimer(() => {
 

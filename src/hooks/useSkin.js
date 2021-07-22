@@ -21,8 +21,9 @@ const useSkin = () => {
     });
 
     useEffect(() => {
+        const newSkin = skins[skinIndex % skins.length];
         setSkin(
-            skins[skinIndex % skins.length]
+            newSkin
         );
     }, [skin, skinIndex]);
 

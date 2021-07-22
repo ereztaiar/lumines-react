@@ -5,7 +5,7 @@ import {default as grid} from 'Skins/default/grid.less';
 import {default as score} from 'Skins/default/score.less';
 import {default as swiper} from 'Skins/default/swiper.less';
 import {default as BackgroundComponent} from 'Skins/default/Background.jsx';
-
+import * as paths from 'Skins/default/paths';
 export {
     background,
     character,
@@ -13,5 +13,6 @@ export {
     grid,
     score,
     swiper,
+    paths,
     BackgroundComponent
 }

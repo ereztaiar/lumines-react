@@ -1,10 +1,13 @@
 import React from 'react';
 import {FaRegGrinStars} from "react-icons/fa";
-import useSkin from "Hooks/useSkin";
 
-const Character = () => {
+const Character = props => {
 
-    const {skin: {character: characterStyle}} = useSkin();
+    const {
+        styles:{
+            characterStyle
+        }
+    } = props;
 
     return (
         <div className={characterStyle.character}>

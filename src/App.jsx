@@ -15,11 +15,16 @@ const App = () => {
     const reflection = false;
     const [score, addOne, multiplier, highScore, deletedBlocks, deleted] = useScore();
 
-    const {skin: {BackgroundComponent}} = useSkin();
-
-    useEffect(() =>{
-
-    },[BackgroundComponent])
+    const {
+        skin: {
+            BackgroundComponent,
+            dispenser: dispenserStyle,
+            grid: gridStyle,
+            score: scoreStyle,
+            character:characterStyle,
+            paths
+        }
+    } = useSkin();
 
     return (
         <div className={Classes.root}>
@@ -29,13 +34,49 @@ const App = () => {
                     <GameView scoring={{addOne, multiplier, deletedBlocks}}>
                         {({setCurrentCube, grid, currentCube, newCube, setNewCube, tick, currentDeleted}) => (
                             <>
-                                <Score score={score} highScore={highScore} deleted={deleted}/>
-                                <Grid grid={grid} tick={tick} deleted={currentDeleted}/>
+                                <Score
+                                    score={score}
+                                    highScore={highScore}
+                                    deleted={deleted}
+                                    styles={
+                                        {
+                                            scoreStyle
+                                        }
+                                    }
+                                />
+                                <Grid
+                                    grid={grid}
+                                    tick={tick}
+                                    deleted={currentDeleted}
+                                    styles={
+                                        {
+                                            gridStyle
+                                        }
+                                    }
+                                    paths={paths}
+                                />
                                 {reflection && <Reflection>
                                     <Grid currentCube={currentCube} grid={grid} rowStart={8} showSwiper={false}/>
                                 </Reflection>}
-                                <Dispenser setCurrentCube={setCurrentCube} newCube={newCube} setNewCube={setNewCube}/>
-                                <Character/>
+                                <Dispenser
+                                    setCurrentCube={setCurrentCube}
+                                    newCube={newCube}
+                                    setNewCube={setNewCube}
+                                    styles={
+                                        {
+                                            dispenserStyle,
+                                            gridStyle
+                                        }
+                                    }
+                                    paths={paths}
+                                />
+                                <Character
+                                    styles={
+                                        {
+                                            characterStyle
+                                        }
+                                    }
+                                />
                             </>
                         )}
                     </GameView>
