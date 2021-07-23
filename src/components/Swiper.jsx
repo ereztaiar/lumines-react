@@ -1,21 +1,24 @@
 import React, {useState, useEffect} from 'react';
-// import swiper from './styles/swiper.less'
-import useTimer from "../hooks/useTimer";
-import useSkin from "../hooks/useSkin";
-// import {MAX_TICK} from "./GameView";
-
 
 const MAX_WIDTH = 12.5;
-const MAX_TICK = 160; // todo: check why import from gameview brakes dispense
+const MAX_TICK = 160;
 
-const Swiper = ({tick, deleted, score = false}) => {
+const Swiper = props => {
+
+    const {
+        tick,
+        deleted,
+        score = false,
+        styles: {
+            swiperStyle
+        }
+    } = props;
 
     const [style, setStyle] = useState({
         left: "0%",
         width: `${MAX_WIDTH}%`,
         transform: `translateX(-100%)`
     });
-    const {skin: {swiper: swiperStyle}} = useSkin();
 
     useEffect(() => {
         const left = (100 * tick) / MAX_TICK;

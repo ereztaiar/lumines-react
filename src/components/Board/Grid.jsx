@@ -13,8 +13,9 @@ const Grid = props => {
         showSwiper = true,
         tick = 0,
         deleted,
-        styles:{
-            gridStyle
+        styles: {
+            gridStyle,
+            swiperStyle
         },
         paths
     } = props;
@@ -30,7 +31,7 @@ const Grid = props => {
             let gridColumns = '';
             for (let x = 0; x < COLUMNS; x++) {
 
-                let className = BLOCK_ASSOCIATION[BLOCKS_TYPES.EMPTY];
+                let className = BLOCK_ASSOCIATION[BLOCKS_TYPES.EMPTY];// todo: change class to common svg
 
                 if (grid[x][y] === BLOCKS_TYPES.TYPE_A) {
                     gridColumns += `<div class="${gridStyle.gridItem}"><img src="${paths.aBlock}"/></div>`;
@@ -70,9 +71,18 @@ const Grid = props => {
     return (
         <div className={gridStyle.board}>
             <div className={gridStyle.grid} dangerouslySetInnerHTML={{__html: blocks}}/>
-            {showSwiper && <Swiper tick={tick} score={true} deleted={deleted}/>}
+            {showSwiper && <Swiper
+                tick={tick}
+                score={true}
+                deleted={deleted}
+                styles={
+                    {
+                        swiperStyle
+                    }
+                }
+            />}
         </div>
     );
-}
+};
 
 export default Grid;

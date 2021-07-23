@@ -13,7 +13,14 @@ import useSkin from "Hooks/useSkin";
 const App = () => {
     const store = Store();
     const reflection = false;
-    const [score, addOne, multiplier, highScore, deletedBlocks, deleted] = useScore();
+    const [
+        score,
+        addOne,
+        multiplier,
+        highScore,
+        deletedBlocks,
+        deleted
+    ] = useScore();
 
     const {
         skin: {
@@ -22,9 +29,10 @@ const App = () => {
             grid: gridStyle,
             score: scoreStyle,
             character:characterStyle,
+            swiper: swiperStyle,
             paths
         }
-    } = useSkin();
+    } = useSkin(score);
 
     return (
         <div className={Classes.root}>
@@ -50,7 +58,8 @@ const App = () => {
                                     deleted={currentDeleted}
                                     styles={
                                         {
-                                            gridStyle
+                                            gridStyle,
+                                            swiperStyle
                                         }
                                     }
                                     paths={paths}

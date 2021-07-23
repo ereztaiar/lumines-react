@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+        "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="30" height="30"
+     viewBox="0 0 300 300">
+
+    <rect
+            width="50"
+            height="50"
+            fill="#1ECBE1"
+            rx="3"
+            x="45"
+            y="-15"
+    />
+    <rect
+            width="50"
+            height="50"
+            fill="#961EE1"
+            rx="15"
+            x="45"
+            y="-15"
+    />
+
+    <rect
+            width="50"
+            height="50"
+            fill="#961EE1"
+            rx="3"
+            x="95"
+            y="35"
+    />
+    <rect
+            width="50"
+            height="50"
+            fill="#1ECBE1"
+            rx="15"
+            x="95"
+            y="35"
+    />
+    <!-- -->
+    <rect
+            width="30"
+            height="30"
+            fill="#1ECBE1"
+            rx="3"
+            x="-5"
+            y="-5"
+    />
+    <rect
+            width="30"
+            height="30"
+            fill="#961EE1"
+            rx="15"
+            x="-5"
+            y="-5"
+    />
+
+    <rect
+            width="30"
+            height="30"
+            fill="#961EE1"
+            rx="3"
+            x="25"
+            y="25"
+    />
+    <rect
+            width="30"
+            height="30"
+            fill="#1ECBE1"
+            rx="15"
+            x="25"
+            y="25"
+    />
+
+<!-- -->
+    <rect
+            width="30"
+            height="30"
+            fill="#1ECBE1"
+            rx="3"
+            x="120"
+            y="70"
+    />
+    <rect
+            width="30"
+            height="30"
+            fill="#961EE1"
+            rx="15"
+            x="120"
+            y="70"
+    />
+
+    <rect
+            width="30"
+            height="30"
+            fill="#961EE1"
+            rx="3"
+            x="150"
+            y="100"
+    />
+    <rect
+            width="30"
+            height="30"
+            fill="#1ECBE1"
+            rx="15"
+            x="150"
+            y="100"
+    />
+
+<!-- -->
+
+
+    <rect
+            width="10"
+            height="10"
+            fill="#1ECBE1"
+            rx="3"
+            x="85"
+            y="85"
+    />
+    <rect
+            width="10"
+            height="10"
+            fill="#961EE1"
+            rx="15"
+            x="85"
+            y="85"
+    />
+
+    <rect
+            width="10"
+            height="10"
+            fill="#961EE1"
+            rx="3"
+            x="75"
+            y="75"
+    />
+    <rect
+            width="10"
+            height="10"
+            fill="#1ECBE1"
+            rx="15"
+            x="75"
+            y="75"
+    />
+
+    <!-- -->
+
+    <rect
+            width="35"
+            height="35"
+            fill="#1ECBE1"
+            rx="3"
+            x="250"
+            y="25"
+    />
+    <rect
+            width="35"
+            height="35"
+            fill="#961EE1"
+            rx="15"
+            x="250"
+            y="25"
+    />
+
+    <rect
+            width="35"
+            height="35"
+            fill="#961EE1"
+            rx="3"
+            x="215"
+            y="65"
+    />
+    <rect
+            width="35"
+            height="35"
+            fill="#1ECBE1"
+            rx="15"
+            x="215"
+            y="65"
+    />
+</svg>

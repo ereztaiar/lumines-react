@@ -22,7 +22,16 @@ function nop() {
     });
 }
 
-const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
+const GameView = props => {
+
+    const {
+        scoring: {
+            addOne,
+            multiplier,
+            deletedBlocks
+        },
+        children
+    } = props;
 
     const [pause, togglePause] = useState(true);
 
@@ -182,7 +191,7 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
             }
         } catch (ex) {
         }
-    })
+    });
 
     useEffect(() => {
 
@@ -214,7 +223,6 @@ const GameView = ({scoring: {addOne, multiplier, deletedBlocks}, children}) => {
 
         }
     }, [tick]);
-
 
     return (
         <>

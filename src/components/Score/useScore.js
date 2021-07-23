@@ -32,8 +32,7 @@ const useScore = () => {
             return () => {
 
             }
-        }
-        , [score]);
+        }, [score]);
 
     return [
         score,

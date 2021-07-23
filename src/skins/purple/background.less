@@ -4,7 +4,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  transform: scale(1.5);
 
   &:before, &:after {
     position: absolute;
@@ -18,10 +17,16 @@
 
 
   &:before {
-    background: #E1341E;
+    background: url('Skins/purple/paths/background.svg');
+    background-size: 100%;
+    opacity: .6;
   }
 
   &:after {
+    z-index: -10;
+    background: url('Assets/images/scan-mask.png') repeat;
+    background-color: rebeccapurple;
+    transform: scale(2);
   }
 
   svg {
