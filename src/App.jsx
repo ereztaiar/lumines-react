@@ -9,10 +9,14 @@ import Reflection from "Components/Reflection";
 import {Score, useScore} from "Components/Score";
 import Character from "Components/Charecter";
 import useSkin from "Hooks/useSkin";
+import useSplash from "Hooks/useSplash";
+import Splash from "Components/Splash";
 
 const App = () => {
-    const store = Store();
+
     const reflection = true;
+
+    const [splash] = useSplash();
     const [
         score,
         addOne,
@@ -28,88 +32,95 @@ const App = () => {
             dispenser: dispenserStyle,
             grid: gridStyle,
             score: scoreStyle,
-            character:characterStyle,
+            character: characterStyle,
             swiper: swiperStyle,
             reflection: reflectionStyle,
             paths
         }
     } = useSkin(score);
 
+    if (splash) {
+        return (
+            <Splash/>
+        );
+    }
+
+
     return (
         <div className={Classes.root}>
-            <Context.Provider value={store}>
-                <BackgroundComponent/>
-                <div className={Classes.app + ' ' + Classes.container}>
-                    <GameView scoring={{addOne, multiplier, deletedBlocks}}>
-                        {({setCurrentCube, grid, currentCube, newCube, setNewCube, tick, currentDeleted}) => (
-                            <>
-                                <Score
-                                    score={score}
-                                    highScore={highScore}
-                                    deleted={deleted}
-                                    styles={
-                                        {
-                                            scoreStyle
-                                        }
+
+            <BackgroundComponent/>
+            <div className={Classes.app + ' ' + Classes.container}>
+                <GameView scoring={{addOne, multiplier, deletedBlocks}}>
+                    {({setCurrentCube, grid, currentCube, newCube, setNewCube, tick, currentDeleted}) => (
+                        <>
+                            <Score
+                                score={score}
+                                highScore={highScore}
+                                deleted={deleted}
+                                styles={
+                                    {
+                                        scoreStyle
                                     }
-                                />
+                                }
+                            />
+                            <Grid
+                                grid={grid}
+                                tick={tick}
+                                deleted={currentDeleted}
+                                styles={
+                                    {
+                                        gridStyle,
+                                        swiperStyle
+                                    }
+                                }
+                                paths={paths}
+                            />
+                            {reflection && <Reflection
+                                styles={
+                                    {
+                                        reflectionStyle
+                                    }
+                                }
+                            >
                                 <Grid
+                                    currentCube={currentCube}
                                     grid={grid}
                                     tick={tick}
-                                    deleted={currentDeleted}
+                                    rowStart={8}
+                                    showSwiper={false}
                                     styles={
                                         {
-                                            gridStyle,
-                                            swiperStyle
-                                        }
-                                    }
-                                    paths={paths}
-                                />
-                                {reflection && <Reflection
-                                    styles={
-                                        {
-                                            reflectionStyle
-                                        }
-                                    }
-                                >
-                                    <Grid
-                                        currentCube={currentCube}
-                                        grid={grid}
-                                        tick={tick}
-                                        rowStart={8}
-                                        showSwiper={false}
-                                        styles={
-                                            {
-                                                gridStyle
-                                            }
-                                        }
-                                        paths={paths}
-                                    />
-                                </Reflection>}
-                                <Dispenser
-                                    setCurrentCube={setCurrentCube}
-                                    newCube={newCube}
-                                    setNewCube={setNewCube}
-                                    styles={
-                                        {
-                                            dispenserStyle,
                                             gridStyle
                                         }
                                     }
                                     paths={paths}
                                 />
-                                <Character
-                                    styles={
-                                        {
-                                            characterStyle
-                                        }
+                            </Reflection>}
+                            <Dispenser
+                                setCurrentCube={setCurrentCube}
+                                newCube={newCube}
+                                setNewCube={setNewCube}
+                                styles={
+                                    {
+                                        dispenserStyle,
+                                        gridStyle
                                     }
-                                />
-                            </>
-                        )}
-                    </GameView>
-                </div>
-            </Context.Provider>
+                                }
+                                paths={paths}
+                            />
+                            <Character
+                                styles={
+                                    {
+                                        characterStyle
+                                    }
+                                }
+                            />
+                        </>
+                    )}
+                </GameView>
+            </div>
+
         </div>
     );
 };
