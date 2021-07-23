@@ -10,7 +10,7 @@ const Splash = props => {
     const [blocks, setBlocks] = useState('');
     useTimer(() => {
         render()
-    }, 2500);
+    }, 1200);
 
     const render = () => {
         let gridHtml = '';
