@@ -91,6 +91,7 @@ module.exports = {
         host: '0.0.0.0',
         port: 3030,
         disableHostCheck: true,
+        useLocalIp: true,
         after: function (app, server, compiler) {
             console.log('the server has started :)')
         },

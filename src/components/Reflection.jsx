@@ -1,9 +1,20 @@
 import React from 'react';
-import reflection from '../styles/reflection.less';
 
-const Reflection = ({children})=>{
+const Reflection = props => {
 
-    return <div className={"reflection"}>{children}</div>
+    const {
+        children,
+        styles: {
+            reflectionStyle
+        }
+    } = props;
+
+    return (
+        <div
+            className={reflectionStyle.reflection}>
+            {children}
+        </div>
+    );
 }
 
 export default Reflection;

@@ -12,7 +12,7 @@ import useSkin from "Hooks/useSkin";
 
 const App = () => {
     const store = Store();
-    const reflection = false;
+    const reflection = true;
     const [
         score,
         addOne,
@@ -30,6 +30,7 @@ const App = () => {
             score: scoreStyle,
             character:characterStyle,
             swiper: swiperStyle,
+            reflection: reflectionStyle,
             paths
         }
     } = useSkin(score);
@@ -64,8 +65,26 @@ const App = () => {
                                     }
                                     paths={paths}
                                 />
-                                {reflection && <Reflection>
-                                    <Grid currentCube={currentCube} grid={grid} rowStart={8} showSwiper={false}/>
+                                {reflection && <Reflection
+                                    styles={
+                                        {
+                                            reflectionStyle
+                                        }
+                                    }
+                                >
+                                    <Grid
+                                        currentCube={currentCube}
+                                        grid={grid}
+                                        tick={tick}
+                                        rowStart={8}
+                                        showSwiper={false}
+                                        styles={
+                                            {
+                                                gridStyle
+                                            }
+                                        }
+                                        paths={paths}
+                                    />
                                 </Reflection>}
                                 <Dispenser
                                     setCurrentCube={setCurrentCube}

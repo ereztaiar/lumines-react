@@ -6,6 +6,7 @@ import {default as score} from 'Skins/default/score.less';
 import {default as swiper} from 'Skins/default/swiper.less';
 import {default as BackgroundComponent} from 'Skins/default/Background.jsx';
 import * as paths from 'Skins/default/paths';
+import {default as reflection} from 'Skins/reflection.less';
 export {
     background,
     character,
@@ -14,5 +15,6 @@ export {
     score,
     swiper,
     paths,
+    reflection,
     BackgroundComponent
 }

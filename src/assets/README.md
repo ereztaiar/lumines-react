@@ -1,1 +1,1 @@
-move sounds to skin when skin is completed
+move sounds to skin
