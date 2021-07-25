@@ -11,12 +11,15 @@ import Character from "Components/Charecter";
 import useSkin from "Hooks/useSkin";
 import useSplash from "Hooks/useSplash";
 import Splash from "Components/Splash";
+import useMenu from "Hooks/useMenu";
+import {Menu} from "Components/Menu";
 
 const App = () => {
 
     const reflection = true;
 
     const [splash] = useSplash();
+    const [menuActive] = useMenu();
     const [
         score,
         addOne,
@@ -42,6 +45,12 @@ const App = () => {
     if (splash) {
         return (
             <Splash/>
+        );
+    }
+
+    if(menuActive){
+        return (
+            <Menu/>
         );
     }
 
