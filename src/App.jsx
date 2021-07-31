@@ -42,13 +42,13 @@ const App = () => {
         }
     } = useSkin(score);
 
-    if (splash) {
+    if (false && splash) {
         return (
             <Splash/>
         );
     }
 
-    if(menuActive){
+    if(true || menuActive){
         return (
             <Menu/>
         );

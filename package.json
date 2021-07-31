@@ -25,6 +25,7 @@
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.1.0",
     "babel-polyfill": "^6.26.0",
+    "boxen": "^5.0.1",
     "dotenv-webpack": "^5.0.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.5.0",

@@ -1,6 +1,7 @@
 const HtmlPlugin = require('html-webpack-plugin');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const boxen = require('boxen');
 
 module.exports = {
     devtool: 'source-map',
@@ -84,6 +85,14 @@ module.exports = {
             title: 'Lumines React',
             favicon: './src/assets/paths/favicon.svg',
         }),
+        {
+            apply: compiler => {
+
+                compiler.hooks.done.tap('afterCompile', compilation => {
+                    console.log('my test')
+                })
+            }
+        }
 
     ],
     devServer: {
@@ -93,7 +102,20 @@ module.exports = {
         disableHostCheck: true,
         useLocalIp: true,
         after: function (app, server, compiler) {
-            console.log('the server has started :)')
+            server.middleware.waitUntilValid(() => {
+                console.log(
+                    boxen('Lumines is ready!', {
+                        borderColor: 'magenta',
+                        backgroundColor: '#fe6f15',
+                        borderStyle: 'doubleSingle',
+                        float: 'center',
+                        align: 'center',
+                        margin: 1,
+                        padding: 1
+                    })
+                );
+            })
         },
+
     },
 };
