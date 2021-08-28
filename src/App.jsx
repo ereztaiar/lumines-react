@@ -19,7 +19,7 @@ const App = () => {
     const reflection = true;
 
     const [splash] = useSplash();
-    const [menuActive] = useMenu();
+    const [menuActive,setMenuActive] = useMenu();
     const [
         score,
         addOne,
@@ -42,15 +42,15 @@ const App = () => {
         }
     } = useSkin(score);
 
-    if (false && splash) {
+    if (splash) {
         return (
             <Splash/>
         );
     }
 
-    if(true || menuActive){
+    if(menuActive){
         return (
-            <Menu/>
+            <Menu setMenuActive={setMenuActive}/>
         );
     }
 

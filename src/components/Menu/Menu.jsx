@@ -5,6 +5,8 @@ import useKey from "Hooks/useKey";
 
 const Menu = props => {
 
+    const {setMenuActive} = props;
+
     const [menuItems, setMenuItems] = useState([
         <Play key={"play"}/>,
         <Settings key={"setting"}/>,
@@ -13,9 +15,10 @@ const Menu = props => {
     ]);
 
     useKey(key => {
-        console.log(key)
         switch (key) {
+            case "Escape":
             case "Enter":
+                setMenuActive(false);
                 break;
             case "ArrowUp":
                 const lastItem = menuItems.pop();

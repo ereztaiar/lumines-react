@@ -110,7 +110,7 @@ const GameView = props => {
     }, speed);
 
     useKey(async (key) => {
-        if (key === 'p' || key === 'p') {
+        if (key === 'p') {
             togglePause(!pause);
         }
         if (pause) {

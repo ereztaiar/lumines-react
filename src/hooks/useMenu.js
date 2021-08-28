@@ -4,7 +4,8 @@ const useMenu = props => {
     const [menuActive , setMenuActive] = useState(true);
 
     return [
-        menuActive
+        menuActive,
+        setMenuActive
     ];
 }
 
