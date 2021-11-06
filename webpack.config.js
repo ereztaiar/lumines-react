@@ -1,5 +1,6 @@
 const HtmlPlugin = require('html-webpack-plugin');
 const path = require('path');
+const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const boxen = require('boxen');
 
@@ -96,9 +97,13 @@ module.exports = {
 
     ],
     devServer: {
-        https: true,
-        cert: './webpack/lumines.cert',
-        key: './webpack/lumines.key',
+        https: {
+            cert: fs.readFileSync('./webpack/lumines.cert'),
+            key: fs.readFileSync('./webpack/lumines.key'),
+        },
+        contentBase: path.join(__dirname, 'dist'),
+        public: 'lumines-react.dev',
+        publicPath: '/',
         hot: true,
         host: '0.0.0.0',
         port: 3030,
