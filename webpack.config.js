@@ -1,7 +1,7 @@
 const HtmlPlugin = require('html-webpack-plugin');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const boxen = require('boxen');
+//const boxen = require('boxen');
 
 module.exports = {
     devtool: 'source-map',
@@ -84,18 +84,10 @@ module.exports = {
         new HtmlPlugin({
             title: 'Lumines React',
             favicon: './src/assets/paths/favicon.svg',
-        }),
-        {
-            apply: compiler => {
-
-                compiler.hooks.done.tap('afterCompile', compilation => {
-                    console.log('my test')
-                })
-            }
-        }
+        })
 
     ],
-    devServer: {
+    /*devServer: {
         https: true,
         cert: './webpack/lumines.cert',
         key: './webpack/lumines.key',
@@ -120,5 +112,5 @@ module.exports = {
             })
         },
 
-    },
+    },*/
 };
