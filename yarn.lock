@@ -1516,6 +1516,14 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
+"@lumines/core@link:packages/@lumines/core":
+  version "0.0.0"
+  uid ""
+
+"@lumines/game-router@link:packages/@lumines/game-router":
+  version "0.0.0"
+  uid ""
+
 "@lumines/menu@link:packages/@lumines/menu":
   version "0.0.0"
   uid ""

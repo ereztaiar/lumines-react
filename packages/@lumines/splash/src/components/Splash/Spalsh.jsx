@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { FaReact } from "react-icons/fa";
 import { default as splashStyle } from '@lumines/splash/src/styles/splash.less';
 import useTimer from "Hooks/useTimer";
+
+
 
 const COLORS_SWATCH = 5;
 
@@ -35,6 +37,7 @@ const Splash = props => {
 
     const [blocks, setBlocks] = useState(getBlocks);
 
+    
 
 
     useTimer(() => {

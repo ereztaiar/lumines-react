@@ -1,22 +1,33 @@
-import React, {useEffect} from 'react';
-import Context from './context.js';
-import {default as Classes} from 'Skins/common.less';
+import React from 'react';
+import { default as Classes } from 'Skins/common.less';
 import Dispenser from "Components/Dispenser";
-import {Grid} from "Components/Board";
+import { Grid } from "Components/Board";
 import GameView from "Components/GameView";
 import Reflection from "Components/Reflection";
-import {Score, useScore} from "Components/Score";
+import { Score, useScore } from "Components/Score";
 import Character from "Components/Charecter";
 import useSkin from "Hooks/useSkin";
-import Splash, { useSplash } from "@lumines/splash";
-import Menu,{ useMenu } from "@lumines/menu";
+
+
+import Keys from "@lumines/core";
+import Menu from "@lumines/menu/src/context/menu";
+
+import Router from "@lumines/game-router";
+
 
 const App = () => {
 
+
+    return (
+        <Keys>
+            <Menu>
+                <Router />
+            </Menu>
+        </Keys>
+    );
+
     const reflection = true;
 
-    const [splash] = useSplash();
-    const [menuActive,setMenuActive] = useMenu();
     const [
         score,
         addOne,
@@ -39,26 +50,15 @@ const App = () => {
         }
     } = useSkin(score);
 
-    if (splash) {
-        return (
-            <Splash/>
-        );
-    }
-
-    if(menuActive){
-        return (
-            <Menu setMenuActive={setMenuActive}/>
-        );
-    }
 
 
     return (
         <div className={Classes.root}>
 
-            <BackgroundComponent/>
+            <BackgroundComponent />
             <div className={Classes.app + ' ' + Classes.container}>
-                <GameView scoring={{addOne, multiplier, deletedBlocks}}>
-                    {({setCurrentCube, grid, currentCube, newCube, setNewCube, tick, currentDeleted}) => (
+                <GameView scoring={{ addOne, multiplier, deletedBlocks }}>
+                    {({ setCurrentCube, grid, currentCube, newCube, setNewCube, tick, currentDeleted }) => (
                         <>
                             <Score
                                 score={score}

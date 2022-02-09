@@ -1,7 +1,7 @@
 {
-  "name": "@lumines/splash",
+  "name": "@lumines/game-router",
   "version": "1.0.0",
-  "description": "Splash screen for lumines react",
+  "description": "game router for lumines react",
   "main": "index.js",
   "exports": {
     ".": {
@@ -11,8 +11,5 @@
       "default": "./index.js"
     },
     "./": "./"
-  },
-  "peerDependencies": {
-    
   }
 }

@@ -4,8 +4,9 @@ import MenuItem from "@lumines/menu/src/components/Menu/MenuItem";
 import {githubLink} from "Assets/paths/";
 
 const Github = props => {
+    const { selected } = props;
     return (
-        <MenuItem icon={<FaGithub/>} color={"#a974e0"} active={false}>
+        <MenuItem icon={<FaGithub/>} color={"#a974e0"} active={selected}>
             <section>
                 <p>
                     <a href={"https://github.com/ereztaiar/lumines-react"} target={"_blank"}>Github repository</a>

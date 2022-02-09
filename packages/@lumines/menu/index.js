@@ -1,4 +1,2 @@
 export { default } from './src/components/Menu/Menu';
-export {
-    default as useMenu
-} from './src/hooks/useMenu';
+export { useMenu } from './src/context/menu';

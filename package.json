@@ -4,6 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@lumines/core": "link:packages/@lumines/core",
+    "@lumines/game-router": "link:packages/@lumines/game-router",
     "@lumines/menu": "link:packages/@lumines/menu",
     "@lumines/splash": "link:packages/@lumines/splash",
     "css-loader": "^6.5.1",

@@ -1,44 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Play, Settings, Skin, Github } from "@lumines/menu/src/components/Menu/Items";
 import menuStyle from "@lumines/menu/src/styles/menu.less";
-import useKey from "Hooks/useKey";
+import { useMenu } from '@lumines/menu/index';
+
 
 const Menu = props => {
 
-    const {setMenuActive} = props;
+    const { } = props;
 
-    const [menuItems, setMenuItems] = useState([
-        <Play key={"play"}/>,
-        <Settings key={"setting"}/>,
-        <Skin key={"skin"}/>,
-        <Github key={"Github"}/>
-    ]);
+    const { state: { menuOrder, selected, menuLocked } } = useMenu();
 
-    useKey(key => {
-        switch (key) {
-            case "Escape":
-            case "Enter":
-                setMenuActive(false);
-                break;
-            case "ArrowUp":
-                const lastItem = menuItems.pop();
-                menuItems.unshift(lastItem);
-                break;
-            case "ArrowDown":
-                const firstItem = menuItems.shift();
-                menuItems.push(firstItem);
-                break;
-            default:
-                break;
+    const menuItems = menuOrder.map((item, index) => {
+
+        switch (item) {
+            case 'play': {
+                return <Play key={"play"} selected={index === 0 && selected === 'play'} />;
+            }
+            case 'setting': {
+                return <Settings key={"setting"} selected={index === 0 && selected === 'setting'} />;
+            }
+            case 'skin': {
+                return <Skin key={"skin"} selected={index === 0 && selected === 'skin'} />;
+            }
+            case 'github': {
+                return <Github key={"github"} selected={index === 0 && selected === 'github'} />;
+            }
         }
-        setMenuItems([...menuItems]);
     });
+
+    let lockedClass;
+
+    if (menuLocked === null) {
+        lockedClass = ''
+    } else if (menuLocked === true) {
+        lockedClass = menuStyle.locked;
+    } else if (menuLocked === false) {
+        lockedClass = menuStyle.unlocked;
+    }
 
 
     return (
         <div className={menuStyle.root}>
             <div className={menuStyle.title}>MENU</div>
-            <div className={menuStyle["menu-items"]}>
+            <div className={[menuStyle["menu-items"], lockedClass].join(' ')}>
                 {menuItems}
             </div>
         </div>

@@ -7,15 +7,16 @@ const MenuItem = props => {
         title,
         icon,
         children,
-        color
+        color,
+        active
     } = props;
 
     return (
-        <div className={menuItemStyle.root} style={{backgroundColor: color}}>
-            <div className={menuItemStyle.title} style={{backgroundColor: color}}>
+        <div className={[menuItemStyle.root , (active ? menuItemStyle.active : '')].join(' ')} style={{ backgroundColor: color }}>
+            <div className={menuItemStyle.title} style={{ backgroundColor: color }}>
                 {icon}
                 {title}
-                <div className={menuItemStyle.content} style={{backgroundColor: color}}>
+                <div className={menuItemStyle.content} style={{ backgroundColor: color }}>
                     {children}
                 </div>
             </div>

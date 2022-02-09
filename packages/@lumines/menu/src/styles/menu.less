@@ -15,42 +15,67 @@
   }
 }
 
-.root {
-  background: linear-gradient(90deg,
-  rgb(100, 103, 125) 0%,
-  rgb(49, 49, 52) 65%,
-  rgb(100, 103, 125) 100%);
+@-webkit-keyframes menu-locked {
+    from {
+        left: 40%;
+    }
 
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-
-  .title {
-    background-color: #626262;
-    color: white;
-    text-shadow: 1px 1px 0 #75e5e7;
-    -webkit-font-smoothing: antialiased;
-    text-align: center;
-    padding: 5px;
-    border-radius: 15px;
-    border-bottom: 1px solid #75e5e7;
-    border-right: 1px solid #75e5e7;
-    font-size: 1.5rem;
-    -webkit-animation: title-enter 1s ease-in-out forwards;
-    position: absolute;
-    left: 100%;
-    top: 5px;
-    width: 95%;
-  }
-
-  .menu-items {
-    position: absolute;
-    width: 150px;
-    height: 100vw;
-    padding: 1em;
-    left: 100%;
-    top: 35px;
-    -webkit-animation: menu-enter 1s ease-in-out forwards;
-  }
+    to {
+        left: ~"calc(0% - 150px/3)";
+    }
 }
+
+@-webkit-keyframes menu-unlocked {
+    from {
+        left: 0%;
+    }
+
+    to {
+        left: 40%
+    }
+}
+
+.root {
+    background: linear-gradient(90deg, rgb(100, 103, 125) 0%, rgb(49, 49, 52) 65%, rgb(100, 103, 125) 100%);
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+
+    .title {
+        background-color: #626262;
+        color: white;
+        text-shadow: 1px 1px 0 #75e5e7;
+        -webkit-font-smoothing: antialiased;
+        text-align: center;
+        padding: 5px;
+        border-radius: 15px;
+        border-bottom: 1px solid #75e5e7;
+        border-right: 1px solid #75e5e7;
+        font-size: 1.5rem;
+        -webkit-animation: title-enter 1s ease-in-out forwards;
+        position: absolute;
+        left: 100%;
+        top: 5px;
+        width: 95%;
+    }
+
+    .menu-items {
+        position: absolute;
+        width: 150px;
+        height: 100vw;
+        padding: 1em;
+        left: 100%;
+        top: 35px;
+        -webkit-animation: menu-enter 1s ease-in-out forwards;
+    }
+
+    .locked {
+        -webkit-animation: menu-locked 1s ease-in-out forwards;
+    }
+
+    .unlocked {
+        -webkit-animation: menu-unlocked 1s ease-in-out forwards;
+    }
+}
+
