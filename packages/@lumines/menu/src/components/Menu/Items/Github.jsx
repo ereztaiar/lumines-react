@@ -1,6 +1,6 @@
 import React from 'react';
 import {FaGithub} from "react-icons/fa";
-import MenuItem from "Components/Menu/MenuItem";
+import MenuItem from "@lumines/menu/src/components/Menu/MenuItem";
 import {githubLink} from "Assets/paths/";
 
 const Github = props => {

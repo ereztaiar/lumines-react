@@ -4,7 +4,7 @@
 @grid-rows: 12;
 @ready-board-grid-columns: @grid-columns;
 @ready-board-grid-rows: 2;
-@grid-item-width: 6vh;
+@grid-item-width: 3vw;
 @grid-item-height: @grid-item-width;
 @grid-item-width-max: 70px;
 @grid-item-height-max: @grid-item-width-max;
@@ -16,41 +16,42 @@
 
 
 :root {
-  --grid-columns: @grid-columns;
-  --grid-rows: @grid-rows;
-  --grid-item-width: @grid-item-width;
-  --grid-item-height: @grid-item-height;
-  --ready-grid-columns: @ready-board-grid-columns;
-  --ready-grid-rows: @ready-board-grid-rows;
+    --grid-columns: @grid-columns;
+    --grid-rows: @grid-rows;
+    --grid-item-width: @grid-item-width;
+    --grid-item-height: @grid-item-height;
+    --ready-grid-columns: @ready-board-grid-columns;
+    --ready-grid-rows: @ready-board-grid-rows;
 }
 
 * {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
-body{
-  padding: 0;
-  margin: 0;
+body {
+    padding: 0;
+    margin: 0;
 }
 
 .root {
-  overflow: hidden;
-  margin: 0;
-  font-family: 'Exo 2', sans-serif;
-//position: fixed;
-//  inset: 1em 1em 1em 1em;
-  .app {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    font-family: 'Exo 2', sans-serif;
+    //position: fixed;
+    //  inset: 1em 1em 1em 1em;
+    .app {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
 
-    &.container {
-      display: grid;
-      grid-template-columns: 25% 50% 25%;
-      grid-template-rows: minmax(2 * @grid-item-height, auto) @center-height / 2 @center-height / 2 auto;
-      align-items: center;
+        &.container {
+            display: grid;
+            grid-template-columns: 25% 50% 25%;
+            grid-template-rows: minmax(2 * @grid-item-height, 150px) calc(@center-height ~"/" 2 ) calc(@center-height ~"/" 2 ) calc(@center-height ~"/" 4 ) auto;
+            grid-template-areas: "head head head" "well grid score" "well grid score" "footer footer footer" "footer footer footer";
+            align-items: center;
+        }
     }
-  }
 }

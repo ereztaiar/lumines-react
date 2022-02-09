@@ -1,5 +1,5 @@
 import React from 'react';
-import {FaRegGrinStars} from "react-icons/fa";
+import { FaReact } from "react-icons/fa";
 
 const Character = props => {
 
@@ -11,7 +11,7 @@ const Character = props => {
 
     return (
         <div className={characterStyle.character}>
-            <FaRegGrinStars/>
+            <FaReact/>
         </div>
     )
 }

@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {Play, Settings, Skin, Github} from "Components/Menu/Items";
-import menuStyle from "Components/Menu/styles/menu.less";
+import React, { useState } from 'react';
+import { Play, Settings, Skin, Github } from "@lumines/menu/src/components/Menu/Items";
+import menuStyle from "@lumines/menu/src/styles/menu.less";
 import useKey from "Hooks/useKey";
 
 const Menu = props => {

@@ -1,5 +1,4 @@
 import {useEffect} from 'react';
-import useGamePad from "./useGamePad";
 
 const useKey = (callbackDown = () => { }, callbackUp = () =>{}) =>{
 

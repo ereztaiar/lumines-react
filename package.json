@@ -4,14 +4,19 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@lumines/menu": "link:packages/@lumines/menu",
+    "@lumines/splash": "link:packages/@lumines/splash",
     "css-loader": "^6.5.1",
+    "file-loader": "^6.2.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
+    "mini-css-extract-plugin": "^2.4.5",
     "parallax-js": "^3.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "style-loader": "^3.3.1",
+    "url-loader": "^4.1.1",
     "use-sound": "^4.0.1",
     "webpack-dev-server": "^4.6.0"
   },
@@ -26,7 +31,6 @@
     "babel-loader": "^8.2.3",
     "babel-polyfill": "^6.26.0",
     "dotenv-webpack": "^7.0.3",
-    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.4.5",
     "webpack": "^5.65.0",
@@ -35,6 +39,7 @@
   },
   "scripts": {
     "watch": "webpack serve --config webpack.config.js --mode development  --hot --history-api-fallback --progress",
+    "build": "webpack build",
     "test": "jest"
   },
   "jest": {

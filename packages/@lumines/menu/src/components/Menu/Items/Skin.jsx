@@ -1,6 +1,6 @@
 import React from 'react';
-import {FaBuffer} from "react-icons/fa";
-import MenuItem from "Components/Menu/MenuItem";
+import { FaBuffer } from "react-icons/fa";
+import MenuItem from "@lumines/menu/src/components/Menu/MenuItem";
 
 const Skin = props =>{
     return (

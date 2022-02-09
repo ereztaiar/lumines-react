@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import Context from './context.js';
-import Store from './store.js';
 import {default as Classes} from 'Skins/common.less';
 import Dispenser from "Components/Dispenser";
 import {Grid} from "Components/Board";
@@ -9,10 +8,8 @@ import Reflection from "Components/Reflection";
 import {Score, useScore} from "Components/Score";
 import Character from "Components/Charecter";
 import useSkin from "Hooks/useSkin";
-import useSplash from "Hooks/useSplash";
-import Splash from "Components/Splash";
-import useMenu from "Hooks/useMenu";
-import {Menu} from "Components/Menu";
+import Splash, { useSplash } from "@lumines/splash";
+import Menu,{ useMenu } from "@lumines/menu";
 
 const App = () => {
 

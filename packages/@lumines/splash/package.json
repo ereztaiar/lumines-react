@@ -1,0 +1,15 @@
+{
+  "name": "@lumines/splash",
+  "version": "1.0.0",
+  "description": "Splash screen for lumines react",
+  "main": "index.js",
+  "exports": {
+    ".": {
+      "default": "./index.js"
+    },
+    "./index": {
+      "default": "./index.js"
+    },
+    "./": "./"
+  }
+}

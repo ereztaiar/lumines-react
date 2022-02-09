@@ -31,8 +31,6 @@ const Grid = props => {
             let gridColumns = '';
             for (let x = 0; x < COLUMNS; x++) {
 
-                let className = BLOCK_ASSOCIATION[BLOCKS_TYPES.EMPTY];// todo: change class to common svg
-
                 if (grid[x][y] === BLOCKS_TYPES.TYPE_A) {
                     gridColumns += `<div class="${gridStyle.gridItem}"><img src="${paths.aBlock}"/></div>`;
                 } else if (grid[x][y] === BLOCKS_TYPES.TYPE_B) {
@@ -42,11 +40,9 @@ const Grid = props => {
                 } else if (grid[x][y] === BLOCKS_TYPES.TYPE_B_SPECIAL) {
                     gridColumns += `<div class="${gridStyle.gridItem}"><img src="${paths.bBlockSpecial}"/></div>`;
                 } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_A) {
-                    className = BLOCK_ASSOCIATION[BLOCKS_TYPES.DELETION_TYPE_A];
-                    gridColumns += `<div class="${gridStyle.gridItem} ${className}"></div>`;
+                    gridColumns += `<div class="${gridStyle.gridItem}"><img src="${paths.darkA}"/></div>`;
                 } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B) {
-                    className = BLOCK_ASSOCIATION[BLOCKS_TYPES.DELETION_TYPE_B];
-                    gridColumns += `<div class="${gridStyle.gridItem} ${className}"></div>`;
+                    gridColumns += `<div class="${gridStyle.gridItem}"><img src="${paths.darkB}"/></div>`;
                 } else {
                     gridColumns += `<div class="${gridStyle.gridItem}"></div>`;
                 }

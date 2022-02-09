@@ -1,6 +1,6 @@
 import React from 'react';
-import {FaCogs} from "react-icons/fa";
-import MenuItem from "Components/Menu/MenuItem";
+import { FaCogs } from "react-icons/fa";
+import MenuItem from "@lumines/menu/src/components/Menu/MenuItem";
 
 const Settings = props =>{
     return (

@@ -41,7 +41,13 @@ module.exports = {
             },
             {
                 test: /\.png|jpg|wav|svg$/,
-                use: ['file-loader'],
+                type: 'asset/resource'
+                //loader: 'url-loader',
+               // options: {
+               //     limit:1,
+               //     name: 'images/[contenthash]-[name].[ext]'
+                //}
+               // use: ['file-loader?name=[contenthash]/[name].[ext]'],
             },
             {
                 test: /\.css|\.less$/i,

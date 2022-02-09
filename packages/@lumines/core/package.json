@@ -1,0 +1,15 @@
+{
+  "name": "@lumines/core",
+  "version": "1.0.0",
+  "description": "core of lumines react",
+  "main": "index.js",
+  "exports": {
+    ".": {
+      "default": "./index.js"
+    },
+    "./index": {
+      "default": "./index.js"
+    },
+    "./": "./"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "@lumines/menu",
+  "version": "1.0.0",
+  "description": "Menu for lumines react",
+  "main": "index.js",
+  "exports": {
+    ".": {
+      "default": "./index.js"
+    },
+    "./index": {
+      "default": "./index.js"
+    },
+    "./": "./"
+  }
+}

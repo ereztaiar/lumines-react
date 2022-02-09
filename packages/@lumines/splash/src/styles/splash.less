@@ -1,0 +1,108 @@
+@import "Skins/for.less";
+
+:root {
+    --alice-blue: #edf2fb;
+    --lavender-web-1: #e2eafc;
+    --lavender-web-2: #d7e3fc;
+    --perwinkle-crayola: #ccdbfd;
+    --lavender-blue-1: #c1d3fe;
+    --lavender-blue-2: #b6ccfe;
+    --baby-blue-eyes: #abc4ff;
+    --orange-pantone: #ff5400;
+    --dark-orange:#ff8500;
+}
+
+@-webkit-keyframes blink {
+  0% {
+    opacity: .2;
+  }
+  50% {
+    opacity: 1.0;
+  }
+
+  100% {
+    opacity: .2;
+  }
+}
+
+.root {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    color: var(--orange-pantone);
+    -webkit-text-stroke: 1px var(--dark-orange);
+    font-size:2.0rem;
+    overflow:hidden;
+
+    .titleCard {
+        position: absolute;
+        inset: 15%;
+        text-align: center;
+        z-index: 20;
+
+        h3 {
+        }
+
+        h2 {
+            img {
+                width: 20px;
+                height: 20px;
+                margin-inline: 15px;
+            }
+        }
+
+        h1 {
+        }
+    }
+
+    .action {
+        position: fixed;
+        bottom: 5%;
+        text-align: center;
+        width: 100%;
+        z-index: 20;
+        -webkit-animation: blink 1.3s ease-in-out infinite;
+    }
+
+    .block {
+        width: ~"calc(100vw / 16)";
+        height: ~"calc(100vw / 16)";
+        float: left;
+        background: var(--baby-blue-eyes);
+        position: relative;
+
+        &:after {
+            display: block;
+            content: ' ';
+            border: 1px solid var(--baby-blue-eyes);
+            width: ~"calc(100% + 1px)";
+            height: ~"calc(100% + 1px)";
+        }
+
+        &:before {
+            display: block;
+            content: ' ';
+            width: 8px;
+            height: 8px;
+            position: absolute;
+            top: ~"calc(100% - 4px)";
+            left: ~"calc(100% - 4px)";
+            background-color: var(--baby-blue-eyes);
+            z-index: 10;
+        }
+    }
+
+    @array: 1 var(--alice-blue), 2 var(--lavender-web-1), 3 var(--lavender-web-2), 4 var(--perwinkle-crayola), 5 var(--lavender-blue-1);
+
+    .for(@array);
+
+    .-each(@color) {
+        @idx: extract(@color, 1);
+        @value: extract(@color, 2);
+
+        .block-@{idx} {
+            background: @value;
+            transition: all 1.5s ease;
+        }
+    }
+}

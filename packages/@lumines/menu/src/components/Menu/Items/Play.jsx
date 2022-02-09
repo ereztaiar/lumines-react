@@ -1,6 +1,6 @@
 import React from "react";
 import {FaGamepad} from "react-icons/fa";
-import MenuItem from "Components/Menu/MenuItem";
+import MenuItem from "@lumines/menu/src/components/Menu/MenuItem";
 
 const Play = props =>{
     return(

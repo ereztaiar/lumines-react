@@ -1,6 +1,6 @@
 import React from 'react';
 
-import menuItemStyle from 'Components/Menu/styles/menuItem.less';
+import menuItemStyle from '@lumines/menu/src/styles/menuItem.less';
 
 const MenuItem = props => {
     const {
