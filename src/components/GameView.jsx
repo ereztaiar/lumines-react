@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import useSound from "use-sound";
-import {COLUMNS, createEmptyGrid, ROWS} from './Board';
-import {generateCube, dispenseOrder, CUBE_STATES} from "./Dispenser";
-import useTimer from "../hooks/useTimer";
-import Block from "./Board/block";
-import useKey from "../hooks/useKey";
+import { COLUMNS, createEmptyGrid, ROWS } from '@lumines/game-components/src/components/Board';
+import { generateCube, dispenseOrder, CUBE_STATES } from "@lumines/game-components/src/components/Dispenser";
+import useTimer from "@lumines/core/src/hooks/useTimer";
+import Block from "@lumines/game-components/src/components/Board/block";
+import useKey from "@lumines/core/src/hooks/useKey";// todo: replace with context
 import * as swap from '../util/swap.js';
 import {leftOrder} from "../util/swap.js";
 import * as sounds from '../assets/sounds';

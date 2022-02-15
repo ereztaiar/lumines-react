@@ -1,6 +1,3 @@
-import React from 'react';
-import GridItem from "./GridItem";
-
 class Block {
 
     constructor(className, isSet, x, y) {

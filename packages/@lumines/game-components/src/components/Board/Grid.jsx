@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import Swiper from "Components/Swiper";
-import {COLUMNS, READY_GRID, ROWS, BLOCKS_TYPES} from "Components/Board/index";
-import GridItem from "Components/Board/GridItem";
-import {BLOCK_ASSOCIATION} from "Components/Dispenser";
+import React, { useEffect, useState } from 'react';
+import Swiper from "@lumines/game-components/src/components/Swiper/Swiper";
+import { COLUMNS, READY_GRID, ROWS, BLOCKS_TYPES } from "@lumines/game-components/src/components/Board";
+//import GridItem from "@lumines/game-components/src/components/Board/GridItem";
+//import { BLOCK_ASSOCIATION } from "@lumines/game-components/src/components/Dispenser";
 
 
 const Grid = props => {

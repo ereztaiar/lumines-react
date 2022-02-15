@@ -1,0 +1,15 @@
+{
+  "name": "@lumines/game-components",
+  "version": "1.0.0",
+  "description": "game components of lumines react",
+  "main": "index.js",
+  "exports": {
+    ".": {
+      "default": "./index.js"
+    },
+    "./index": {
+      "default": "./index.js"
+    },
+    "./": "./"
+  }
+}

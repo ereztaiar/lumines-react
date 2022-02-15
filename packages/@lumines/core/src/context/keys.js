@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import React, { useState, createContext, useContext, useEffect, useReducer } from 'react';
+import Gamepad from 'react-gamepad'
 
 const KeysContext = createContext({});
 const { Provider: KeysProvider } = KeysContext;
@@ -9,6 +10,9 @@ const keyReducer = (state, action) => {
     switch (which) {
         case 65: {
             return { key, which };
+        }
+        case 'Start': {
+            return { key: ' ', which: null }
         }
         default: {
             return { key, which };
@@ -45,10 +49,46 @@ const Keys = props => {
             window.removeEventListener('keyup', keyUpHandler);
 
         }
-    }, [])
+    }, []);
+
+    const connectHandler = (gamepadIndex) => {
+        //console.log(`Gamepad ${gamepadIndex} connected !`)
+    }
+
+    const disconnectHandler = (gamepadIndex) => {
+        //console.log(`Gamepad ${gamepadIndex} disconnected !`)
+    }
+
+    const buttonChangeHandler = (buttonName, down) => {
+        //console.log(buttonName, down)
+    }
+
+    const buttonDownHandler = (buttonName) => {
+        dispatch({ key: buttonName, which: buttonName })
+    }
+
+    const buttonUpHandler = (buttonName) => {
+        dispatch({ key: null, which: null })
+    }
+
+    const axisChangeHandler = (axisName, value, previousValue) => {
+        //console.log(axisName, value)
+    }
 
     return (
-        <KeysProvider value={value}>{children}</KeysProvider>
+        <Gamepad
+            onConnect={connectHandler}
+            onDisconnect={disconnectHandler}
+
+            onButtonChange={buttonChangeHandler}
+            onButtonDown={buttonDownHandler}
+            onButtonUp={buttonUpHandler}
+
+            onAxisChange={axisChangeHandler}
+
+        >
+            <KeysProvider value={value}>{children}</KeysProvider>
+        </Gamepad>
     );
 
 };

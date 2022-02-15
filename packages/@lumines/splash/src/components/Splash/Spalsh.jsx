@@ -1,7 +1,7 @@
 import React, {  useState } from "react";
 import { FaReact } from "react-icons/fa";
 import { default as splashStyle } from '@lumines/splash/src/styles/splash.less';
-import useTimer from "Hooks/useTimer";
+import useTimer from "@lumines/core/src/hooks/useTimer";
 
 
 

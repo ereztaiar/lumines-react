@@ -1520,6 +1520,10 @@
   version "0.0.0"
   uid ""
 
+"@lumines/game-components@link:packages/@lumines/game-components":
+  version "0.0.0"
+  uid ""
+
 "@lumines/game-router@link:packages/@lumines/game-router":
   version "0.0.0"
   uid ""
@@ -5192,6 +5196,10 @@ react-dom@^17.0.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
+
+react-gamepad@SBRK/react-gamepad:
+  version "1.0.3"
+  resolved "https://codeload.github.com/SBRK/react-gamepad/tar.gz/8b839f55a3cafd558fab490015c1834add60da55"
 
 react-icons@^4.3.1:
   version "4.3.1"

@@ -1,6 +1,8 @@
 import React, { useEffect, createContext, useContext, useReducer } from 'react';
 import { useKeys, KEYS } from "@lumines/core";
 
+import { useRouter } from "@lumines/game-router/src/context/routerContext";
+
 const MenuContext = createContext({});
 const { Provider: MenuProvider } = MenuContext;
 
@@ -72,9 +74,13 @@ const Menu = props => {
 
     const [state, dispatch] = useReducer(menuReducer, defaultState);
     const { state: { key } } = useKeys();
+    const { state: { isMenu }, dispatch: routerDispatch } = useRouter();
     const value = { state, dispatch };
 
     useEffect(() => {
+        if (!isMenu) {
+            return;
+        }
         switch (key) {
             case KEYS.ARROW_UP:
                 dispatch({ type: 'menu_up' })
@@ -82,12 +88,14 @@ const Menu = props => {
             case KEYS.ARROW_DOWN:
                 dispatch({ type: 'menu_down' })
                 break;
-            case KEYS.ENTER: {
+            case KEYS.ENTER:
+            case KEYS.SPACE: {
                 dispatch({ type: 'selected' })
                 break;
             }
             case KEYS.ESCAPE: {
-                dispatch({ type: 'menu_exit' })
+                dispatch({ type: 'menu_exit' });
+                routerDispatch({ type: 'menu_exit' });
                 break;
             }
             default:

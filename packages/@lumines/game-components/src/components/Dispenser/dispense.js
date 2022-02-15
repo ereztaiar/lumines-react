@@ -1,7 +1,7 @@
-import React from "react";
-import Block from "../Board/block";
-import GridItem from "../Board/GridItem";
-import {BLOCKS_TYPES} from "../Board";
+//import React from "react";
+import Block from "@lumines/game-components/src/components/Board/block";
+//import GridItem from "@lumines/game-components/src/components/Board/GridItem";
+import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board";
 
 
 const BLOCKS = {

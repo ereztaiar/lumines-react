@@ -1,4 +1,4 @@
-import {COLUMNS, READY_GRID, ROWS} from "./index.jsx";
+import { COLUMNS, READY_GRID, ROWS } from "@lumines/game-components/src/components/Board";
 
 const BLOCKS_TYPES = {
     EMPTY: 0,

@@ -1,18 +1,21 @@
 import React from 'react';
 import { default as Classes } from 'Skins/common.less';
-import Dispenser from "Components/Dispenser";
-import { Grid } from "Components/Board";
+import Dispenser from "@lumines/game-components/src/components/Dispenser/Dispenser";
+import { Grid } from "@lumines/game-components/src/components/Board";
 import GameView from "Components/GameView";
-import Reflection from "Components/Reflection";
-import { Score, useScore } from "Components/Score";
-import Character from "Components/Charecter";
-import useSkin from "Hooks/useSkin";
+import Reflection from "@lumines/game-components/src/components/Reflection/Reflection";
+import Score from "@lumines/game-components/src/components/Score/Score";
+import useScore from "@lumines/game-components/src/hooks/useScore";
+import Character from "@lumines/game-components/src/components/Charecter/Charecter";
+import useSkin from "@lumines/core/src/hooks/useSkin";
+
 
 
 import Keys from "@lumines/core";
 import Menu from "@lumines/menu/src/context/menu";
 
 import Router from "@lumines/game-router";
+import { default as RouterProvider } from "@lumines/game-router/src/context/routerContext";
 
 
 const App = () => {
@@ -20,9 +23,11 @@ const App = () => {
 
     return (
         <Keys>
-            <Menu>
-                <Router />
-            </Menu>
+            <RouterProvider>
+                <Menu>
+                    <Router />
+                </Menu>
+            </RouterProvider>
         </Keys>
     );
 

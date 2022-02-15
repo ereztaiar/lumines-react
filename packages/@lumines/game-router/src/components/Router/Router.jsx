@@ -1,62 +1,30 @@
 import React, { useEffect, useReducer } from 'react';
 import Splash from "@lumines/splash";
 import Menu, { useMenu } from "@lumines/menu";
-import { useKeys, KEYS, CODES } from "@lumines/core";
+
+import { default as RouterProvider, useRouter } from "@lumines/game-router/src/context/routerContext";
 
 
-const gameFlow = (prevState, action) => {
-    const { type } = action;
-    switch (type) {
-        case 'reset': {
-            return { ...defaultState }
-        }
-        case 'menu': {
-            return {
-                ...prevState,
-                isSplash: false,
-                isMenu: true
-            }
-        }
-        default: {
-            return prevState;
-        }
-    }
-};
-
-const defaultState = {
-    isSplash: true,
-    isMenu: false
-};
 
 const Router = props => {
 
     const { children } = props;
 
+    const { state } = useRouter();
 
-
-    const [state, dispatch] = useReducer(gameFlow, defaultState);
-
-    const { state: { key, which } } = useKeys();
-
-    useEffect(() => {
-        if (state.isSplash && key === KEYS.SPACE) {
-            dispatch({ type: 'menu' });
-        } else if (which === CODES.RESET) {
-            dispatch({ type: 'reset' });
-        }
-    }, [key]);
+    let screen = <></>;
 
     if (state.isSplash) {
-        return <Splash />;
+        screen = <Splash />;
     }
 
     if (state.isMenu) {
-        return <Menu/>
+        screen = <Menu />
     }
 
 
     return (
-        <>no splash</>
+        screen
     );
 }
 

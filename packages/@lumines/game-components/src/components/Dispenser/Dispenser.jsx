@@ -1,9 +1,9 @@
-import React, {useEffect, useState, useContext} from 'react';
-import generateCube, {BLOCK_ASSOCIATION, dispenseOrder} from "./dispense";
-import GridItem from "../Board/GridItem";
+import React, { useEffect, useState, useContext } from 'react';
+import generateCube, { BLOCK_ASSOCIATION, dispenseOrder } from "@lumines/game-components/src/components/Dispenser/dispense";
+//import GridItem from "@lumines/game-components/src/components/Board/GridItem";
 
-import context from "../../context";
-import {BLOCKS_TYPES} from "../Board";
+// import context from "@lumines/core/src/context";
+import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board";
 
 
 const WELL_SIZE = 3;

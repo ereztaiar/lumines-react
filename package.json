@@ -3,24 +3,26 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/@lumines/core",
+    "packages/@lumines/game-router",
+    "packages/@lumines/menu",
+    "packages/@lumines/splash",
+    "packages/@lumines/geme-components"
+  ],
   "dependencies": {
     "@lumines/core": "link:packages/@lumines/core",
     "@lumines/game-router": "link:packages/@lumines/game-router",
     "@lumines/menu": "link:packages/@lumines/menu",
     "@lumines/splash": "link:packages/@lumines/splash",
-    "css-loader": "^6.5.1",
-    "file-loader": "^6.2.0",
-    "less": "^4.1.2",
-    "less-loader": "^10.2.0",
-    "mini-css-extract-plugin": "^2.4.5",
+    "@lumines/game-components": "link:packages/@lumines/game-components",
     "parallax-js": "^3.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-gamepad": "SBRK/react-gamepad",
     "react-icons": "^4.3.1",
-    "style-loader": "^3.3.1",
-    "url-loader": "^4.1.1",
-    "use-sound": "^4.0.1",
-    "webpack-dev-server": "^4.6.0"
+    "use-sound": "^4.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
@@ -29,6 +31,11 @@
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
     "@svgr/webpack": "^6.1.2",
+    "css-loader": "^6.5.1",
+    "file-loader": "^6.2.0",
+    "url-loader": "^4.1.1",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
     "babel-jest": "^27.4.5",
     "babel-loader": "^8.2.3",
     "babel-polyfill": "^6.26.0",
@@ -37,7 +44,10 @@
     "jest": "^27.4.5",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
-    "webpack-merge": "^5.8.0"
+    "webpack-merge": "^5.8.0",
+    "webpack-dev-server": "^4.6.0",
+    "style-loader": "^3.3.1",
+    "mini-css-extract-plugin": "^2.4.5"
   },
   "scripts": {
     "watch": "webpack serve --config webpack.config.js --mode development  --hot --history-api-fallback --progress",

@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import * as defaultSkin from 'Skins/default';
 import * as purple from 'Skins/purple';
 import * as yellow from 'Skins/yellow';
-import useKey from "Hooks/useKey";
+import useKey from "@lumines/core/src/hooks/useKey";// todo: replace with context
 
 const skins = [
     defaultSkin,
