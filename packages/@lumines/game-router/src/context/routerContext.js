@@ -21,9 +21,19 @@ const gameFlow = (prevState, action) => {
             return {
                 ...prevState,
                 isSplash: false,
-                isMenu: true
+                isMenu: true,
+                isGame: false
             }
         }
+        case 'start_game': {
+            return {
+                ...prevState,
+                isSplash: false,
+                isMenu: false,
+                isGame: true
+            }
+        }
+
         /* 
          * should exit close the menu or revert to splash screen
          * case 'menu_exit': {

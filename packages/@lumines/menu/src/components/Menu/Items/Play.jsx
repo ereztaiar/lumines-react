@@ -3,15 +3,20 @@ import { FaGamepad } from "react-icons/fa";
 import { GiAlarmClock } from "react-icons/gi";
 import { RiGameFill } from "react-icons/ri";
 import MenuItem from "@lumines/menu/src/components/Menu/MenuItem";
+import { useMenu } from "@lumines/menu/src/context/menu";
+import { useRouter } from "@lumines/game-router/src/context/routerContext";
+import playStyle from "@lumines/menu/src/styles/play.less";
 
 const Play = props => {
     const { selected } = props;
+
+    const { state, dispatch } = useMenu();
+    const { state: { isMenu }, dispatch: routerDispatch } = useRouter();
     return (
         <MenuItem icon={<FaGamepad />} color={"#e6af6e"} active={selected}>
-            <section>
-                start playing
-                <RiGameFill />
-                <GiAlarmClock/>
+            <section className={playStyle.options}>
+                <span className={playStyle.button} onClick={() => { routerDispatch({ type: 'start_game' }) }}><RiGameFill /></span>
+                <span className={playStyle.button} onClick={() => { routerDispatch({ type: 'start_game' }) }}><GiAlarmClock /></span>
             </section>
         </MenuItem>
     );

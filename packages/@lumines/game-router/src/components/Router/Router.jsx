@@ -1,9 +1,9 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { lazy, Suspense, useEffect, useReducer } from 'react';
 import Splash from "@lumines/splash";
-import Menu, { useMenu } from "@lumines/menu";
-
 import { default as RouterProvider, useRouter } from "@lumines/game-router/src/context/routerContext";
 
+const Menu = lazy(() => import("@lumines/menu"));
+const Game = lazy(() => import("@lumines/game-components/src/components/Game/Game"));
 
 
 const Router = props => {
@@ -22,9 +22,15 @@ const Router = props => {
         screen = <Menu />
     }
 
+    if (state.isGame) {
+        screen = <Game />
+    }
+
 
     return (
-        screen
+        <Suspense fallback={<div>Loading...</div>}>
+            {screen}
+        </Suspense>
     );
 }
 

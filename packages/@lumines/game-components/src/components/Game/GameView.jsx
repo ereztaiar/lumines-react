@@ -1,14 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import useSound from "use-sound";
-import { COLUMNS, createEmptyGrid, ROWS } from '@lumines/game-components/src/components/Board';
+import { createEmptyGrid } from '@lumines/game-components/src/components/Board';
 import { generateCube, dispenseOrder, CUBE_STATES } from "@lumines/game-components/src/components/Dispenser";
 import useTimer from "@lumines/core/src/hooks/useTimer";
-import Block from "@lumines/game-components/src/components/Board/block";
 import useKey from "@lumines/core/src/hooks/useKey";// todo: replace with context
-import * as swap from '../util/swap.js';
-import {leftOrder} from "../util/swap.js";
-import * as sounds from '../assets/sounds';
-import {clearFromDeletion, prepareForDeletion, clearColumn} from "../util/clear-blocks";
+import * as swap from 'Util/swap.js';
+import * as sounds from 'Assets/sounds';
+import { clearFromDeletion, prepareForDeletion, clearColumn } from "Util/clear-blocks";
 
 const MAX_TICK = 160;
 const INITIAL_TICK = 0;
@@ -70,7 +68,7 @@ const GameView = props => {
                 if (Math.abs(dest?.bottomLeft?.y - dest?.bottomRight?.y) > 0) {
                     setIsSplit(true);
                 }
-                setCurrentCube({...dest});
+                setCurrentCube({ ...dest });
             }
             setGrid([...updatedGrid]);
             await nop();
@@ -147,7 +145,7 @@ const GameView = props => {
                 return;
             }
             if (typeof dest !== 'undefined') {
-                setCurrentCube({...dest});
+                setCurrentCube({ ...dest });
             }
 
         } catch (ex) {
@@ -187,7 +185,7 @@ const GameView = props => {
                 return;
             }
             if (typeof dest !== 'undefined') {
-                setCurrentCube({...dest});
+                setCurrentCube({ ...dest });
             }
         } catch (ex) {
         }
