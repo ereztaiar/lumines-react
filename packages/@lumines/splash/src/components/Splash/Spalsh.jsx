@@ -24,7 +24,7 @@ const Splash = props => {
     const getBlocks = () => {
         const blocks = (
             <>
-                {[...Array(16 * 16)].map((item, idx) => {
+                {[...Array(8 * 8)].map((item, idx) => {
 
                     const blockIdx = Math.floor(Math.random() * COLORS_SWATCH + 1);
                     const blockClass = splashStyle[`block-${blockIdx}`];
