@@ -232,7 +232,8 @@ const GameView = props => {
                 newCube,
                 setNewCube,
                 tick,
-                currentDeleted
+                currentDeleted,
+                pause
             })}
         </>
     )

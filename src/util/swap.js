@@ -49,7 +49,7 @@ function moveLeft(array, cube) {
     const src = {...cube};
     const dest = {};
     return new Promise((resolve, reject) => {
-        if (typeof array[cube.topLeft.x - 1] === 'undefined' || typeof array[cube.topLeft.x - 1][cube.topLeft.y] === 'undefined') {
+        if (cube.topLeft.x - 1 < 0 || cube.bottomLeft.x - 1 < 0) {
             reject(OUT_OF_BOUNDS);
             return;
         }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { default as Classes } from 'Skins/common.less';
+import { default as GameClasses } from './Game.less';
 import Dispenser from "@lumines/game-components/src/components/Dispenser/Dispenser";
 import { Grid } from "@lumines/game-components/src/components/Board";
 import GameView from "@lumines/game-components/src/components/Game/GameView";
@@ -7,6 +8,7 @@ import Reflection from "@lumines/game-components/src/components/Reflection/Refle
 import Score from "@lumines/game-components/src/components/Score/Score";
 import useScore from "@lumines/game-components/src/hooks/useScore";
 import Character from "@lumines/game-components/src/components/Charecter/Charecter";
+import Pause from "@lumines/game-components/src/components/Game/Pause";
 import useSkin from "@lumines/core/src/hooks/useSkin";
 
 
@@ -38,15 +40,14 @@ const Game = () => {
         }
     } = useSkin(score);
 
-
-
     return (
         <div className={Classes.root}>
 
             <BackgroundComponent />
-            <div className={Classes.app + ' ' + Classes.container}>
+            <div className={Classes.app + ' ' + Classes.container + ' ' + GameClasses.pauseContainer}>
                 <GameView scoring={{ addOne, multiplier, deletedBlocks }}>
-                    {({ setCurrentCube, grid, currentCube, newCube, setNewCube, tick, currentDeleted }) => (
+                    {({ setCurrentCube, grid, currentCube, newCube, setNewCube, tick, currentDeleted, pause }) => {
+                        return (
                         <>
                             <Score
                                 score={score}
@@ -110,8 +111,10 @@ const Game = () => {
                                     }
                                 }
                             />
+                            <Pause pause={pause} />
                         </>
-                    )}
+                        );
+                    }}
                 </GameView>
             </div>
 
