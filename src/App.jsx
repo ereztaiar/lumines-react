@@ -7,7 +7,7 @@ import {Grid} from "Components/Board";
 import GameView from "Components/GameView";
 import Reflection from "Components/Reflection";
 import {Score, useScore} from "Components/Score";
-import Character from "Components/Charecter";
+import Character from "Components/Character";
 import useSkin from "Hooks/useSkin";
 import useSplash from "Hooks/useSplash";
 import Splash from "Components/Splash";
