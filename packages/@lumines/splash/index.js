@@ -1,1 +1,1 @@
-export { default } from './src/components/Splash/Spalsh';
+export { default } from './src/components/Splash/Splash';

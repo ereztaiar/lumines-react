@@ -4,7 +4,7 @@ import Dispenser from "@lumines/game-components/src/components/Dispenser/Dispens
 import { Grid } from "@lumines/game-components/src/components/Board";
 import Reflection from "@lumines/game-components/src/components/Reflection/Reflection";
 import Score from "@lumines/game-components/src/components/Score/Score";
-import Character from "@lumines/game-components/src/components/Charecter/Charecter";
+import Character from "@lumines/game-components/src/components/Character/Character";
 import Pause from "@lumines/game-components/src/components/Game/Pause";
 
 const GameContent = (props) => {

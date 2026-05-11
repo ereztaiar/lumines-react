@@ -9,7 +9,7 @@
     "packages/@lumines/game-router",
     "packages/@lumines/menu",
     "packages/@lumines/splash",
-    "packages/@lumines/geme-components"
+    "packages/@lumines/game-components"
   ],
   "dependencies": {
     "@lumines/core": "link:packages/@lumines/core",

@@ -27,8 +27,6 @@ The app shell lives in `src/` (entry `src/index.js` → `src/App.jsx`). Game log
 
 Cross-package imports use **two coexisting styles**: the package root (`import Keys from "@lumines/core"`) and deep paths (`import { useRouter } from "@lumines/game-router/src/context/routerContext"`). Both are intentional — every package's `package.json` exports map includes `"./": "./"` to allow the deep form. Lazy-loaded screens (`Menu`, `Game` in `Router.jsx`) use deep imports so that splash isn't blocked by their bundles.
 
-Note: `package.json` workspaces lists `packages/@lumines/geme-components` (typo) but the actual folder is `game-components`. The `dependencies` block uses the correct `link:packages/@lumines/game-components`, so resolution works — don't "fix" the typo without checking that nothing depends on the broken glob silently excluding the package from workspace hoisting.
-
 ### Provider stack
 
 `App.jsx` wires the context tree top-down:
@@ -85,8 +83,3 @@ const GameContent = (props) => {
   // ...
 };
 ```
-
-### Filename quirks
-
-- `packages/@lumines/splash/src/components/Splash/Spalsh.jsx` — the file is misspelled. `index.js` imports from `./Splash.jsx` but the package root re-exports from `./Spalsh` (case/spelling matters on Linux). If you rename, update both `Splash/index.js` and `splash/index.js`.
-- Folder name `Charecter/` (not Character) under `game-components`.
