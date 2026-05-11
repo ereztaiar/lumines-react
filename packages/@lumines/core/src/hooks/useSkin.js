@@ -32,7 +32,7 @@ const useSkin = props => {
 
 
     useEffect(() => {
-            if (score % 10) {
+            if (score > 0 && score % 1000 === 0) {
                 setSkinIndex(skinIndex + 1);
             }
         },
