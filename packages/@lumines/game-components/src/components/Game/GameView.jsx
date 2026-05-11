@@ -31,7 +31,7 @@ const GameView = props => {
         children
     } = props;
 
-    const [pause, togglePause] = useState(true);
+    const [pause, togglePause] = useState(false);
 
     const [currentCube, setCurrentCube] = useState(initialCube);
     const [newCube, setNewCube] = useState(CUBE_STATES.WAITING);
