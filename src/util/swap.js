@@ -76,11 +76,11 @@ function moveRight(array, cube) {
     const src = {...cube};
     const dest = {};
     return new Promise((resolve, reject) => {
-        if (typeof array[cube.topRight.x + 1] === 'undefined' || typeof array[cube.topRight.x + 1][cube.topRight.y] === 'undefined') {
+        if (cube.topRight.x + 1 >= array.length || cube.bottomRight.x + 1 >= array.length) {
             reject(OUT_OF_BOUNDS);
             return;
         }
-        if (array[cube.topRight.x + 1][cube.topRight.y] !== 0) {
+        if (array[cube.topRight.x + 1][cube.topRight.y] !== 0 || array[cube.bottomRight.x + 1][cube.bottomRight.y] !== 0) {
             reject(WALL);
             return;
         }
