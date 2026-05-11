@@ -11,6 +11,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 There is no lint or typecheck step configured.
 
+## Before you code
+
+**Always use EnterPlanMode to design your approach before implementing non-trivial changes.** Planning helps catch architectural issues and prevents wasted effort. For simple fixes (typos, single-line changes), you can proceed directly. For anything involving multiple files, new features, refactors, or state changes, plan first and get alignment before writing code.
+
 ## Architecture
 
 This is a React 17 / Webpack 5 reimplementation of the puzzle game Lumines, organized as a Yarn workspaces monorepo.
