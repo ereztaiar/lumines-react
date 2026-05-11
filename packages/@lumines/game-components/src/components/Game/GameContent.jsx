@@ -1,0 +1,77 @@
+import React from "react";
+import { useGame } from "@lumines/game-components/src/contexts";
+import Dispenser from "@lumines/game-components/src/components/Dispenser/Dispenser";
+import { Grid } from "@lumines/game-components/src/components/Board";
+import Reflection from "@lumines/game-components/src/components/Reflection/Reflection";
+import Score from "@lumines/game-components/src/components/Score/Score";
+import Character from "@lumines/game-components/src/components/Charecter/Charecter";
+import Pause from "@lumines/game-components/src/components/Game/Pause";
+
+const GameContent = (props) => {
+  const {
+    reflection,
+    scoreStyle,
+    gridStyle,
+    swiperStyle,
+    reflectionStyle,
+    paths,
+    dispenserStyle,
+    characterStyle,
+    score,
+    highScore,
+    deleted,
+  } = props;
+  const {
+    setCurrentCube,
+    grid,
+    currentCube,
+    newCube,
+    setNewCube,
+    tick,
+    currentDeleted,
+    pause,
+  } = useGame();
+
+  return (
+    <>
+      <Score
+        score={score}
+        highScore={highScore}
+        deleted={deleted}
+        pause={pause}
+        styles={{ scoreStyle }}
+      />
+      <Grid
+        grid={grid}
+        tick={tick}
+        deleted={currentDeleted}
+        styles={{ gridStyle, swiperStyle }}
+        paths={paths}
+      />
+      {reflection && (
+        <Reflection styles={{ reflectionStyle }}>
+          <Grid
+            currentCube={currentCube}
+            grid={grid}
+            tick={tick}
+            rowStart={8}
+            showSwiper={false}
+            styles={{ gridStyle }}
+            paths={paths}
+          />
+        </Reflection>
+      )}
+      <Dispenser
+        setCurrentCube={setCurrentCube}
+        newCube={newCube}
+        setNewCube={setNewCube}
+        styles={{ dispenserStyle, gridStyle }}
+        paths={paths}
+      />
+      <Character styles={{ characterStyle }} />
+      <Pause pause={pause} />
+    </>
+  );
+};
+
+export default GameContent;
