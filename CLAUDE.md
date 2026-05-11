@@ -65,6 +65,27 @@ Defined in `webpack.config.js` and used throughout source: `Assets`, `Components
 
 `css-loader` is configured with `modules: { localIdentName: '[name]_[local]_[hash:base64:5]' }` for both `.css` and `.less`. Import as `import { default as Classes } from 'Skins/common.less'` and use `Classes.someName`.
 
+### Component conventions
+
+Components should receive `props` as a single parameter and destructure it on the next line:
+
+```jsx
+const MyComponent = (props) => {
+  const { prop1, prop2, prop3 } = props;
+  // ... rest of component
+};
+```
+
+This pattern keeps the function signature clean and makes it explicit which props a component uses. Pair destructuring with context hooks like `useGame()` for accessing shared state:
+
+```jsx
+const GameContent = (props) => {
+  const { reflection, scoreStyle, gridStyle } = props;
+  const { grid, currentCube, pause } = useGame();
+  // ...
+};
+```
+
 ### Filename quirks
 
 - `packages/@lumines/splash/src/components/Splash/Spalsh.jsx` — the file is misspelled. `index.js` imports from `./Splash.jsx` but the package root re-exports from `./Spalsh` (case/spelling matters on Linux). If you rename, update both `Splash/index.js` and `splash/index.js`.
