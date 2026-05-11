@@ -53,6 +53,7 @@ const Game = () => {
                                 score={score}
                                 highScore={highScore}
                                 deleted={deleted}
+                                pause={pause}
                                 styles={
                                     {
                                         scoreStyle

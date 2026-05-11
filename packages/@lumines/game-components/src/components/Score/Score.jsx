@@ -8,6 +8,7 @@ const Score = props => {
         score,
         highScore,
         deleted,
+        pause,
         styles:{
             scoreStyle
         }
@@ -15,6 +16,9 @@ const Score = props => {
     const [time, setTime] = useState(0);
 
     useTimer(() => {
+        if (pause) {
+            return;
+        }
 
         setTime(time + 1);
 
