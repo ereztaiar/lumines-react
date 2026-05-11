@@ -33,7 +33,7 @@ const Game = () => {
             reflection: reflectionStyle,
             paths
         }
-    } = useSkin(score);
+    } = useSkin({score});
 
     return (
         <div className={Classes.root}>

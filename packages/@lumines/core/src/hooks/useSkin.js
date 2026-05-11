@@ -28,12 +28,12 @@ const useSkin = props => {
         setSkin(
             newSkin
         );
-    }, [skin, skinIndex]);
+    }, [skinIndex]);
 
 
     useEffect(() => {
-            if (score > 0 && score % 1000 === 0) {
-                setSkinIndex(skinIndex + 1);
+            if (score > 0 && score % 100 === 0) {
+                setSkinIndex(prev => prev + 1);
             }
         },
         [score])
