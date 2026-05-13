@@ -3,7 +3,7 @@ import {
     moveDown,
     errors,
     DROP_RATE
-} from './swap.js';
+} from './index.js';
 
 
 describe('move block down', () => {

@@ -4,7 +4,7 @@ import {
     moveRight,
     OUT_OF_BOUNDS,
     WALL
-} from './swap.js';
+} from './index.js';
 
 
 describe('move block right', () => {

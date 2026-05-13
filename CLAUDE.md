@@ -17,55 +17,25 @@ There is no lint or typecheck step configured.
 
 ## Architecture
 
-This is a React 17 / Webpack 5 reimplementation of the puzzle game Lumines, organized as a Yarn workspaces monorepo.
+React 17 / Webpack 5 Lumines game, Yarn workspaces monorepo. App shell in `src/`; game logic in `packages/@lumines/`:
 
-### Workspace layout
+- `core` — input handling + hooks (`useKey`, `useClock`, `useTimer`, `useSkin`). Exports `Keys` provider and `KEYS`/`CODES`.
+- `game-router` — screen state machine (splash → menu → game).
+- `menu`, `splash`, `game-components` — respective screens.
 
-The app shell lives in `src/` (entry `src/index.js` → `src/App.jsx`). Game logic is split across packages under `packages/@lumines/`:
+**Imports**: Both root-level (`@lumines/core`) and deep paths (`@lumines/game-router/src/context/routerContext`) work intentionally. Lazy-loaded screens use deep imports to avoid blocking splash.
 
-- `core` — input handling (keyboard + gamepad via `react-gamepad`) and shared hooks (`useKey`, `useClock`, `useTimer`, `useSkin`). Exports the `Keys` provider and `KEYS`/`CODES` constants.
-- `game-router` — top-level screen state machine (splash → menu → game).
-- `menu` — menu screen + `useMenu` context.
-- `splash` — splash screen.
-- `game-components` — the actual game (Board, Dispenser, Game, Grid, Reflection, Score, Swiper, Character).
-
-Cross-package imports use **two coexisting styles**: the package root (`import Keys from "@lumines/core"`) and deep paths (`import { useRouter } from "@lumines/game-router/src/context/routerContext"`). Both are intentional — every package's `package.json` exports map includes `"./": "./"` to allow the deep form. Lazy-loaded screens (`Menu`, `Game` in `Router.jsx`) use deep imports so that splash isn't blocked by their bundles.
-
-### Provider stack
-
-`App.jsx` wires the context tree top-down:
-
+**Provider stack** (`App.jsx`):
 ```
-<Keys>                     // window keydown/up + gamepad → {key, which} via useReducer
-  <RouterProvider>         // screen state {isSplash, isMenu, isGame}
-    <Menu>                 // menu state (item order, selected, locked)
-      <Router />           // renders Splash | Menu | Game based on RouterProvider state
+<Keys> → <RouterProvider> → <Menu> → <Router />
 ```
+Screens subscribe to `useKeys()` and react in `useEffect([key])` — no central dispatcher. Key bindings dispatch from the provider owning the relevant state, not leaf components.
 
-State machines downstream subscribe to `useKeys()` and react in `useEffect([key])` — there is no central dispatcher. For example, `RouterProvider` advances splash→menu when `key === KEYS.SPACE`; `Menu` translates arrow keys into `menu_up`/`menu_down`. When adding new key bindings, dispatch from the provider that owns the relevant state, not from a leaf component.
+**Game loop** (`GameView.jsx`): ~35ms tick-driven via `useTimer`. Grid cells are integers (`0` empty, `1`/`2` colors, `3`/`4` special, `5`/`6` pending deletion). Per tick at `tick % 10 === 0`: drop cube, run `prepareForDeletion()` (swiper sweeps left-to-right). At `dropCount === MAX_TICK / 2`: spawn new cube. Cube ops in `src/util/swap.js` mutate grid and return `dest` descriptor; callers must update both `setGrid()` and `setCurrentCube()`. `moveDown` resolves `OUT_OF_BOUNDS` when landed.
 
-### Game loop (`game-components/src/components/Game/GameView.jsx`)
+**Skins** (`core/src/hooks/useSkin.js`): Cycles `default`, `purple`, `yellow` (via `Skins` alias). Folders export `BackgroundComponent` + `.less` styles + SVG paths. Auto-rotates on score changes or `s` key.
 
-The game is tick-driven via `useTimer` at ~35ms cadence. Per tick:
-
-- `tick % 10 === 0` → drop the active cube one row, then `prepareForDeletion(grid)` and `clearColumn(grid, tick/10)`. This is the **swiper** — it sweeps left-to-right one column per tick interval.
-- `dropCount === MAX_TICK / 2` → start dropping a new cube.
-
-Grid cells are integers, not objects: `0` empty, `1`/`2` are the two block colors (skins map these to visuals), `3`/`4` are special blocks, `5`/`6` mark cells "ready for deletion" (preserve the color via `5↔1`, `6↔2` mapping in `clearFromDeletion`). The Lumines core mechanic — 2×2 squares of one color get cleared by the swiper — is implemented in `src/util/clear-blocks.js::prepareForDeletion`.
-
-Cube manipulation (`src/util/swap.js`) is Promise-based and operates on four named corners (`topLeft`, `topRight`, `bottomLeft`, `bottomRight`). Each operation mutates the grid array in place AND resolves with a fresh `dest` cube descriptor — callers must update both via `setGrid([...updatedGrid])` and `setCurrentCube({ ...dest })`. `moveDown` can resolve with a third `OUT_OF_BOUNDS` value indicating the cube has landed; this is the signal to dispense a new one.
-
-### Skins
-
-`useSkin` (in `core/src/hooks/useSkin.js`) cycles through `Skins/default`, `Skins/purple`, `Skins/yellow` (resolved via the `Skins` webpack alias to `src/skins/`). Each skin is a folder exporting `BackgroundComponent` plus per-component `.less` style modules and SVG `paths`. The skin auto-rotates on score changes and on the `s` key.
-
-### Webpack aliases
-
-Defined in `webpack.config.js` and used throughout source: `Assets`, `Components`, `Hooks`, `Skins`, `Styles`, `Util` (all rooted at `src/`). **Jest does not know about these aliases** — tests must use relative imports. Existing tests in `src/util/` only import sibling files, so this hasn't surfaced yet; if you add a test that needs a skin or asset, configure `moduleNameMapper` in the Jest config first.
-
-### CSS modules
-
-`css-loader` is configured with `modules: { localIdentName: '[name]_[local]_[hash:base64:5]' }` for both `.css` and `.less`. Import as `import { default as Classes } from 'Skins/common.less'` and use `Classes.someName`.
+**Webpack aliases** (`webpack.config.js`): `Assets`, `Components`, `Hooks`, `Skins`, `Styles`, `Util` all rooted at `src/`. **Jest ignores aliases** — tests use relative imports. CSS modules via `import { default as Classes } from 'Skins/common.less'`.
 
 ### Component conventions
 

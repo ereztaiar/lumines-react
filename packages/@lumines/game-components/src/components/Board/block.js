@@ -1,15 +1,14 @@
 class Block {
+  constructor(className, isSet, x, y) {
+    this.className = className;
+    this.isSet = isSet;
+    this.x = x;
+    this.y = y;
+  }
 
-    constructor(className, isSet, x, y) {
-        this.className = className;
-        this.isSet = isSet;
-        this.x = x;
-        this.y =y;
-    }
-
-    get BlockItem() {
-        return
-    }
+  get BlockItem() {
+    return;
+  }
 }
 
 export default Block;

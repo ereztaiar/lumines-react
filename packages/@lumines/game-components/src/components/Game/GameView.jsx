@@ -4,7 +4,7 @@ import { createEmptyGrid } from '@lumines/game-components/src/components/Board';
 import { generateCube, dispenseOrder, CUBE_STATES } from "@lumines/game-components/src/components/Dispenser";
 import useTimer from "@lumines/core/src/hooks/useTimer";
 import useKey from "@lumines/core/src/hooks/useKey";// todo: replace with context
-import * as swap from 'Util/swap.js';
+import * as swap from 'Util/swap';
 import * as sounds from 'Assets/sounds';
 import { clearFromDeletion, prepareForDeletion, clearColumn } from "Util/clear-blocks";
 
