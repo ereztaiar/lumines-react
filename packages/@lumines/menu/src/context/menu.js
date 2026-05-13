@@ -1,4 +1,4 @@
-import React, { useEffect, createContext, useContext, useReducer } from 'react';
+import React, { useEffect, createContext, useContext, useReducer, useRef } from 'react';
 import { useKeys, KEYS } from "@lumines/core";
 
 import { useRouter } from "@lumines/game-router/src/context/routerContext";
@@ -75,12 +75,42 @@ const Menu = props => {
     const [state, dispatch] = useReducer(menuReducer, defaultState);
     const { state: { key } } = useKeys();
     const { state: { isMenu }, dispatch: routerDispatch } = useRouter();
+    const idleTimerRef = useRef(null);
     const value = { state, dispatch };
+
+    useEffect(() => {
+        if (!isMenu) {
+            if (idleTimerRef.current) {
+                clearTimeout(idleTimerRef.current);
+                idleTimerRef.current = null;
+            }
+            return;
+        }
+
+        idleTimerRef.current = setTimeout(() => {
+            routerDispatch({ type: 'reset' });
+        }, 60000);
+
+        return () => {
+            if (idleTimerRef.current) {
+                clearTimeout(idleTimerRef.current);
+                idleTimerRef.current = null;
+            }
+        };
+    }, [isMenu, routerDispatch]);
 
     useEffect(() => {
         if (!isMenu) {
             return;
         }
+
+        if (idleTimerRef.current) {
+            clearTimeout(idleTimerRef.current);
+        }
+        idleTimerRef.current = setTimeout(() => {
+            routerDispatch({ type: 'reset' });
+        }, 60000);
+
         switch (key) {
             case KEYS.ARROW_UP:
                 dispatch({ type: 'menu_up' })
