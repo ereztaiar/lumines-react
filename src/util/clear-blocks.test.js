@@ -200,8 +200,9 @@ describe('delete set blocks', () => {
         ];
         await prepareForDeletion(array);
         // The 2x2 square at cols 8-9, rows 8-9 contains special block (type 3)
-        // Col 10 is adjacent to col 9 and shares the same rows → flood fill marks it too
-        expect(array[8][8]).toBe(5);
+        // Special block stays type 7 (special deletion A); regular blocks become 5
+        // Col 10 is adjacent → flood fill marks it too
+        expect(array[8][8]).toBe(7); // was type-3 special → special deletion
         expect(array[9][8]).toBe(5);
         expect(array[8][9]).toBe(5);
         expect(array[9][9]).toBe(5);
@@ -229,9 +230,36 @@ describe('delete set blocks', () => {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ];
         await prepareForDeletion(array);
-        expect(array[8][8]).toBe(5);
-        expect(array[9][8]).toBe(5);
-        expect(array[8][9]).toBe(5);
-        expect(array[9][9]).toBe(5);
+        // Special blocks (3) become 7; normal blocks (1) become 5
+        expect(array[8][8]).toBe(7); // was type-3 special
+        expect(array[9][8]).toBe(5); // was type-1 normal
+        expect(array[8][9]).toBe(5); // was type-1 normal
+        expect(array[9][9]).toBe(7); // was type-3 special
+    });
+
+    it('clearFromDeletion reverts special deletion marks to special types', async () => {
+        let array = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 7, 8],
+            [0, 0, 0, 0, 0, 0, 0, 0, 5, 6],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ];
+        await clearFromDeletion(array);
+        expect(array[8][8]).toBe(3); // array[8][8]=7 → type-3 special A
+        expect(array[8][9]).toBe(4); // array[8][9]=8 → type-4 special B
+        expect(array[9][8]).toBe(1); // array[9][8]=5 → type-1 normal A
+        expect(array[9][9]).toBe(2); // array[9][9]=6 → type-2 normal B
     });
 });

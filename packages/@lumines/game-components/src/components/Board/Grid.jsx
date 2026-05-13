@@ -39,6 +39,10 @@ const Grid = (props) => {
           gridColumns += `<div class="${gridStyle.gridItem}"><img src="${paths.darkA}"/></div>`;
         } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B) {
           gridColumns += `<div class="${gridStyle.gridItem}"><img src="${paths.darkB}"/></div>`;
+        } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_A_SPECIAL) {
+          gridColumns += `<div class="${gridStyle.gridItem}"><img src="${paths.darkA}"/></div>`;
+        } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B_SPECIAL) {
+          gridColumns += `<div class="${gridStyle.gridItem}"><img src="${paths.darkB}"/></div>`;
         } else {
           gridColumns += `<div class="${gridStyle.gridItem}"></div>`;
         }

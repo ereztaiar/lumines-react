@@ -42,10 +42,12 @@ Screens subscribe to `useKeys()` and react in `useEffect([key])` — no central 
 | `2` | `TYPE_B` | Color B block |
 | `3` | `TYPE_A_SPECIAL` | Special color A block |
 | `4` | `TYPE_B_SPECIAL` | Special color B block |
-| `5` | `DELETION_TYPE_A` | Color A pending deletion |
-| `6` | `DELETION_TYPE_B` | Color B pending deletion |
+| `5` | `DELETION_TYPE_A` | Normal color A pending deletion |
+| `6` | `DELETION_TYPE_B` | Normal color B pending deletion |
+| `7` | `DELETION_TYPE_A_SPECIAL` | Special color A pending deletion |
+| `8` | `DELETION_TYPE_B_SPECIAL` | Special color B pending deletion |
 
-Types `1` and `3` are the same color (A); types `2` and `4` are the same color (B). A 2×2 square can be any mix of the two same-color types. When a square contains a special block (`3` or `4`), `prepareForDeletion` BFS flood-fills all connected same-color blocks (including specials) and marks them all as deletion type (`5`/`6`) — recursive chain deletion.
+Types `1` and `3` are the same color (A); types `2` and `4` are the same color (B). A 2×2 square can be any mix of the two same-color types. When a square contains a special block (`3` or `4`), `prepareForDeletion` BFS flood-fills all connected same-color blocks and marks them for deletion — normal blocks become `5`/`6`, special blocks become `7`/`8`. Using separate markers for specials allows `clearFromDeletion` to revert `7`→`3` and `8`→`4`, so the special block retains its type across swiper cycles and the flood fill re-triggers correctly on each pass.
 
 **Skins** (`core/src/hooks/useSkin.js`): Cycles `default`, `purple`, `yellow` (via `Skins` alias). Folders export `BackgroundComponent` + `.less` styles + SVG paths. Auto-rotates on score changes or `s` key.
 

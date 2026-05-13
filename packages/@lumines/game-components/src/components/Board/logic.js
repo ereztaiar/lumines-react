@@ -8,6 +8,8 @@ const BLOCKS_TYPES = {
     TYPE_B_SPECIAL: 4,
     DELETION_TYPE_A: 5,
     DELETION_TYPE_B: 6,
+    DELETION_TYPE_A_SPECIAL: 7,
+    DELETION_TYPE_B_SPECIAL: 8,
 };
 
 function* createEmptyGrid() {
