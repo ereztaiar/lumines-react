@@ -50,7 +50,7 @@ const Splash = props => {
             {blocks}
             <div className={splashStyle.titleCard}>
                 <h3>PUZZLE <FaReact /> FUSION</h3>
-                <h1>LUMINES REACT</h1>
+                <h1>LUMINES REACT AI REMASTER</h1>
                 <h2>PUZZLE<img src={"/favicon.svg"} />FUSION</h2>
             </div>
             <div className={splashStyle.action}>
