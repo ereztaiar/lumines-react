@@ -177,4 +177,61 @@ describe('delete set blocks', () => {
         ]);
         expect(result).toEqual(2);
     });
+
+    it('special block triggers chain deletion of adjacent same-color blocks', async () => {
+        let array = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            // col 8: special block in square, col 9: regular, col 10: neighbor
+            [0, 0, 0, 0, 0, 0, 0, 0, 3, 1], // row 8: special A, regular A
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 1], // row 9: regular A, regular A
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 1], // row 9 neighbor col
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ];
+        await prepareForDeletion(array);
+        // The 2x2 square at cols 8-9, rows 8-9 contains special block (type 3)
+        // Col 10 is adjacent to col 9 and shares the same rows → flood fill marks it too
+        expect(array[8][8]).toBe(5);
+        expect(array[9][8]).toBe(5);
+        expect(array[8][9]).toBe(5);
+        expect(array[9][9]).toBe(5);
+        expect(array[10][8]).toBe(5);
+        expect(array[10][9]).toBe(5);
+    });
+
+    it('mixed 1+3 square is detected as color A deletion', async () => {
+        let array = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 3, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 3],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ];
+        await prepareForDeletion(array);
+        expect(array[8][8]).toBe(5);
+        expect(array[9][8]).toBe(5);
+        expect(array[8][9]).toBe(5);
+        expect(array[9][9]).toBe(5);
+    });
 });

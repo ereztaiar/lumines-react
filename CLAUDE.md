@@ -31,7 +31,21 @@ React 17 / Webpack 5 Lumines game, Yarn workspaces monorepo. App shell in `src/`
 ```
 Screens subscribe to `useKeys()` and react in `useEffect([key])` — no central dispatcher. Key bindings dispatch from the provider owning the relevant state, not leaf components.
 
-**Game loop** (`GameView.jsx`): ~35ms tick-driven via `useTimer`. Grid cells are integers (`0` empty, `1`/`2` colors, `3`/`4` special, `5`/`6` pending deletion). Per tick at `tick % 10 === 0`: drop cube, run `prepareForDeletion()` (swiper sweeps left-to-right). At `dropCount === MAX_TICK / 2`: spawn new cube. Cube ops in `src/util/swap.js` mutate grid and return `dest` descriptor; callers must update both `setGrid()` and `setCurrentCube()`. `moveDown` resolves `OUT_OF_BOUNDS` when landed.
+**Game loop** (`GameView.jsx`): ~35ms tick-driven via `useTimer`. Grid cells are integers — see block types below. Per tick at `tick % 10 === 0`: drop cube, run `prepareForDeletion()` (swiper sweeps left-to-right), `clearColumn(grid, tick/10)`. At `tick === 1`: `clearFromDeletion()` reverts any unswept deletion marks. At `dropCount === MAX_TICK / 2`: spawn new cube. Cube ops in `src/util/swap.js` mutate grid and return `dest` descriptor; callers must update both `setGrid()` and `setCurrentCube()`. `moveDown` resolves `OUT_OF_BOUNDS` when landed.
+
+**Block types** (`packages/@lumines/game-components/src/components/Board/logic.js`):
+
+| Value | Constant | Meaning |
+|-------|----------|---------|
+| `0` | `EMPTY` | Empty cell |
+| `1` | `TYPE_A` | Color A block |
+| `2` | `TYPE_B` | Color B block |
+| `3` | `TYPE_A_SPECIAL` | Special color A block |
+| `4` | `TYPE_B_SPECIAL` | Special color B block |
+| `5` | `DELETION_TYPE_A` | Color A pending deletion |
+| `6` | `DELETION_TYPE_B` | Color B pending deletion |
+
+Types `1` and `3` are the same color (A); types `2` and `4` are the same color (B). A 2×2 square can be any mix of the two same-color types. When a square contains a special block (`3` or `4`), `prepareForDeletion` BFS flood-fills all connected same-color blocks (including specials) and marks them all as deletion type (`5`/`6`) — recursive chain deletion.
 
 **Skins** (`core/src/hooks/useSkin.js`): Cycles `default`, `purple`, `yellow` (via `Skins` alias). Folders export `BackgroundComponent` + `.less` styles + SVG paths. Auto-rotates on score changes or `s` key.
 

@@ -1,45 +1,57 @@
 function prepareForDeletion(array) {
     const width = array.length;
     const height = array[0].length;
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
 
-        const setToClear = ([clearItem, readyForDeletion]) => {
+        const floodFill = (startX, startY, colorTypes, deletionType) => {
+            const stack = [[startX, startY]];
+            const visited = new Set();
+            while (stack.length > 0) {
+                const [x, y] = stack.pop();
+                const key = `${x},${y}`;
+                if (visited.has(key)) continue;
+                visited.add(key);
+                if (x < 0 || x >= width || y < 0 || y >= height) continue;
+                const v = array[x][y];
+                if (colorTypes.includes(v) || v === deletionType) {
+                    array[x][y] = deletionType;
+                    stack.push([x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]);
+                }
+            }
+        };
 
-            for (let x = 0; x < width - 1; x++) { // one less then active columns
-                for (let y = height; y > 3; y--) {// one less then active rows
+        const checkSquares = (normalType, specialType, deletionType) => {
+            for (let x = 0; x < width - 1; x++) {
+                for (let y = height; y > 3; y--) {
                     if (
                         typeof array[x][y + 1] !== 'undefined' && array[x][y + 1] === 0 &&
                         typeof array[x + 1][y + 1] !== 'undefined' && array[x + 1][y + 1] === 0
+                    ) continue;
 
-                    ) {
-                        continue;
-                    }
-                    const current = (array[x][y] === clearItem || array[x][y] === readyForDeletion);
-                    const left = (array[x + 1][y] === clearItem || array[x + 1][y] === readyForDeletion);
-                    const above = (array[x][y - 1] === clearItem || array[x][y - 1] === readyForDeletion);
-                    const diagonally = (array[x + 1][y - 1] === clearItem || array[x + 1][y - 1] === readyForDeletion);
+                    const match = (v) => v === normalType || v === specialType || v === deletionType;
 
+                    if (match(array[x][y]) && match(array[x + 1][y]) &&
+                        match(array[x][y - 1]) && match(array[x + 1][y - 1])) {
 
-                    if (
-                        current &&
-                        left &&
-                        above &&
-                        diagonally
+                        const hasSpecial =
+                            array[x][y] === specialType || array[x + 1][y] === specialType ||
+                            array[x][y - 1] === specialType || array[x + 1][y - 1] === specialType;
 
-                    ) {
-                        array[x][y] = readyForDeletion;
-                        array[x + 1][y] = readyForDeletion;
-                        array[x][y - 1] = readyForDeletion;
-                        array[x + 1][y - 1] = readyForDeletion;
+                        array[x][y] = deletionType;
+                        array[x + 1][y] = deletionType;
+                        array[x][y - 1] = deletionType;
+                        array[x + 1][y - 1] = deletionType;
+
+                        if (hasSpecial) {
+                            floodFill(x, y, [normalType, specialType], deletionType);
+                        }
                     }
                 }
-
             }
-        }
-        setToClear([1, 5]);
-        setToClear([3, 5]);//todo fix special
-        setToClear([2, 6]);
-        setToClear([4, 6]);//todo fix special
+        };
+
+        checkSquares(1, 3, 5);
+        checkSquares(2, 4, 6);
 
         resolve([...array]);
     });
