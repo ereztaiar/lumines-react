@@ -1,13 +1,12 @@
-import React from 'react';
+import React from "react";
 import useSkin from "@lumines/core/src/hooks/useSkin";
 
-const GridItem = ({className}) => {
+const GridItem = ({ className }) => {
+  const {
+    skin: { grid: gridStyle },
+  } = useSkin();
 
-    const {skin: {grid: gridStyle}}  = useSkin();
-
-    return (
-        <div className={`${gridStyle.gridItem} ${className}`}></div>
-    );
+  return <div className={`${gridStyle.gridItem} ${className}`}></div>;
 };
 
 export default GridItem;

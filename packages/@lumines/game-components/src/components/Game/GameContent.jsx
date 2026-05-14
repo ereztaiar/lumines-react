@@ -43,6 +43,7 @@ const GameContent = (props) => {
       />
       <Grid
         grid={grid}
+        currentCube={currentCube}
         tick={tick}
         deleted={currentDeleted}
         styles={{ gridStyle, swiperStyle }}
