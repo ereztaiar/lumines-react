@@ -8,13 +8,16 @@ const Pause = ({ pause }) => {
     if (!pause) return null;
 
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const { togglePause } = useGame();
+    const { togglePause, resetScore } = useGame();
     const { dispatch } = useRouter();
     const { state: { key } } = useKeys();
 
     const menuItems = [
         { label: 'Continue', action: () => togglePause(false) },
-        { label: 'Quit', action: () => dispatch({ type: 'menu' }) }
+        { label: 'Quit', action: () => {
+            resetScore();
+            dispatch({ type: 'menu' });
+        } }
     ];
 
     useEffect(() => {

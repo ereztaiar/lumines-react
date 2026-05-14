@@ -30,7 +30,7 @@ function nop() {
 
 const GameView = (props) => {
   const {
-    scoring: { addOne, multiplier, deletedBlocks },
+    scoring: { addOne, multiplier, deletedBlocks, resetScore },
     children,
   } = props;
 
@@ -236,6 +236,7 @@ const GameView = (props) => {
         currentDeleted,
         pause,
         togglePause,
+        resetScore,
       })}
     </>
   );

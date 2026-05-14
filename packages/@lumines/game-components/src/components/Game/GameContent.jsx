@@ -20,6 +20,7 @@ const GameContent = (props) => {
     score,
     highScore,
     deleted,
+    level,
   } = props;
   const {
     setCurrentCube,
@@ -38,6 +39,7 @@ const GameContent = (props) => {
         score={score}
         highScore={highScore}
         deleted={deleted}
+        level={level}
         pause={pause}
         styles={{ scoreStyle }}
       />

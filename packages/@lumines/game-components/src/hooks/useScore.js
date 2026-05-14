@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 
 
 const MULTIPLIER = 4;
+const BLOCKS_PER_LEVEL = 10;
 const getHighScore = () => window.localStorage.getItem('highScore') | 0;
 const storeHighScore = (highScore) => window.localStorage.setItem('highScore', `${highScore}`);
 
@@ -23,6 +24,13 @@ const useScore = () => {
         setDeleted(deleted + items);
     }
 
+    const resetScore = () => {
+        setScore(0);
+        setDeleted(0);
+    }
+
+    const level = Math.floor(deleted / BLOCKS_PER_LEVEL) + 1;
+
     useEffect(
         () => {
             if (score > highScore) {
@@ -40,7 +48,9 @@ const useScore = () => {
         multiplier,
         highScore,
         deletedBlocks,
-        deleted
+        deleted,
+        resetScore,
+        level
     ]
 
 }
@@ -48,6 +58,7 @@ const useScore = () => {
 export default useScore;
 export {
     MULTIPLIER,
+    BLOCKS_PER_LEVEL,
     getHighScore,
     storeHighScore
 }

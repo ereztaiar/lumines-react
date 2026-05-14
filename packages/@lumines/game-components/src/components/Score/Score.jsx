@@ -8,6 +8,7 @@ const Score = props => {
         score,
         highScore,
         deleted,
+        level,
         pause,
         styles:{
             scoreStyle
@@ -45,7 +46,7 @@ const Score = props => {
         <section id={scoreStyle.score}>
             <div className={scoreStyle.data}>
                 <div className={scoreStyle.title}>LEVEL</div>
-                <div className={scoreStyle.info}>1</div>
+                <div className={scoreStyle.info}>{level}</div>
             </div>
             <div className={scoreStyle.data}>
                 <div className={scoreStyle.title}>TIME</div>

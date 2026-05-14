@@ -9,7 +9,7 @@ import GameContent from "@lumines/game-components/src/components/Game/GameConten
 const Game = () => {
   const reflection = true;
 
-  const [score, addOne, multiplier, highScore, deletedBlocks, deleted] =
+  const [score, addOne, multiplier, highScore, deletedBlocks, deleted, resetScore, level] =
     useScore();
 
   const {
@@ -37,7 +37,7 @@ const Game = () => {
           GameClasses.pauseContainer
         }
       >
-        <GameProvider scoring={{ addOne, multiplier, deletedBlocks }}>
+        <GameProvider scoring={{ addOne, multiplier, deletedBlocks, resetScore }}>
           <GameContent
             reflection={reflection}
             scoreStyle={scoreStyle}
@@ -50,6 +50,7 @@ const Game = () => {
             score={score}
             highScore={highScore}
             deleted={deleted}
+            level={level}
           />
         </GameProvider>
       </div>
