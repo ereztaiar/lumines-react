@@ -67,6 +67,8 @@ const menuReducer = (state, action) => {
 
 }
 
+const MENU_TIMEOUT = 600000;
+
 const Menu = props => {
     const {
         children
@@ -89,7 +91,7 @@ const Menu = props => {
 
         idleTimerRef.current = setTimeout(() => {
             routerDispatch({ type: 'reset' });
-        }, 60000);
+        }, MENU_TIMEOUT);
 
         return () => {
             if (idleTimerRef.current) {

@@ -6,7 +6,7 @@ import {githubLink} from "Assets/paths/";
 const Github = props => {
     const { selected } = props;
     return (
-        <MenuItem icon={<FaGithub/>} color={"#a974e0"} active={selected}>
+        <MenuItem icon={<FaGithub size={80}/>} color={"#a974e0"} active={selected}>
             <section>
                 <p>
                     <a href={"https://github.com/ereztaiar/lumines-react"} target={"_blank"}>Github repository</a>

@@ -13,7 +13,7 @@ const Play = props => {
     const { state, dispatch } = useMenu();
     const { state: { isMenu }, dispatch: routerDispatch } = useRouter();
     return (
-        <MenuItem icon={<FaGamepad />} color={"#e6af6e"} active={selected}>
+        <MenuItem icon={<FaGamepad size={80}/>} color={"#e6af6e"} active={selected}>
             <section className={playStyle.options}>
                 <span className={playStyle.button} onClick={() => { routerDispatch({ type: 'start_game' }) }}><SiApplearcade /></span>
                 <span className={playStyle.button} onClick={() => { routerDispatch({ type: 'start_game' }) }}><GiAlarmClock /></span>
