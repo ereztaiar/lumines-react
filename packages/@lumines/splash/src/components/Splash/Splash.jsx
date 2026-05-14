@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaReact } from "react-icons/fa";
-import { default as splashStyle } from "@lumines/splash/src/styles/splash.less";
+import { default as splashStyle } from "@lumines/splash/src/styles/splash_2.less";
 import useTimer from "@lumines/core/src/hooks/useTimer";
 
 const COLORS_SWATCH = 5;
@@ -40,12 +40,16 @@ const Splash = (props) => {
         <h3>
           PUZZLE <FaReact /> FUSION
         </h3>
-        <h1>LUMINES REACT AI REMASTER</h1>
-        <h2>
+        <h1 className={splashStyle.mainTitle}>
+          LUMINES REACT
+          <br />
+          AI REMASTER
+        </h1>
+        <h3>
           PUZZLE
           <img src={"/favicon.svg"} />
           FUSION
-        </h2>
+        </h3>
       </div>
       <div className={splashStyle.action}>
         <h4>PRESS SPACE KEY</h4>

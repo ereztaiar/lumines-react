@@ -1,0 +1,156 @@
+@import "Skins/for.less";
+
+:root {
+  
+  --dark-orange: #ff8500;
+  
+
+  --deep-navy: #0d0d2b;
+  --dark-indigo: #1a0050;
+  --electric-indigo: #2d00a0;
+  --vivid-violet: #6600cc;
+
+  --grid-line: #0a0a1a;
+
+  --cyan-text: #00f5ff;
+  --soft-purple-text: #c084fc;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 90deg;
+}
+
+@property --percentage {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --color {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #118ab2;
+}
+
+@-webkit-keyframes blink {
+  0% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes rotate-gradient {
+  0% {
+    --angle: 0deg;
+    --percentage: 0%;
+    --color: #118ab2;
+  }
+  50% {
+    --angle: 180deg;
+    --percentage: 100%;
+
+    --color: #0a0a1a;
+  }
+
+  100% {
+    --angle: 360deg;
+    --percentage: 0%;
+
+    --color: #0a0a1a;
+  }
+}
+
+.root {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  color: var(--cyan-text);
+ font-size: 2rem;
+  overflow: hidden;
+
+  &::after {
+    position: absolute;
+    content: " ";
+
+    width: 100vw;
+    height: 100vh;
+    left: 0%;
+    top: 0%;
+
+    display: block;
+    z-index: -1;
+    transition: --angle 0.5s 0.1s, --percentage 0.5s, --color 0.2s;
+    background: linear-gradient(
+      var(--angle),
+      var(--color) var(--percentage),
+      #ef476f,
+      var(--color) calc(100% - var(--percentage))
+    );
+    animation: rotate-gradient 5s linear infinite;
+  }
+
+  .titleCard {
+    position: absolute;
+    inset: 15%;
+    text-align: center;
+    z-index: 20;
+
+
+    .mainTitle{
+        color: var(--soft-purple-text);
+    }
+
+
+
+    h2, h3 {
+      img {
+        width: 40px;
+        height: 40px;
+        margin-inline: 15px;
+      }
+    }
+  }
+
+  .action {
+    position: fixed;
+    bottom: 5%;
+    left: 5%;
+    text-align: left;
+    width: 100%;
+    z-index: 20;
+    -webkit-animation: blink 1.3s ease-in-out infinite;
+  }
+
+  .block {
+    width: ~"calc(calc(100vw / 8) - 4px)";
+    height: ~"calc(calc(100vw / 8) - 4px)";
+    float: left;
+    background: var(--vivid-violet);
+    position: relative;
+    margin: 2px;
+  }
+
+  @array: 1 var(--deep-navy), 2 var(--dark-indigo), 3 var(--electric-indigo),
+    4 var(--vivid-violet);
+
+  .for(@array);
+
+  .-each(@color) {
+    @idx: extract(@color, 1);
+    @value: extract(@color, 2);
+
+    .block-@{idx} {
+      background: @value;
+      transition: all 1.5s ease;
+    }
+  }
+}
