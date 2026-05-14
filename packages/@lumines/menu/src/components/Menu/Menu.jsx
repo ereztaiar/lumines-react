@@ -4,6 +4,7 @@ import {
   Settings,
   Skin,
   Github,
+  Scores,
 } from "@lumines/menu/src/components/Menu/Items";
 
 import menuStyle from "@lumines/menu/src/styles/menu.less";
@@ -41,6 +42,14 @@ const Menu = (props) => {
           <Github
             key={"github"}
             selected={index === 0 && selected === "github"}
+          />
+        );
+      }
+      case "scores": {
+        return (
+          <Scores
+            key={"scores"}
+            selected={index === 0 && selected === "scores"}
           />
         );
       }

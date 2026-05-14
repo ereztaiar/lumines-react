@@ -75,7 +75,7 @@ const GameContent = (props) => {
       />
       <Character styles={{ characterStyle }} />
       <Pause pause={pause} />
-      <GameOver isGameOver={isGameOver} />
+      <GameOver isGameOver={isGameOver} score={score} />
     </>
   );
 };

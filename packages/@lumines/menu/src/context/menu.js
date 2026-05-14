@@ -9,7 +9,7 @@ const { Provider: MenuProvider } = MenuContext;
 const defaultState = {
     reflection: true,
     // controlles: 'N/A'
-    menuOrder: ['play', 'setting', 'skin', 'github'],
+    menuOrder: ['play', 'setting', 'skin', 'github', 'scores'],
     selected: null,
     menuLocked: null,// 3 states null, true, false
 };

@@ -80,3 +80,60 @@
   transform: translateX(-50%);
   z-index: 10;
 }
+
+.nameEntryForm {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 10;
+}
+
+.nameEntryLabel {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  letter-spacing: 0.05em;
+}
+
+.nameEntryScore {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.nameEntryHint {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.05em;
+}
+
+.nameEntryInput {
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid white;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  width: 130px;
+  padding: 0.4rem 0.5rem;
+  letter-spacing: 0.6rem;
+  text-transform: uppercase;
+  font-family: inherit;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.6rem;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #ffd700;
+  }
+}
