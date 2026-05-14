@@ -42,9 +42,9 @@ const GameView = (props) => {
   const [isSplit, setIsSplit] = useState(false);
   const [speed, setSpeed] = useState(35);
   const [dropCount, setDropCount] = useState(0);
-  const [playRotate] = useSound(sounds.lazer1);
+  const [playRotate] = useSound(sounds.waterDrop);
   const [playDrop] = useSound(sounds.lazer2);
-  const [playMove] = useSound(sounds.punch);
+  const [playMove] = useSound(sounds.drip);
   const [currentDeleted, setCurrentDeleted] = useState(0);
 
   const [tick, setTick] = useState(INITIAL_TICK);

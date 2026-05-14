@@ -4,3 +4,8 @@
 - [Game over](https://freesound.org/people/EFlexMusic/sounds/369594/)
 - [Score up](https://freesound.org/people/kwazi/sounds/34115/)
 - [Menu select](https://freesound.org/people/matiasromero/sounds/65491/)
+
+
+https://freesound.org/people/Nightflame/sounds/188642/
+
+https://freesound.org/people/LilMati/sounds/349873/
