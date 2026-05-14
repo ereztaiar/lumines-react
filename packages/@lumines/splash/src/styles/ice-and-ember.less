@@ -1,19 +1,15 @@
 @import "Skins/for.less";
 
 :root {
-  
-  --dark-orange: #ff8500;
-  
+  --dark-blue: #1a2a3a;
+  --steel-blue: #2a5080;
+  --burnt-orange: #c04000;
+  --vivid-orange: #ff6a00;
 
-  --deep-navy: #0d0d2b;
-  --dark-indigo: #1a0050;
-  --electric-indigo: #2d00a0;
-  --vivid-violet: #6600cc;
+  --grid-line: #0a1520;
 
-  --grid-line: #0a0a1a;
-
-  --cyan-text: #00f5ff;
-  --soft-purple-text: #c084fc;
+  --cyan-text: #00cfcf;
+  --white-text: #ffffff;
 }
 
 @property --angle {
@@ -58,14 +54,14 @@
     --angle: 180deg;
     --percentage: 100%;
 
-    --color: #0a0a1a;
+    --color: #0a1520;
   }
 
   100% {
     --angle: 360deg;
     --percentage: 0%;
 
-    --color: #0a0a1a;
+    --color: #0a1520;
   }
 }
 
@@ -74,7 +70,7 @@
   height: 100vh;
   position: relative;
   color: var(--cyan-text);
- font-size: 2rem;
+  font-size: 2rem;
   overflow: hidden;
 
   &::after {
@@ -104,14 +100,12 @@
     text-align: center;
     z-index: 20;
 
-
-    .mainTitle{
-        color: var(--soft-purple-text);
+    .mainTitle {
+      color: var(--white-text);
     }
 
-
-
-    h2, h3 {
+    h2,
+    h3 {
       img {
         width: 40px;
         height: 40px;
@@ -134,13 +128,13 @@
     width: ~"calc(calc(100vw / 8) - 4px)";
     height: ~"calc(calc(100vw / 8) - 4px)";
     float: left;
-    background: var(--vivid-violet);
+    background: var(--vivid-orange);
     position: relative;
     margin: 2px;
   }
 
-  @array: 1 var(--deep-navy), 2 var(--dark-indigo), 3 var(--electric-indigo),
-    4 var(--vivid-violet);
+  @array: 1 var(--dark-blue), 2 var(--steel-blue), 3 var(--burnt-orange),
+    4 var(--vivid-orange);
 
   .for(@array);
 
