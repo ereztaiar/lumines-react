@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Exo+2:wght@300&display=swap");
 
 @grid-columns: 16;
 @grid-rows: 12;
@@ -14,44 +14,45 @@
 @center-width: @grid-item-width * @grid-columns;
 @center-height: @grid-item-height * @grid-rows;
 
-
 :root {
-    --grid-columns: @grid-columns;
-    --grid-rows: @grid-rows;
-    --grid-item-width: @grid-item-width;
-    --grid-item-height: @grid-item-height;
-    --ready-grid-columns: @ready-board-grid-columns;
-    --ready-grid-rows: @ready-board-grid-rows;
+  --grid-columns: @grid-columns;
+  --grid-rows: @grid-rows;
+  --grid-item-width: @grid-item-width;
+  --grid-item-height: @grid-item-height;
+  --ready-grid-columns: @ready-board-grid-columns;
+  --ready-grid-rows: @ready-board-grid-rows;
 }
 
 * {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 body {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .root {
-    overflow: hidden;
-    margin: 0;
-    font-family: 'Exo 2', sans-serif;
-    //position: fixed;
-    //  inset: 1em 1em 1em 1em;
-    .app {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  font-family: "Exo 2", sans-serif;
+  //position: fixed;
+  //  inset: 1em 1em 1em 1em;
+  .app {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
 
-        &.container {
-            display: grid;
-            grid-template-columns: 25% 50% 25%;
-            grid-template-rows: minmax(2 * @grid-item-height, 150px) calc(@center-height ~"/" 2 ) calc(@center-height ~"/" 2 ) calc(@center-height ~"/" 4 ) auto;
-            grid-template-areas: "head head head" "well grid score" "well grid score" "footer footer footer" "footer footer footer";
-            align-items: center;
-        }
+    &.container {
+      display: grid;
+      grid-template-columns: 25% 50% 25%;
+      grid-template-rows: minmax(3vw, 150px) calc(
+          @center-height ~"/" 2
+        ) calc(@center-height ~"/" 2) calc(@center-height ~"/" 4) auto;
+      grid-template-areas: "head head head" "well grid score" "well grid score" "footer footer footer" "footer footer footer";
+      align-items: center;
     }
+  }
 }

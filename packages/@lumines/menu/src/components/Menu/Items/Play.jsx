@@ -1,7 +1,7 @@
 import React from "react";
 import { FaGamepad } from "react-icons/fa";
 import { GiAlarmClock } from "react-icons/gi";
-import { RiGameFill } from "react-icons/ri";
+import { SiApplearcade  } from "react-icons/si";
 import MenuItem from "@lumines/menu/src/components/Menu/MenuItem";
 import { useMenu } from "@lumines/menu/src/context/menu";
 import { useRouter } from "@lumines/game-router/src/context/routerContext";
@@ -15,7 +15,7 @@ const Play = props => {
     return (
         <MenuItem icon={<FaGamepad />} color={"#e6af6e"} active={selected}>
             <section className={playStyle.options}>
-                <span className={playStyle.button} onClick={() => { routerDispatch({ type: 'start_game' }) }}><RiGameFill /></span>
+                <span className={playStyle.button} onClick={() => { routerDispatch({ type: 'start_game' }) }}><SiApplearcade /></span>
                 <span className={playStyle.button} onClick={() => { routerDispatch({ type: 'start_game' }) }}><GiAlarmClock /></span>
             </section>
         </MenuItem>
