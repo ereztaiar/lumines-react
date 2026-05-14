@@ -19,9 +19,6 @@ import {
 const MAX_TICK = 160;
 const INITIAL_TICK = 0;
 
-const initialCube = generateCube().next().value;
-const initialGrid = createEmptyGrid().next().value;
-
 function nop() {
   return new Promise((resolve, reject) => {
     setTimeout(resolve, 0);
@@ -37,9 +34,9 @@ const GameView = (props) => {
   const [pause, togglePause] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
 
-  const [currentCube, setCurrentCube] = useState(initialCube);
+  const [currentCube, setCurrentCube] = useState(() => generateCube().next().value);
   const [newCube, setNewCube] = useState(CUBE_STATES.WAITING);
-  const [grid, setGrid] = useState(initialGrid);
+  const [grid, setGrid] = useState(() => createEmptyGrid().next().value);
   const [isSplit, setIsSplit] = useState(false);
   const [speed, setSpeed] = useState(35);
   const [dropCount, setDropCount] = useState(0);
