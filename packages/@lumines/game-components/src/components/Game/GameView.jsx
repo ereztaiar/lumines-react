@@ -65,10 +65,6 @@ const GameView = (props) => {
         currentCube,
       );
       if (outOfBounds === swap.errors.OUT_OF_BOUNDS) {
-        if (currentCube.bottomLeft.y <= 1) {
-          setIsGameOver(true);
-          return;
-        }
         setNewCube(CUBE_STATES.NEW);
         setDropCount(0);
         return;
@@ -206,6 +202,14 @@ const GameView = (props) => {
 
   useEffect(() => {
     if (newCube === CUBE_STATES.READY) {
+      const spawnBlocked = dispenseOrder.some((order) => {
+        const block = currentCube[order];
+        return grid[block.x]?.[block.y] !== 0;
+      });
+      if (spawnBlocked) {
+        setIsGameOver(true);
+        return;
+      }
       dispenseOrder.map((order, idx) => {
         const block = currentCube[order];
         grid[block.x][block.y] = block.Block;
