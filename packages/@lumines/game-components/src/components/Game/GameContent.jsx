@@ -6,6 +6,7 @@ import Reflection from "@lumines/game-components/src/components/Reflection/Refle
 import Score from "@lumines/game-components/src/components/Score/Score";
 import Character from "@lumines/game-components/src/components/Character/Character";
 import Pause from "@lumines/game-components/src/components/Game/Pause";
+import GameOver from "@lumines/game-components/src/components/Game/GameOver";
 
 const GameContent = (props) => {
   const {
@@ -31,6 +32,7 @@ const GameContent = (props) => {
     tick,
     currentDeleted,
     pause,
+    isGameOver,
   } = useGame();
 
   return (
@@ -73,6 +75,7 @@ const GameContent = (props) => {
       />
       <Character styles={{ characterStyle }} />
       <Pause pause={pause} />
+      <GameOver isGameOver={isGameOver} />
     </>
   );
 };

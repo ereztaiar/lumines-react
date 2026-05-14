@@ -35,6 +35,7 @@ const GameView = (props) => {
   } = props;
 
   const [pause, togglePause] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   const [currentCube, setCurrentCube] = useState(initialCube);
   const [newCube, setNewCube] = useState(CUBE_STATES.WAITING);
@@ -64,6 +65,10 @@ const GameView = (props) => {
         currentCube,
       );
       if (outOfBounds === swap.errors.OUT_OF_BOUNDS) {
+        if (currentCube.bottomLeft.y <= 1) {
+          setIsGameOver(true);
+          return;
+        }
         setNewCube(CUBE_STATES.NEW);
         setDropCount(0);
         return;
@@ -83,7 +88,7 @@ const GameView = (props) => {
   };
 
   useTimer(async () => {
-    if (pause) {
+    if (pause || isGameOver) {
       return;
     }
 
@@ -237,6 +242,7 @@ const GameView = (props) => {
         pause,
         togglePause,
         resetScore,
+        isGameOver,
       })}
     </>
   );
