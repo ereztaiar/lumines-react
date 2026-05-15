@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useSound from "use-sound";
 import { createEmptyGrid } from "@lumines/game-components/src/components/Board";
 import {
@@ -38,6 +38,9 @@ const GameView = (props) => {
   const [newCube, setNewCube] = useState(CUBE_STATES.WAITING);
   const [grid, setGrid] = useState(() => createEmptyGrid().next().value);
   const [isSplit, setIsSplit] = useState(false);
+  const isSplitRef = useRef(false);
+  const setSplit = (val) => { isSplitRef.current = val; setIsSplit(val); };
+  const [isHardDropping, setIsHardDropping] = useState(false);
   const [speed, setSpeed] = useState(35);
   const [dropCount, setDropCount] = useState(0);
   const [playRotate] = useSound(sounds.waterDrop);
@@ -49,7 +52,7 @@ const GameView = (props) => {
 
   const startDrop = async () => {
     setNewCube(CUBE_STATES.DROP);
-    setIsSplit(false);
+    setSplit(false);
   };
 
   const drop = async () => {
@@ -64,12 +67,13 @@ const GameView = (props) => {
       if (outOfBounds === swap.errors.OUT_OF_BOUNDS) {
         setNewCube(CUBE_STATES.NEW);
         setDropCount(0);
+        setIsHardDropping(false);
         return;
       }
 
       if (typeof dest !== "undefined") {
         if (Math.abs(dest?.bottomLeft?.y - dest?.bottomRight?.y) > 0) {
-          setIsSplit(true);
+          setSplit(true);
         }
         setCurrentCube({ ...dest });
       }
@@ -93,7 +97,7 @@ const GameView = (props) => {
 
     if (dropCount === MAX_TICK / 2) {
       await startDrop();
-    } else if (tick % 10 === 0) {
+    } else if (isHardDropping || tick % 10 === 0) {
       await drop();
 
       prepareForDeletion(grid);
@@ -118,7 +122,7 @@ const GameView = (props) => {
         return;
       }
       try {
-        if (isSplit) {
+        if (isSplitRef.current) {
           return;
         }
         let updatedGrid, dest, outOfBounds;
@@ -134,13 +138,10 @@ const GameView = (props) => {
             await nop();
             break;
           case "ArrowDown":
-            [updatedGrid, dest, outOfBounds] = await swap.moveDown(
-              grid,
-              currentCube,
-            );
-            addOne();
-            await nop();
-            break;
+            playDrop();
+            await startDrop();
+            setIsHardDropping(true);
+            return;
           default:
             break;
         }
@@ -156,7 +157,7 @@ const GameView = (props) => {
       } catch (ex) {}
     },
     async (key) => {
-      if (isSplit || pause) {
+      if (isSplitRef.current || pause) {
         return;
       }
       try {
@@ -170,14 +171,6 @@ const GameView = (props) => {
           case "ArrowUp":
             playRotate();
             [updatedGrid, dest] = await swap.rotate(grid, currentCube);
-            await nop();
-            break;
-          case "ArrowDown":
-            [updatedGrid, dest, outOfBounds] = await swap.moveDown(
-              grid,
-              currentCube,
-            );
-            addOne();
             await nop();
             break;
           default:
@@ -212,6 +205,7 @@ const GameView = (props) => {
         grid[block.x][block.y] = block.Block;
       });
       setGrid([...grid]);
+      setSplit(false);
       setNewCube(CUBE_STATES.WAITING);
     }
     return () => {};
