@@ -13,7 +13,6 @@ import * as sounds from "Assets/sounds";
 import {
   prepareForDeletion,
   clearExitedGroups,
-  clearAllMarked,
   revertUnclaimedMarks,
 } from "Util/clear-blocks";
 
@@ -59,7 +58,7 @@ const GameView = (props) => {
 
   const drop = async () => {
     if (newCube !== CUBE_STATES.DROP) {
-      return;
+      return null;
     }
     try {
       const [updatedGrid, dest, outOfBounds] = await swap.moveDown(
@@ -70,7 +69,7 @@ const GameView = (props) => {
         setNewCube(CUBE_STATES.NEW);
         setDropCount(0);
         setIsHardDropping(false);
-        return;
+        return null;
       }
 
       if (typeof dest !== "undefined") {
@@ -81,8 +80,9 @@ const GameView = (props) => {
       }
       setGrid([...updatedGrid]);
       await nop();
+      return dest || null;
     } catch (e) {
-      // console.log(e)
+      return null;
     }
   };
 
@@ -96,17 +96,13 @@ const GameView = (props) => {
     if (dropCount === MAX_TICK / 2) {
       await startDrop();
     } else if (isHardDropping || tick % 10 === 0) {
-      await drop();
+      const liveCube = await drop();
 
       const swiperCol = Math.floor(tick / 10);
       const prevSwiperCol = prevSwiperColRef.current;
       let score = 0;
-      if (prevSwiperCol !== null && prevSwiperCol !== swiperCol) {
-        if (swiperCol < prevSwiperCol) {
-          score += await clearAllMarked(grid);
-        } else {
-          score += await clearExitedGroups(grid, prevSwiperCol);
-        }
+      if (prevSwiperCol !== null && swiperCol > prevSwiperCol) {
+        score += await clearExitedGroups(grid, prevSwiperCol, liveCube);
       }
       prevSwiperColRef.current = swiperCol;
 
