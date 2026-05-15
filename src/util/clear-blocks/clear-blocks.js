@@ -1,3 +1,22 @@
+// Mirror of BLOCKS_TYPES from @lumines/game-components/src/components/Board/logic.
+// Inlined here so this file is consumable by Jest without dragging in JSX
+// dependencies (Board/index.jsx) that the root babel config can't parse.
+const EMPTY = 0;
+const TYPE_A = 1;
+const TYPE_B = 2;
+const TYPE_A_SPECIAL = 3;
+const TYPE_B_SPECIAL = 4;
+const DELETION_TYPE_A = 5;
+const DELETION_TYPE_B = 6;
+const DELETION_TYPE_A_SPECIAL = 7;
+const DELETION_TYPE_B_SPECIAL = 8;
+
+const isMarkedForDeletion = (v) =>
+  v === DELETION_TYPE_A ||
+  v === DELETION_TYPE_B ||
+  v === DELETION_TYPE_A_SPECIAL ||
+  v === DELETION_TYPE_B_SPECIAL;
+
 function prepareForDeletion(array) {
   const width = array.length;
   const height = array[0].length;
@@ -43,9 +62,9 @@ function prepareForDeletion(array) {
         for (let y = height; y > 3; y--) {
           if (
             typeof array[x][y + 1] !== "undefined" &&
-            array[x][y + 1] === 0 &&
+            array[x][y + 1] === EMPTY &&
             typeof array[x + 1][y + 1] !== "undefined" &&
-            array[x + 1][y + 1] === 0
+            array[x + 1][y + 1] === EMPTY
           )
             continue;
 
@@ -98,8 +117,8 @@ function prepareForDeletion(array) {
       }
     };
 
-    checkSquares(1, 3, 5, 7);
-    checkSquares(2, 4, 6, 8);
+    checkSquares(TYPE_A, TYPE_A_SPECIAL, DELETION_TYPE_A, DELETION_TYPE_A_SPECIAL);
+    checkSquares(TYPE_B, TYPE_B_SPECIAL, DELETION_TYPE_B, DELETION_TYPE_B_SPECIAL);
 
     resolve([...array]);
   });
@@ -111,10 +130,10 @@ function clearFromDeletion(array) {
   return new Promise((resolve, reject) => {
     for (let x = 0; x < width; x++) {
       for (let y = height; y > 3; y--) {
-        if (array[x][y] === 5) array[x][y] = 1;
-        if (array[x][y] === 6) array[x][y] = 2;
-        if (array[x][y] === 7) array[x][y] = 3;
-        if (array[x][y] === 8) array[x][y] = 4;
+        if (array[x][y] === DELETION_TYPE_A) array[x][y] = TYPE_A;
+        if (array[x][y] === DELETION_TYPE_B) array[x][y] = TYPE_B;
+        if (array[x][y] === DELETION_TYPE_A_SPECIAL) array[x][y] = TYPE_A_SPECIAL;
+        if (array[x][y] === DELETION_TYPE_B_SPECIAL) array[x][y] = TYPE_B_SPECIAL;
       }
     }
 
@@ -128,15 +147,10 @@ function clearColumn(array, x) {
     let i = column.length - 1;
     let j = column.length - 1;
     let count = 0;
-    const newColumn = new Array(column.length).fill(0);
-    for (; column[i] !== 0; i--) {
+    const newColumn = new Array(column.length).fill(EMPTY);
+    for (; column[i] !== EMPTY; i--) {
       if (i <= 1) break;
-      if (
-        column[i] === 5 ||
-        column[i] === 6 ||
-        column[i] === 7 ||
-        column[i] === 8
-      ) {
+      if (isMarkedForDeletion(column[i])) {
         count++;
         continue;
       }
@@ -150,4 +164,44 @@ function clearColumn(array, x) {
   });
 }
 
-export { prepareForDeletion, clearFromDeletion, clearColumn };
+function countMarksInColumn(array, x) {
+  const column = array[x];
+  return new Promise((resolve) => {
+    let count = 0;
+    for (let i = 0; i < column.length; i++) {
+      if (isMarkedForDeletion(column[i])) count++;
+    }
+    resolve(count);
+  });
+}
+
+function clearAllMarked(array) {
+  const width = array.length;
+  return new Promise((resolve) => {
+    let total = 0;
+    for (let x = 0; x < width; x++) {
+      const column = array[x];
+      const newColumn = new Array(column.length).fill(EMPTY);
+      let j = column.length - 1;
+      for (let i = column.length - 1; i >= 0; i--) {
+        const v = column[i];
+        if (v === EMPTY) continue;
+        if (isMarkedForDeletion(v)) {
+          total++;
+          continue;
+        }
+        newColumn[j--] = v;
+      }
+      array[x] = newColumn;
+    }
+    resolve(total);
+  });
+}
+
+export {
+  prepareForDeletion,
+  clearFromDeletion,
+  clearColumn,
+  countMarksInColumn,
+  clearAllMarked,
+};

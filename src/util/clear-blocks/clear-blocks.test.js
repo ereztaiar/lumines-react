@@ -1,5 +1,11 @@
 import "babel-polyfill";
-import {clearColumn, clearFromDeletion, prepareForDeletion} from './index.js';
+import {
+    clearColumn,
+    clearFromDeletion,
+    prepareForDeletion,
+    countMarksInColumn,
+    clearAllMarked,
+} from './index.js';
 
 
 describe('delete set blocks', () => {
@@ -235,6 +241,85 @@ describe('delete set blocks', () => {
         expect(array[9][8]).toBe(5); // was type-1 normal
         expect(array[8][9]).toBe(5); // was type-1 normal
         expect(array[9][9]).toBe(7); // was type-3 special
+    });
+
+    it('countMarksInColumn counts 5/6/7/8 without mutating the grid', async () => {
+        let array = [
+            [0, 0, 0, 0, 0, 0, 5, 6, 7, 8],
+            [0, 0, 0, 0, 0, 0, 0, 1, 2, 3],
+            [0, 0, 0, 0, 0, 0, 5, 5, 5, 5],
+        ];
+        const snapshot = JSON.parse(JSON.stringify(array));
+
+        expect(await countMarksInColumn(array, 0)).toEqual(4);
+        expect(await countMarksInColumn(array, 1)).toEqual(0);
+        expect(await countMarksInColumn(array, 2)).toEqual(4);
+        expect(array).toStrictEqual(snapshot);
+    });
+
+    it('clearAllMarked removes 5/6/7/8 across all columns with gravity, returns total count', async () => {
+        let array = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 5, 1, 5],
+            [0, 0, 0, 0, 0, 0, 0, 0, 6, 2],
+            [0, 0, 0, 0, 0, 0, 0, 0, 7, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ];
+
+        const total = await clearAllMarked(array);
+
+        expect(total).toEqual(4);
+        expect(array).toStrictEqual([
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]);
+    });
+
+    it('special block chains across multiple columns and clears all at once via clearAllMarked', async () => {
+        let array = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // col 0
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // col 1
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // col 2
+            [0, 0, 0, 0, 0, 0, 0, 0, 3, 1], // col 3: special A + regular A (anchors 2x2)
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 1], // col 4: regulars completing 2x2
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0], // col 5: chain
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0], // col 6: chain
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0], // col 7: chain end
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // col 8
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ];
+
+        await prepareForDeletion(array);
+
+        // All chain cells get marked (special as 7, regulars as 5)
+        expect(array[3][8]).toBe(7);
+        expect(array[3][9]).toBe(5);
+        expect(array[4][8]).toBe(5);
+        expect(array[4][9]).toBe(5);
+        expect(array[5][8]).toBe(5);
+        expect(array[6][8]).toBe(5);
+        expect(array[7][8]).toBe(5);
+
+        const total = await clearAllMarked(array);
+
+        expect(total).toEqual(7);
+        // Every chain cell is now empty
+        expect(array[3][8]).toBe(0);
+        expect(array[3][9]).toBe(0);
+        expect(array[4][8]).toBe(0);
+        expect(array[4][9]).toBe(0);
+        expect(array[5][8]).toBe(0);
+        expect(array[6][8]).toBe(0);
+        expect(array[7][8]).toBe(0);
     });
 
     it('clearFromDeletion reverts special deletion marks to special types', async () => {

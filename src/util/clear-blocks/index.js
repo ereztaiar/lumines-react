@@ -1,5 +1,7 @@
 export {
     prepareForDeletion,
     clearFromDeletion,
-    clearColumn
+    clearColumn,
+    countMarksInColumn,
+    clearAllMarked
 } from './clear-blocks.js';

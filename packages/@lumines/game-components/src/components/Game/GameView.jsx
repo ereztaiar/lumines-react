@@ -11,9 +11,9 @@ import useKey from "@lumines/core/src/hooks/useKey"; // todo: replace with conte
 import * as swap from "Util/swap";
 import * as sounds from "Assets/sounds";
 import {
-  clearFromDeletion,
   prepareForDeletion,
-  clearColumn,
+  countMarksInColumn,
+  clearAllMarked,
 } from "Util/clear-blocks";
 
 const MAX_TICK = 160;
@@ -90,22 +90,24 @@ const GameView = (props) => {
     }
 
     setTick(tick + 1 === MAX_TICK ? INITIAL_TICK : tick + 1);
-    if (tick === 1) {
-      clearFromDeletion(grid);
-      setCurrentDeleted(0);
-    }
 
     if (dropCount === MAX_TICK / 2) {
       await startDrop();
     } else if (isHardDropping || tick % 10 === 0) {
       await drop();
 
-      prepareForDeletion(grid);
-      const score = await clearColumn(grid, tick / 10);
+      await prepareForDeletion(grid);
+      const score = await countMarksInColumn(grid, tick / 10);
       deletedBlocks(score);
       setCurrentDeleted(currentDeleted + score);
       multiplier(score);
     }
+
+    if (tick === MAX_TICK - 1) {
+      await clearAllMarked(grid);
+      setCurrentDeleted(0);
+    }
+
     if (dropCount >= MAX_TICK) {
       setDropCount(0);
     }
