@@ -1,9 +1,14 @@
 import { WALL, OUT_OF_BOUNDS, leftOrder } from './constants.js';
+import { isSplit } from './isSplit.js';
 
 function moveLeft(array, cube) {
     const src = {...cube};
     const dest = {};
     return new Promise((resolve, reject) => {
+        if (isSplit(cube)) {
+            resolve([array]);
+            return;
+        }
         if (cube.topLeft.x - 1 < 0 || cube.bottomLeft.x - 1 < 0) {
             reject(OUT_OF_BOUNDS);
             return;

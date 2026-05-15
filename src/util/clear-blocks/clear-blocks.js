@@ -199,10 +199,94 @@ function clearAllMarked(array) {
   });
 }
 
+function findMarkedComponents(array) {
+  const width = array.length;
+  const height = array[0].length;
+  const visited = new Set();
+  const groups = [];
+
+  for (let x = 0; x < width; x++) {
+    for (let y = 0; y < height; y++) {
+      if (!isMarkedForDeletion(array[x][y])) continue;
+      const key = `${x},${y}`;
+      if (visited.has(key)) continue;
+
+      const component = [];
+      let maxX = x;
+      const queue = [[x, y]];
+      while (queue.length > 0) {
+        const [cx, cy] = queue.shift();
+        const ck = `${cx},${cy}`;
+        if (visited.has(ck)) continue;
+        if (cx < 0 || cx >= width || cy < 0 || cy >= height) continue;
+        if (!isMarkedForDeletion(array[cx][cy])) continue;
+        visited.add(ck);
+        component.push([cx, cy]);
+        if (cx > maxX) maxX = cx;
+        queue.push([cx - 1, cy], [cx + 1, cy], [cx, cy - 1], [cx, cy + 1]);
+      }
+
+      groups.push({ component, maxX });
+    }
+  }
+
+  return groups;
+}
+
+function applyGravity(array, affectedCols) {
+  for (const col of affectedCols) {
+    const column = array[col];
+    const newColumn = new Array(column.length).fill(EMPTY);
+    let j = column.length - 1;
+    for (let i = column.length - 1; i >= 0; i--) {
+      if (column[i] !== EMPTY) newColumn[j--] = column[i];
+    }
+    array[col] = newColumn;
+  }
+}
+
+function clearExitedGroups(array, exitedCol) {
+  return new Promise((resolve) => {
+    const groups = findMarkedComponents(array);
+    let total = 0;
+    const affectedCols = new Set();
+    for (const { component, maxX } of groups) {
+      if (maxX === exitedCol) {
+        for (const [cx, cy] of component) {
+          array[cx][cy] = EMPTY;
+          affectedCols.add(cx);
+          total++;
+        }
+      }
+    }
+    applyGravity(array, affectedCols);
+    resolve(total);
+  });
+}
+
+function revertUnclaimedMarks(array, swiperCol) {
+  const width = array.length;
+  return new Promise((resolve) => {
+    for (let x = swiperCol; x < width; x++) {
+      const column = array[x];
+      for (let y = 0; y < column.length; y++) {
+        const v = column[y];
+        if (v === DELETION_TYPE_A) column[y] = TYPE_A;
+        else if (v === DELETION_TYPE_B) column[y] = TYPE_B;
+        else if (v === DELETION_TYPE_A_SPECIAL) column[y] = TYPE_A_SPECIAL;
+        else if (v === DELETION_TYPE_B_SPECIAL) column[y] = TYPE_B_SPECIAL;
+      }
+    }
+    resolve();
+  });
+}
+
 export {
   prepareForDeletion,
   clearFromDeletion,
   clearColumn,
   countMarksInColumn,
   clearAllMarked,
+  clearExitedGroups,
+  revertUnclaimedMarks,
 };

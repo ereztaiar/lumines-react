@@ -1,9 +1,14 @@
 import { WALL, OUT_OF_BOUNDS, rightOrder } from './constants.js';
+import { isSplit } from './isSplit.js';
 
 function moveRight(array, cube) {
     const src = {...cube};
     const dest = {};
     return new Promise((resolve, reject) => {
+        if (isSplit(cube)) {
+            resolve([array]);
+            return;
+        }
         if (cube.topRight.x + 1 >= array.length || cube.bottomRight.x + 1 >= array.length) {
             reject(OUT_OF_BOUNDS);
             return;

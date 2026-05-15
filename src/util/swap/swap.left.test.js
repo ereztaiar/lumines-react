@@ -314,4 +314,39 @@ describe('move block left', () => {
 
     });
 
+    // NOTE: layout mirrors the "fail rotate block right broken" case in swap.rotate.test.js.
+    // See memory `project-swap-test-layout` — revisit whether this grid is the right model.
+    it('no-op when cube is split', async () => {
+        array = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 0
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 1
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 2
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 3
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 4
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 5
+            [0, 0, 1, 1, 3, 3, 3, 3, 3, 3], // 6
+            [0, 0, 0, 0, 2, 2, 0, 0, 0, 0], // 7
+
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 8
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 9
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 10
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 11
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 12
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 13
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 14
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  // 15
+        ];
+        const snapshot = JSON.parse(JSON.stringify(array));
+        cube = {
+            topLeft:     {x: 6, y: 2},
+            topRight:    {x: 7, y: 4},
+            bottomLeft:  {x: 6, y: 3},
+            bottomRight: {x: 7, y: 5}
+        };
+
+        await moveLeft(array, cube);
+
+        expect(array).toStrictEqual(snapshot);
+    });
+
 });

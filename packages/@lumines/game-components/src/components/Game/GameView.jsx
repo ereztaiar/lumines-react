@@ -12,8 +12,9 @@ import * as swap from "Util/swap";
 import * as sounds from "Assets/sounds";
 import {
   prepareForDeletion,
-  countMarksInColumn,
+  clearExitedGroups,
   clearAllMarked,
+  revertUnclaimedMarks,
 } from "Util/clear-blocks";
 
 const MAX_TICK = 160;
@@ -47,6 +48,7 @@ const GameView = (props) => {
   const [playDrop] = useSound(sounds.lazer2);
   const [playMove] = useSound(sounds.drip);
   const [currentDeleted, setCurrentDeleted] = useState(0);
+  const prevSwiperColRef = useRef(null);
 
   const [tick, setTick] = useState(INITIAL_TICK);
 
@@ -96,29 +98,27 @@ const GameView = (props) => {
     } else if (isHardDropping || tick % 10 === 0) {
       await drop();
 
+      const swiperCol = Math.floor(tick / 10);
+      const prevSwiperCol = prevSwiperColRef.current;
+      let score = 0;
+      if (prevSwiperCol !== null && prevSwiperCol !== swiperCol) {
+        if (swiperCol < prevSwiperCol) {
+          score += await clearAllMarked(grid);
+        } else {
+          score += await clearExitedGroups(grid, prevSwiperCol);
+        }
+      }
+      prevSwiperColRef.current = swiperCol;
+
+      await revertUnclaimedMarks(grid, swiperCol);
       await prepareForDeletion(grid);
-      const score = await countMarksInColumn(grid, tick / 10);
+
       deletedBlocks(score);
       setCurrentDeleted(currentDeleted + score);
       multiplier(score);
     }
 
     if (tick === MAX_TICK - 1) {
-      const cubeLive = newCube !== CUBE_STATES.NEW;
-      const liftedCells = [];
-      if (cubeLive) {
-        for (const order of dispenseOrder) {
-          const { x, y } = currentCube[order];
-          liftedCells.push({ x, y, value: grid[x][y] });
-          grid[x][y] = 0;
-        }
-      }
-      await clearAllMarked(grid);
-      if (cubeLive) {
-        for (const { x, y, value } of liftedCells) {
-          grid[x][y] = value;
-        }
-      }
       setCurrentDeleted(0);
     }
 

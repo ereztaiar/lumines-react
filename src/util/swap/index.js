@@ -15,3 +15,4 @@ export { rotate } from './rotate.js';
 export { moveLeft } from './moveLeft.js';
 export { moveRight } from './moveRight.js';
 export { moveDown } from './moveDown.js';
+export { isSplit } from './isSplit.js';

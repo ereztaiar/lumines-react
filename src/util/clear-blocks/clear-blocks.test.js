@@ -5,6 +5,8 @@ import {
     prepareForDeletion,
     countMarksInColumn,
     clearAllMarked,
+    clearExitedGroups,
+    revertUnclaimedMarks,
 } from './index.js';
 
 
@@ -346,5 +348,149 @@ describe('delete set blocks', () => {
         expect(array[8][9]).toBe(4); // array[8][9]=8 → type-4 special B
         expect(array[9][8]).toBe(1); // array[9][8]=5 → type-1 normal A
         expect(array[9][9]).toBe(2); // array[9][9]=6 → type-2 normal B
+    });
+
+    describe('clearExitedGroups', () => {
+        const makeGrid = (cols, rows) =>
+            Array.from({ length: cols }, () => new Array(rows).fill(0));
+
+        it('clears a 2x2 component when swiper exits its rightmost column', async () => {
+            const array = makeGrid(8, 10);
+            // 2x2 in cols 2-3, rows 8-9, all marked
+            array[2][8] = 5; array[2][9] = 5;
+            array[3][8] = 5; array[3][9] = 5;
+
+            const cleared = await clearExitedGroups(array, 3);
+            expect(cleared).toBe(4);
+            expect(array[2][8]).toBe(0); expect(array[2][9]).toBe(0);
+            expect(array[3][8]).toBe(0); expect(array[3][9]).toBe(0);
+        });
+
+        it('does not clear a component whose maxX does not match exitedCol', async () => {
+            const array = makeGrid(8, 10);
+            array[2][8] = 5; array[2][9] = 5;
+            array[3][8] = 5; array[3][9] = 5; // maxX = 3
+
+            const cleared = await clearExitedGroups(array, 2); // swiper exiting col 2
+            expect(cleared).toBe(0);
+            expect(array[3][8]).toBe(5); // group still intact
+        });
+
+        it('does not clear a late-arrival group behind the swiper', async () => {
+            // group with maxX=1; swiper has moved to col 5, just exited col 4
+            const array = makeGrid(8, 10);
+            array[0][8] = 5; array[0][9] = 5;
+            array[1][8] = 5; array[1][9] = 5;
+
+            const cleared = await clearExitedGroups(array, 4);
+            expect(cleared).toBe(0);
+            expect(array[0][8]).toBe(5);
+        });
+
+        it('clears a multi-column component spanning across swiper when right edge exits', async () => {
+            // chain across cols 3..6 (e.g. from a special flood-fill), all marked
+            const array = makeGrid(8, 10);
+            for (let x = 3; x <= 6; x++) {
+                array[x][8] = 5;
+                array[x][9] = 5;
+            }
+            // First, exiting col 5 should NOT clear (group's maxX = 6)
+            let cleared = await clearExitedGroups(array, 5);
+            expect(cleared).toBe(0);
+            expect(array[3][8]).toBe(5);
+
+            // Exiting col 6 (the rightmost) clears everything in one shot
+            cleared = await clearExitedGroups(array, 6);
+            expect(cleared).toBe(8);
+            for (let x = 3; x <= 6; x++) {
+                expect(array[x][8]).toBe(0);
+                expect(array[x][9]).toBe(0);
+            }
+        });
+
+        it('applies gravity to affected columns after clearing', async () => {
+            const array = makeGrid(4, 6);
+            // col 1: regular block sits on top of a marked 2x2 row
+            array[1][4] = 1; // unmarked block above
+            array[1][5] = 5; // marked
+            array[2][4] = 1; // unmarked block above
+            array[2][5] = 5; // marked
+            // Form a 2x2 of marks (single component, maxX=2)
+            array[1][5] = 5; array[2][5] = 5;
+            array[1][4] = 1; array[2][4] = 1;
+            // To make it a real 2x2 component of marks, include row 4 marks instead:
+            array[1][4] = 5; array[2][4] = 5;
+
+            const cleared = await clearExitedGroups(array, 2);
+            expect(cleared).toBe(4);
+            // After gravity, marked cells are gone and any remaining blocks fall to the bottom
+            expect(array[1][5]).toBe(0);
+            expect(array[2][5]).toBe(0);
+        });
+
+        it('clears only the matching component when multiple exist', async () => {
+            const array = makeGrid(8, 10);
+            // Component A: cols 1-2, maxX=2
+            array[1][8] = 5; array[1][9] = 5;
+            array[2][8] = 5; array[2][9] = 5;
+            // Component B: cols 5-6, maxX=6
+            array[5][8] = 6; array[5][9] = 6;
+            array[6][8] = 6; array[6][9] = 6;
+
+            const cleared = await clearExitedGroups(array, 2);
+            expect(cleared).toBe(4);
+            expect(array[1][8]).toBe(0);
+            expect(array[5][8]).toBe(6); // untouched
+        });
+
+        it('treats normal and special deletion types as part of the same component', async () => {
+            const array = makeGrid(8, 10);
+            array[2][8] = 5; array[2][9] = 7; // special deletion mixed in
+            array[3][8] = 5; array[3][9] = 5;
+
+            const cleared = await clearExitedGroups(array, 3);
+            expect(cleared).toBe(4);
+            expect(array[2][9]).toBe(0);
+        });
+    });
+
+    describe('revertUnclaimedMarks', () => {
+        const makeGrid = (cols, rows) =>
+            Array.from({ length: cols }, () => new Array(rows).fill(0));
+
+        it('reverts all four deletion types in unvisited columns', async () => {
+            const array = makeGrid(6, 4);
+            array[3] = [5, 6, 7, 8];
+
+            await revertUnclaimedMarks(array, 3);
+            expect(array[3]).toEqual([1, 2, 3, 4]);
+        });
+
+        it('does not touch columns the swiper has already passed', async () => {
+            const array = makeGrid(6, 4);
+            array[0] = [5, 6, 7, 8];
+            array[5] = [5, 6, 7, 8];
+
+            await revertUnclaimedMarks(array, 3);
+            expect(array[0]).toEqual([5, 6, 7, 8]); // locked-in
+            expect(array[5]).toEqual([1, 2, 3, 4]); // reverted
+        });
+
+        it('leaves non-deletion values untouched', async () => {
+            const array = makeGrid(4, 5);
+            array[2] = [0, 1, 2, 3, 4];
+
+            await revertUnclaimedMarks(array, 0);
+            expect(array[2]).toEqual([0, 1, 2, 3, 4]);
+        });
+
+        it('is a no-op when swiperCol is at or beyond the grid width', async () => {
+            const array = makeGrid(4, 3);
+            array[3] = [5, 6, 7];
+            const snapshot = JSON.parse(JSON.stringify(array));
+
+            await revertUnclaimedMarks(array, 4);
+            expect(array).toStrictEqual(snapshot);
+        });
     });
 });

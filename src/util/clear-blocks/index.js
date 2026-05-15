@@ -3,5 +3,7 @@ export {
     clearFromDeletion,
     clearColumn,
     countMarksInColumn,
-    clearAllMarked
+    clearAllMarked,
+    clearExitedGroups,
+    revertUnclaimedMarks,
 } from './clear-blocks.js';
