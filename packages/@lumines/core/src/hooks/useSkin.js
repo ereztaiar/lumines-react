@@ -3,13 +3,15 @@ import * as defaultSkin from 'Skins/default';
 import * as purple from 'Skins/purple';
 import * as yellow from 'Skins/yellow';
 import * as midnightNeon from 'Skins/midnight-neon';
+import * as cherryBlossom from 'Skins/cherry-blossom';
 import useKey from "@lumines/core/src/hooks/useKey";// todo: replace with context
 
 const skins = [
     defaultSkin,
     purple,
     yellow,
-    midnightNeon
+    midnightNeon,
+    cherryBlossom,
 ];
 
 const useSkin = props => {

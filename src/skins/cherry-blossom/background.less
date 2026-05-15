@@ -1,0 +1,101 @@
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(1.5);
+
+  &:before, &:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    display: block;
+  }
+
+  &:before {
+    background: linear-gradient(135deg,
+              #0a0015 0%,
+              #150030 40%,
+              #1a0040 70%,
+              #0a0015 100%);
+    background-size: 400% 400%;
+    z-index: -20;
+
+    @keyframes BgMoveCherryBlossom {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 51%; }
+      100% { background-position: 0% 50%; }
+    }
+    -webkit-animation: BgMoveCherryBlossom 12s ease infinite;
+    animation: BgMoveCherryBlossom 12s ease infinite;
+  }
+
+  &:after {
+    z-index: -10;
+    background: url('../../assets/images/scan-mask.png') repeat;
+    opacity: 0.2;
+  }
+}
+
+.cityscape {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.blinkSlow {
+  @keyframes blinkSlowCherryBlossom {
+    0%, 44%, 56%, 100% { opacity: 1; }
+    50%                 { opacity: 0.1; }
+  }
+  -webkit-animation: blinkSlowCherryBlossom 4.5s ease-in-out infinite;
+  animation: blinkSlowCherryBlossom 4.5s ease-in-out infinite;
+}
+
+.blinkFast {
+  @keyframes blinkFastCherryBlossom {
+    0%, 80%, 95%, 100% { opacity: 1; }
+    88%                 { opacity: 0.06; }
+  }
+  -webkit-animation: blinkFastCherryBlossom 3.0s ease-in-out infinite;
+  animation: blinkFastCherryBlossom 3.0s ease-in-out infinite;
+}
+
+.petalDrift {
+  @keyframes petalDriftCherryBlossom {
+    0%   { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0.9; }
+    33%  { transform: translateY(30px) translateX(12px) rotate(45deg); opacity: 0.7; }
+    66%  { transform: translateY(60px) translateX(-8px) rotate(90deg); opacity: 0.5; }
+    100% { transform: translateY(90px) translateX(5px) rotate(135deg); opacity: 0; }
+  }
+  -webkit-animation: petalDriftCherryBlossom 6s ease-in infinite;
+  animation: petalDriftCherryBlossom 6s ease-in infinite;
+}
+
+.petalDrift2 {
+  @keyframes petalDrift2CherryBlossom {
+    0%   { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0.85; }
+    33%  { transform: translateY(40px) translateX(-15px) rotate(-30deg); opacity: 0.6; }
+    66%  { transform: translateY(75px) translateX(10px) rotate(-70deg); opacity: 0.35; }
+    100% { transform: translateY(110px) translateX(-5px) rotate(-100deg); opacity: 0; }
+  }
+  -webkit-animation: petalDrift2CherryBlossom 8s ease-in 1.5s infinite;
+  animation: petalDrift2CherryBlossom 8s ease-in 1.5s infinite;
+}
+
+.petalDrift3 {
+  @keyframes petalDrift3CherryBlossom {
+    0%   { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0.8; }
+    50%  { transform: translateY(55px) translateX(18px) rotate(60deg); opacity: 0.4; }
+    100% { transform: translateY(100px) translateX(-10px) rotate(120deg); opacity: 0; }
+  }
+  -webkit-animation: petalDrift3CherryBlossom 7s ease-in 3s infinite;
+  animation: petalDrift3CherryBlossom 7s ease-in 3s infinite;
+}
