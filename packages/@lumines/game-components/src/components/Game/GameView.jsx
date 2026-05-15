@@ -104,7 +104,21 @@ const GameView = (props) => {
     }
 
     if (tick === MAX_TICK - 1) {
+      const cubeLive = newCube !== CUBE_STATES.NEW;
+      const liftedCells = [];
+      if (cubeLive) {
+        for (const order of dispenseOrder) {
+          const { x, y } = currentCube[order];
+          liftedCells.push({ x, y, value: grid[x][y] });
+          grid[x][y] = 0;
+        }
+      }
       await clearAllMarked(grid);
+      if (cubeLive) {
+        for (const { x, y, value } of liftedCells) {
+          grid[x][y] = value;
+        }
+      }
       setCurrentDeleted(0);
     }
 
