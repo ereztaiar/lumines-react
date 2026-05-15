@@ -3,18 +3,7 @@ import {
   READY_GRID,
   ROWS,
 } from "@lumines/game-components/src/components/Board";
-
-const BLOCKS_TYPES = {
-  EMPTY: 0,
-  TYPE_A: 1,
-  TYPE_B: 2,
-  TYPE_A_SPECIAL: 3,
-  TYPE_B_SPECIAL: 4,
-  DELETION_TYPE_A: 5,
-  DELETION_TYPE_B: 6,
-  DELETION_TYPE_A_SPECIAL: 7,
-  DELETION_TYPE_B_SPECIAL: 8,
-};
+import { BLOCKS_TYPES } from "./block-types";
 
 function* createEmptyGrid() {
   while (true) {

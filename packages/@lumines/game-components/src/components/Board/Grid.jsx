@@ -57,9 +57,19 @@ const Grid = (props) => {
           (y === ghostTopY || y === ghostBottomY) &&
           (x === ghostLeftX || x === ghostRightX);
 
-        const cellClass = isGhost
-          ? `${gridStyle.gridItem} ${gridStyle.ghostBlock}`
-          : gridStyle.gridItem;
+        const isMarked =
+          grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_A ||
+          grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B ||
+          grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_A_SPECIAL ||
+          grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B_SPECIAL;
+
+        const cellClass = [
+          gridStyle.gridItem,
+          isGhost && gridStyle.ghostBlock,
+          isMarked && gridStyle.markedForDeletion,
+        ]
+          .filter(Boolean)
+          .join(" ");
 
         if (grid[x][y] === BLOCKS_TYPES.TYPE_A) {
           gridColumns += `<div class="${cellClass}"><img src="${paths.aBlock}"/></div>`;

@@ -1,15 +1,16 @@
-// Mirror of BLOCKS_TYPES from @lumines/game-components/src/components/Board/logic.
-// Inlined here so this file is consumable by Jest without dragging in JSX
-// dependencies (Board/index.jsx) that the root babel config can't parse.
-const EMPTY = 0;
-const TYPE_A = 1;
-const TYPE_B = 2;
-const TYPE_A_SPECIAL = 3;
-const TYPE_B_SPECIAL = 4;
-const DELETION_TYPE_A = 5;
-const DELETION_TYPE_B = 6;
-const DELETION_TYPE_A_SPECIAL = 7;
-const DELETION_TYPE_B_SPECIAL = 8;
+import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board/block-types";
+
+const {
+  EMPTY,
+  TYPE_A,
+  TYPE_B,
+  TYPE_A_SPECIAL,
+  TYPE_B_SPECIAL,
+  DELETION_TYPE_A,
+  DELETION_TYPE_B,
+  DELETION_TYPE_A_SPECIAL,
+  DELETION_TYPE_B_SPECIAL,
+} = BLOCKS_TYPES;
 
 const isMarkedForDeletion = (v) =>
   v === DELETION_TYPE_A ||
