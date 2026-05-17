@@ -63,10 +63,17 @@ const Grid = (props) => {
           grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_A_SPECIAL ||
           grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B_SPECIAL;
 
+        const isSwept =
+          grid[x][y] === BLOCKS_TYPES.SWEEP_TYPE_A ||
+          grid[x][y] === BLOCKS_TYPES.SWEEP_TYPE_B ||
+          grid[x][y] === BLOCKS_TYPES.SWEEP_TYPE_A_SPECIAL ||
+          grid[x][y] === BLOCKS_TYPES.SWEEP_TYPE_B_SPECIAL;
+
         const cellClass = [
           gridStyle.gridItem,
           isGhost && gridStyle.ghostBlock,
           isMarked && gridStyle.markedForDeletion,
+          isSwept && gridStyle.beingSwept,
         ]
           .filter(Boolean)
           .join(" ");
@@ -86,6 +93,14 @@ const Grid = (props) => {
         } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_A_SPECIAL) {
           gridColumns += `<div class="${cellClass}"><img src="${paths.darkA}"/></div>`;
         } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B_SPECIAL) {
+          gridColumns += `<div class="${cellClass}"><img src="${paths.darkB}"/></div>`;
+        } else if (grid[x][y] === BLOCKS_TYPES.SWEEP_TYPE_A) {
+          gridColumns += `<div class="${cellClass}"><img src="${paths.darkA}"/></div>`;
+        } else if (grid[x][y] === BLOCKS_TYPES.SWEEP_TYPE_B) {
+          gridColumns += `<div class="${cellClass}"><img src="${paths.darkB}"/></div>`;
+        } else if (grid[x][y] === BLOCKS_TYPES.SWEEP_TYPE_A_SPECIAL) {
+          gridColumns += `<div class="${cellClass}"><img src="${paths.darkA}"/></div>`;
+        } else if (grid[x][y] === BLOCKS_TYPES.SWEEP_TYPE_B_SPECIAL) {
           gridColumns += `<div class="${cellClass}"><img src="${paths.darkB}"/></div>`;
         } else {
           gridColumns += `<div class="${cellClass}"></div>`;

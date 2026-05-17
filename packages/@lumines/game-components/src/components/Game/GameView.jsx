@@ -14,6 +14,7 @@ import {
   prepareForDeletion,
   clearExitedGroups,
   revertUnclaimedMarks,
+  markCurrentAsSweeping,
 } from "Util/clear-blocks";
 
 const MAX_TICK = 160;
@@ -108,6 +109,7 @@ const GameView = (props) => {
 
       await revertUnclaimedMarks(grid, swiperCol);
       await prepareForDeletion(grid);
+      await markCurrentAsSweeping(grid, swiperCol);
 
       deletedBlocks(score);
       setCurrentDeleted(currentDeleted + score);

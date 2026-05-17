@@ -42,4 +42,12 @@ describe('revertUnclaimedMarks', () => {
         await revertUnclaimedMarks(array, 4);
         expect(array).toStrictEqual(snapshot);
     });
+
+    it('does not revert sweep types (9-12) in columns at or beyond swiperCol', async () => {
+        const array = makeGrid(6, 4);
+        array[3] = [9, 10, 11, 12]; // SWEEP types at col 3
+
+        await revertUnclaimedMarks(array, 3);
+        expect(array[3]).toEqual([9, 10, 11, 12]); // unchanged
+    });
 });

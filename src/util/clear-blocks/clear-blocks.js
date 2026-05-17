@@ -10,6 +10,10 @@ const {
   DELETION_TYPE_B,
   DELETION_TYPE_A_SPECIAL,
   DELETION_TYPE_B_SPECIAL,
+  SWEEP_TYPE_A,
+  SWEEP_TYPE_B,
+  SWEEP_TYPE_A_SPECIAL,
+  SWEEP_TYPE_B_SPECIAL,
 } = BLOCKS_TYPES;
 
 const isMarkedForDeletion = (v) =>
@@ -17,6 +21,14 @@ const isMarkedForDeletion = (v) =>
   v === DELETION_TYPE_B ||
   v === DELETION_TYPE_A_SPECIAL ||
   v === DELETION_TYPE_B_SPECIAL;
+
+const isBeingSwept = (v) =>
+  v === SWEEP_TYPE_A ||
+  v === SWEEP_TYPE_B ||
+  v === SWEEP_TYPE_A_SPECIAL ||
+  v === SWEEP_TYPE_B_SPECIAL;
+
+const isEligibleForClear = (v) => isMarkedForDeletion(v) || isBeingSwept(v);
 
 function prepareForDeletion(array) {
   const width = array.length;
@@ -207,7 +219,7 @@ function findMarkedComponents(array) {
 
   for (let x = 0; x < width; x++) {
     for (let y = 0; y < height; y++) {
-      if (!isMarkedForDeletion(array[x][y])) continue;
+      if (!isEligibleForClear(array[x][y])) continue;
       const key = `${x},${y}`;
       if (visited.has(key)) continue;
 
@@ -219,7 +231,7 @@ function findMarkedComponents(array) {
         const ck = `${cx},${cy}`;
         if (visited.has(ck)) continue;
         if (cx < 0 || cx >= width || cy < 0 || cy >= height) continue;
-        if (!isMarkedForDeletion(array[cx][cy])) continue;
+        if (!isEligibleForClear(array[cx][cy])) continue;
         visited.add(ck);
         component.push([cx, cy]);
         if (cx > maxX) maxX = cx;
@@ -315,6 +327,27 @@ function revertUnclaimedMarks(array, swiperCol) {
   });
 }
 
+const DELETION_TO_SWEEP = {
+  [DELETION_TYPE_A]: SWEEP_TYPE_A,
+  [DELETION_TYPE_B]: SWEEP_TYPE_B,
+  [DELETION_TYPE_A_SPECIAL]: SWEEP_TYPE_A_SPECIAL,
+  [DELETION_TYPE_B_SPECIAL]: SWEEP_TYPE_B_SPECIAL,
+};
+
+function markCurrentAsSweeping(array, swiperCol) {
+  return new Promise((resolve) => {
+    const groups = findMarkedComponents(array);
+    for (const { component, maxX } of groups) {
+      if (maxX !== swiperCol) continue;
+      for (const [cx, cy] of component) {
+        const v = array[cx][cy];
+        if (isMarkedForDeletion(v)) array[cx][cy] = DELETION_TO_SWEEP[v];
+      }
+    }
+    resolve();
+  });
+}
+
 export {
   prepareForDeletion,
   clearFromDeletion,
@@ -323,4 +356,5 @@ export {
   clearAllMarked,
   clearExitedGroups,
   revertUnclaimedMarks,
+  markCurrentAsSweeping,
 };

@@ -177,6 +177,17 @@ describe('clearExitedGroups', () => {
         expect(array[2][9]).toBe(0);
     });
 
+    it('clears a group of sweep types (9-12) when its maxX matches exitedCol', async () => {
+        const array = makeGrid(8, 10);
+        array[2][8] = 9;  array[2][9] = 9;  // SWEEP_TYPE_A
+        array[3][8] = 10; array[3][9] = 12; // SWEEP_TYPE_B / SWEEP_TYPE_B_SPECIAL
+
+        const cleared = await clearExitedGroups(array, 3);
+        expect(cleared).toBe(4);
+        expect(array[2][8]).toBe(0);
+        expect(array[3][9]).toBe(0);
+    });
+
     it('falls back to plain gravity when no cube is supplied', async () => {
         const array = makeGrid(4, 8);
         array[1][2] = 1; // floating block above cleared row
