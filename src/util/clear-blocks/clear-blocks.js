@@ -10,6 +10,10 @@ const {
   DELETION_TYPE_B,
   DELETION_TYPE_A_SPECIAL,
   DELETION_TYPE_B_SPECIAL,
+  SWEEP_TYPE_A,
+  SWEEP_TYPE_B,
+  SWEEP_TYPE_A_SPECIAL,
+  SWEEP_TYPE_B_SPECIAL,
 } = BLOCKS_TYPES;
 
 const isMarkedForDeletion = (v) =>
@@ -17,6 +21,12 @@ const isMarkedForDeletion = (v) =>
   v === DELETION_TYPE_B ||
   v === DELETION_TYPE_A_SPECIAL ||
   v === DELETION_TYPE_B_SPECIAL;
+
+const isBeingSwept = (v) =>
+  v === SWEEP_TYPE_A ||
+  v === SWEEP_TYPE_B ||
+  v === SWEEP_TYPE_A_SPECIAL ||
+  v === SWEEP_TYPE_B_SPECIAL;
 
 function prepareForDeletion(array) {
   const width = array.length;
@@ -26,8 +36,9 @@ function prepareForDeletion(array) {
       startX,
       startY,
       colorTypes,
-      deletionType,
+      normalType,
       specialType,
+      deletionType,
       specialDeletionType,
     ) => {
       const stack = [[startX, startY]];
@@ -39,15 +50,9 @@ function prepareForDeletion(array) {
         visited.add(key);
         if (x < 0 || x >= width || y < 0 || y >= height) continue;
         const v = array[x][y];
-        if (
-          colorTypes.includes(v) ||
-          v === deletionType ||
-          v === specialDeletionType
-        ) {
-          array[x][y] =
-            v === specialType || v === specialDeletionType
-              ? specialDeletionType
-              : deletionType;
+        if (colorTypes.includes(v)) {
+          if (v === normalType) array[x][y] = deletionType;
+          else if (v === specialType) array[x][y] = specialDeletionType;
           stack.push([x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]);
         }
       }
@@ -58,7 +63,18 @@ function prepareForDeletion(array) {
       specialType,
       deletionType,
       specialDeletionType,
+      sweepType,
+      specialSweepType,
     ) => {
+      const colorTypes = [
+        normalType,
+        specialType,
+        deletionType,
+        specialDeletionType,
+        sweepType,
+        specialSweepType,
+      ];
+      const match = (v) => colorTypes.includes(v);
       for (let x = 0; x < width - 1; x++) {
         for (let y = height; y > 3; y--) {
           if (
@@ -69,12 +85,6 @@ function prepareForDeletion(array) {
           )
             continue;
 
-          const match = (v) =>
-            v === normalType ||
-            v === specialType ||
-            v === deletionType ||
-            v === specialDeletionType;
-
           if (
             match(array[x][y]) &&
             match(array[x + 1][y]) &&
@@ -84,19 +94,21 @@ function prepareForDeletion(array) {
             const hasSpecial =
               array[x][y] === specialType ||
               array[x][y] === specialDeletionType ||
+              array[x][y] === specialSweepType ||
               array[x + 1][y] === specialType ||
               array[x + 1][y] === specialDeletionType ||
+              array[x + 1][y] === specialSweepType ||
               array[x][y - 1] === specialType ||
               array[x][y - 1] === specialDeletionType ||
+              array[x][y - 1] === specialSweepType ||
               array[x + 1][y - 1] === specialType ||
-              array[x + 1][y - 1] === specialDeletionType;
+              array[x + 1][y - 1] === specialDeletionType ||
+              array[x + 1][y - 1] === specialSweepType;
 
             const markCell = (cx, cy) => {
               const v = array[cx][cy];
-              array[cx][cy] =
-                v === specialType || v === specialDeletionType
-                  ? specialDeletionType
-                  : deletionType;
+              if (v === normalType) array[cx][cy] = deletionType;
+              else if (v === specialType) array[cx][cy] = specialDeletionType;
             };
             markCell(x, y);
             markCell(x + 1, y);
@@ -107,9 +119,10 @@ function prepareForDeletion(array) {
               floodFill(
                 x,
                 y,
-                [normalType, specialType],
-                deletionType,
+                colorTypes,
+                normalType,
                 specialType,
+                deletionType,
                 specialDeletionType,
               );
             }
@@ -118,8 +131,22 @@ function prepareForDeletion(array) {
       }
     };
 
-    checkSquares(TYPE_A, TYPE_A_SPECIAL, DELETION_TYPE_A, DELETION_TYPE_A_SPECIAL);
-    checkSquares(TYPE_B, TYPE_B_SPECIAL, DELETION_TYPE_B, DELETION_TYPE_B_SPECIAL);
+    checkSquares(
+      TYPE_A,
+      TYPE_A_SPECIAL,
+      DELETION_TYPE_A,
+      DELETION_TYPE_A_SPECIAL,
+      SWEEP_TYPE_A,
+      SWEEP_TYPE_A_SPECIAL,
+    );
+    checkSquares(
+      TYPE_B,
+      TYPE_B_SPECIAL,
+      DELETION_TYPE_B,
+      DELETION_TYPE_B_SPECIAL,
+      SWEEP_TYPE_B,
+      SWEEP_TYPE_B_SPECIAL,
+    );
 
     resolve([...array]);
   });
@@ -128,7 +155,7 @@ function prepareForDeletion(array) {
 function clearFromDeletion(array) {
   const width = array.length;
   const height = array[0].length;
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     for (let x = 0; x < width; x++) {
       for (let y = height; y > 3; y--) {
         if (array[x][y] === DELETION_TYPE_A) array[x][y] = TYPE_A;
@@ -144,7 +171,7 @@ function clearFromDeletion(array) {
 
 function clearColumn(array, x) {
   const column = array[x];
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let i = column.length - 1;
     let j = column.length - 1;
     let count = 0;
@@ -199,40 +226,6 @@ function clearAllMarked(array) {
   });
 }
 
-function findMarkedComponents(array) {
-  const width = array.length;
-  const height = array[0].length;
-  const visited = new Set();
-  const groups = [];
-
-  for (let x = 0; x < width; x++) {
-    for (let y = 0; y < height; y++) {
-      if (!isMarkedForDeletion(array[x][y])) continue;
-      const key = `${x},${y}`;
-      if (visited.has(key)) continue;
-
-      const component = [];
-      let maxX = x;
-      const queue = [[x, y]];
-      while (queue.length > 0) {
-        const [cx, cy] = queue.shift();
-        const ck = `${cx},${cy}`;
-        if (visited.has(ck)) continue;
-        if (cx < 0 || cx >= width || cy < 0 || cy >= height) continue;
-        if (!isMarkedForDeletion(array[cx][cy])) continue;
-        visited.add(ck);
-        component.push([cx, cy]);
-        if (cx > maxX) maxX = cx;
-        queue.push([cx - 1, cy], [cx + 1, cy], [cx, cy - 1], [cx, cy + 1]);
-      }
-
-      groups.push({ component, maxX });
-    }
-  }
-
-  return groups;
-}
-
 function getCubeAnchors(cube, array) {
   const map = new Map();
   if (!cube) return map;
@@ -279,29 +272,10 @@ function applyGravity(array, affectedCols, anchors = new Map()) {
   }
 }
 
-function clearExitedGroups(array, exitedCol, cube = null) {
-  return new Promise((resolve) => {
-    const groups = findMarkedComponents(array);
-    let total = 0;
-    const affectedCols = new Set();
-    for (const { component, maxX } of groups) {
-      if (maxX === exitedCol) {
-        for (const [cx, cy] of component) {
-          array[cx][cy] = EMPTY;
-          affectedCols.add(cx);
-          total++;
-        }
-      }
-    }
-    applyGravity(array, affectedCols, getCubeAnchors(cube, array));
-    resolve(total);
-  });
-}
-
-function revertUnclaimedMarks(array, swiperCol) {
+function revertUncommittedMarks(array) {
   const width = array.length;
   return new Promise((resolve) => {
-    for (let x = swiperCol; x < width; x++) {
+    for (let x = 0; x < width; x++) {
       const column = array[x];
       for (let y = 0; y < column.length; y++) {
         const v = column[y];
@@ -315,12 +289,62 @@ function revertUnclaimedMarks(array, swiperCol) {
   });
 }
 
+function commitColumnAsSweeping(array, col) {
+  return new Promise((resolve) => {
+    if (col < 0 || col >= array.length) {
+      resolve(0);
+      return;
+    }
+    const column = array[col];
+    let count = 0;
+    for (let y = 0; y < column.length; y++) {
+      const v = column[y];
+      if (v === DELETION_TYPE_A) {
+        column[y] = SWEEP_TYPE_A;
+        count++;
+      } else if (v === DELETION_TYPE_B) {
+        column[y] = SWEEP_TYPE_B;
+        count++;
+      } else if (v === DELETION_TYPE_A_SPECIAL) {
+        column[y] = SWEEP_TYPE_A_SPECIAL;
+        count++;
+      } else if (v === DELETION_TYPE_B_SPECIAL) {
+        column[y] = SWEEP_TYPE_B_SPECIAL;
+        count++;
+      }
+    }
+    resolve(count);
+  });
+}
+
+function clearSweptColumn(array, col, cube = null) {
+  return new Promise((resolve) => {
+    if (col < 0 || col >= array.length) {
+      resolve(0);
+      return;
+    }
+    const column = array[col];
+    let count = 0;
+    for (let y = 0; y < column.length; y++) {
+      if (isBeingSwept(column[y])) {
+        column[y] = EMPTY;
+        count++;
+      }
+    }
+    if (count > 0) {
+      applyGravity(array, new Set([col]), getCubeAnchors(cube, array));
+    }
+    resolve(count);
+  });
+}
+
 export {
   prepareForDeletion,
   clearFromDeletion,
   clearColumn,
   countMarksInColumn,
   clearAllMarked,
-  clearExitedGroups,
-  revertUnclaimedMarks,
+  revertUncommittedMarks,
+  commitColumnAsSweeping,
+  clearSweptColumn,
 };

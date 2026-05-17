@@ -4,6 +4,7 @@ export {
     clearColumn,
     countMarksInColumn,
     clearAllMarked,
-    clearExitedGroups,
-    revertUnclaimedMarks,
+    revertUncommittedMarks,
+    commitColumnAsSweeping,
+    clearSweptColumn,
 } from './clear-blocks.js';

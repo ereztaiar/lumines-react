@@ -12,8 +12,9 @@ import * as swap from "Util/swap";
 import * as sounds from "Assets/sounds";
 import {
   prepareForDeletion,
-  clearExitedGroups,
-  revertUnclaimedMarks,
+  revertUncommittedMarks,
+  commitColumnAsSweeping,
+  clearSweptColumn,
 } from "Util/clear-blocks";
 
 const MAX_TICK = 160;
@@ -101,13 +102,15 @@ const GameView = (props) => {
       const swiperCol = Math.floor(tick / 10);
       const prevSwiperCol = prevSwiperColRef.current;
       let score = 0;
-      if (prevSwiperCol !== null && swiperCol > prevSwiperCol) {
-        score += await clearExitedGroups(grid, prevSwiperCol, liveCube);
+
+      await revertUncommittedMarks(grid);
+      await prepareForDeletion(grid);
+      await commitColumnAsSweeping(grid, swiperCol);
+
+      if (prevSwiperCol !== null && prevSwiperCol !== swiperCol) {
+        score += await clearSweptColumn(grid, prevSwiperCol, liveCube);
       }
       prevSwiperColRef.current = swiperCol;
-
-      await revertUnclaimedMarks(grid, swiperCol);
-      await prepareForDeletion(grid);
 
       deletedBlocks(score);
       setCurrentDeleted(currentDeleted + score);

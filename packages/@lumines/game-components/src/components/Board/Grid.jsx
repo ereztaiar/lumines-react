@@ -57,15 +57,17 @@ const Grid = (props) => {
           (y === ghostTopY || y === ghostBottomY) &&
           (x === ghostLeftX || x === ghostRightX);
 
-        const swiperCol = Math.floor(tick / 10);
-        const isDeletion =
-          grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_A ||
-          grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B ||
-          grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_A_SPECIAL ||
-          grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B_SPECIAL;
-
-        const isMarked = isDeletion && x > swiperCol;
-        const isSwept = isDeletion && x <= swiperCol;
+        const cellValue = grid[x][y];
+        const isMarked =
+          cellValue === BLOCKS_TYPES.DELETION_TYPE_A ||
+          cellValue === BLOCKS_TYPES.DELETION_TYPE_B ||
+          cellValue === BLOCKS_TYPES.DELETION_TYPE_A_SPECIAL ||
+          cellValue === BLOCKS_TYPES.DELETION_TYPE_B_SPECIAL;
+        const isSwept =
+          cellValue === BLOCKS_TYPES.SWEEP_TYPE_A ||
+          cellValue === BLOCKS_TYPES.SWEEP_TYPE_B ||
+          cellValue === BLOCKS_TYPES.SWEEP_TYPE_A_SPECIAL ||
+          cellValue === BLOCKS_TYPES.SWEEP_TYPE_B_SPECIAL;
 
         const cellClass = [
           gridStyle.gridItem,
@@ -76,21 +78,27 @@ const Grid = (props) => {
           .filter(Boolean)
           .join(" ");
 
-        if (grid[x][y] === BLOCKS_TYPES.TYPE_A) {
+        if (cellValue === BLOCKS_TYPES.TYPE_A) {
           gridColumns += `<div class="${cellClass}"><img src="${paths.aBlock}"/></div>`;
-        } else if (grid[x][y] === BLOCKS_TYPES.TYPE_B) {
+        } else if (cellValue === BLOCKS_TYPES.TYPE_B) {
           gridColumns += `<div class="${cellClass}"><img src="${paths.bBlock}"/></div>`;
-        } else if (grid[x][y] === BLOCKS_TYPES.TYPE_A_SPECIAL) {
+        } else if (cellValue === BLOCKS_TYPES.TYPE_A_SPECIAL) {
           gridColumns += `<div class="${cellClass}"><img src="${paths.aBlockSpecial}"/></div>`;
-        } else if (grid[x][y] === BLOCKS_TYPES.TYPE_B_SPECIAL) {
+        } else if (cellValue === BLOCKS_TYPES.TYPE_B_SPECIAL) {
           gridColumns += `<div class="${cellClass}"><img src="${paths.bBlockSpecial}"/></div>`;
-        } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_A) {
+        } else if (
+          cellValue === BLOCKS_TYPES.DELETION_TYPE_A ||
+          cellValue === BLOCKS_TYPES.DELETION_TYPE_A_SPECIAL ||
+          cellValue === BLOCKS_TYPES.SWEEP_TYPE_A ||
+          cellValue === BLOCKS_TYPES.SWEEP_TYPE_A_SPECIAL
+        ) {
           gridColumns += `<div class="${cellClass}"><img src="${paths.darkA}"/></div>`;
-        } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B) {
-          gridColumns += `<div class="${cellClass}"><img src="${paths.darkB}"/></div>`;
-        } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_A_SPECIAL) {
-          gridColumns += `<div class="${cellClass}"><img src="${paths.darkA}"/></div>`;
-        } else if (grid[x][y] === BLOCKS_TYPES.DELETION_TYPE_B_SPECIAL) {
+        } else if (
+          cellValue === BLOCKS_TYPES.DELETION_TYPE_B ||
+          cellValue === BLOCKS_TYPES.DELETION_TYPE_B_SPECIAL ||
+          cellValue === BLOCKS_TYPES.SWEEP_TYPE_B ||
+          cellValue === BLOCKS_TYPES.SWEEP_TYPE_B_SPECIAL
+        ) {
           gridColumns += `<div class="${cellClass}"><img src="${paths.darkB}"/></div>`;
         } else {
           gridColumns += `<div class="${cellClass}"></div>`;
