@@ -159,6 +159,68 @@ describe('move block down', () => {
         ]);
     });
 
+    it('passes through a SWEEP block below both sides without false OUT_OF_BOUNDS', async () => {
+        // SWEEP_TYPE_A = 9, SWEEP_TYPE_B = 10. Cube at col 7-8 rows 1-2,
+        // SWEEP blocks at rows 3 (directly below). Cube should move through them.
+        array = Array.from({ length: 16 }, () => new Array(10).fill(0));
+        array[7][1] = 1; // topLeft
+        array[7][2] = 1; // bottomLeft
+        array[8][1] = 2; // topRight
+        array[8][2] = 2; // bottomRight
+        array[7][3] = 9; // SWEEP below left
+        array[8][3] = 9; // SWEEP below right
+
+        cube = {
+            topLeft:     { x: 7, y: 1 },
+            topRight:    { x: 8, y: 1 },
+            bottomLeft:  { x: 7, y: 2 },
+            bottomRight: { x: 8, y: 2 },
+        };
+
+        const [, dest, outOfBounds] = await moveDown(array, cube);
+
+        // Should NOT return OUT_OF_BOUNDS
+        expect(outOfBounds).toBeUndefined();
+        // Cube moved down by 1
+        expect(dest.bottomLeft.y).toBe(3);
+        expect(dest.bottomRight.y).toBe(3);
+        // Cube blocks at new positions
+        expect(array[7][2]).toBe(1);
+        expect(array[7][3]).toBe(1);
+        expect(array[8][2]).toBe(2);
+        expect(array[8][3]).toBe(2);
+        // Old top positions are now EMPTY
+        expect(array[7][1]).toBe(0);
+        expect(array[8][1]).toBe(0);
+        // SWEEP was absorbed (not re-positioned above the cube)
+        expect(array[7][1]).toBe(0);
+        expect(array[8][1]).toBe(0);
+    });
+
+    it('treats SWEEP as transparent on one side and real block on other — produces split', async () => {
+        array = Array.from({ length: 16 }, () => new Array(10).fill(0));
+        array[7][1] = 1; // topLeft
+        array[7][2] = 1; // bottomLeft
+        array[8][1] = 2; // topRight
+        array[8][2] = 2; // bottomRight
+        array[7][3] = 9; // SWEEP below left — transparent
+        array[8][3] = 2; // real block below right — blocking
+
+        cube = {
+            topLeft:     { x: 7, y: 1 },
+            topRight:    { x: 8, y: 1 },
+            bottomLeft:  { x: 7, y: 2 },
+            bottomRight: { x: 8, y: 2 },
+        };
+
+        const [, dest, outOfBounds] = await moveDown(array, cube);
+
+        expect(outOfBounds).toBeUndefined();
+        // Left side falls through SWEEP, right stays (split)
+        expect(dest.bottomLeft.y).toBe(3);
+        expect(dest.bottomRight.y).toBe(2);
+    });
+
     it('move block down by 1 column', async () => {
         array = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 0

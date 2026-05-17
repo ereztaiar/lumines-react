@@ -1,5 +1,5 @@
 import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board/block-types";
-import { isBeingSwept } from "./predicates.js";
+import { isBeingSwept, sweepToNormal } from "./predicates.js";
 import { getCubeAnchors, applyGravity } from "./gravity.js";
 
 const {
@@ -50,8 +50,22 @@ function clearSweptColumn(array, col, cube = null) {
     }
     const column = array[col];
     let count = 0;
+
+    const cubeRows = new Set();
+    if (cube) {
+      for (const key of ["topLeft", "topRight", "bottomLeft", "bottomRight"]) {
+        const cell = cube[key];
+        if (cell && cell.x === col) cubeRows.add(cell.y);
+      }
+    }
+
     for (let y = 0; y < column.length; y++) {
-      if (isBeingSwept(column[y])) {
+      if (!isBeingSwept(column[y])) continue;
+      if (cubeRows.has(y)) {
+        // Restore the cube's cell to its base type — the falling cube is
+        // immune to being swept mid-flight; only landed blocks get cleared.
+        column[y] = sweepToNormal(column[y]);
+      } else {
         column[y] = EMPTY;
         count++;
       }
