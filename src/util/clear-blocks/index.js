@@ -6,5 +6,4 @@ export {
     clearAllMarked,
     clearExitedGroups,
     revertUnclaimedMarks,
-    markCurrentAsSweeping,
 } from './clear-blocks.js';
