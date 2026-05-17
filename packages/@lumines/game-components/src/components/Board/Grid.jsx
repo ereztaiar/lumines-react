@@ -6,6 +6,7 @@ import {
   ROWS,
   BLOCKS_TYPES,
 } from "@lumines/game-components/src/components/Board";
+import { isMarkedForDeletion, isBeingSwept } from "Util/clear-blocks/predicates";
 
 const calcGhostRow = (grid, cube) => {
   const leftX = cube.topLeft.x;
@@ -58,16 +59,8 @@ const Grid = (props) => {
           (x === ghostLeftX || x === ghostRightX);
 
         const cellValue = grid[x][y];
-        const isMarked =
-          cellValue === BLOCKS_TYPES.DELETION_TYPE_A ||
-          cellValue === BLOCKS_TYPES.DELETION_TYPE_B ||
-          cellValue === BLOCKS_TYPES.DELETION_TYPE_A_SPECIAL ||
-          cellValue === BLOCKS_TYPES.DELETION_TYPE_B_SPECIAL;
-        const isSwept =
-          cellValue === BLOCKS_TYPES.SWEEP_TYPE_A ||
-          cellValue === BLOCKS_TYPES.SWEEP_TYPE_B ||
-          cellValue === BLOCKS_TYPES.SWEEP_TYPE_A_SPECIAL ||
-          cellValue === BLOCKS_TYPES.SWEEP_TYPE_B_SPECIAL;
+        const isMarked = isMarkedForDeletion(cellValue);
+        const isSwept = isBeingSwept(cellValue);
 
         const cellClass = [
           gridStyle.gridItem,

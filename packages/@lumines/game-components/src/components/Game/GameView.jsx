@@ -1,252 +1,30 @@
-import React, { useEffect, useRef, useState } from "react";
-import useSound from "use-sound";
+import React, { useState } from "react";
 import { createEmptyGrid } from "@lumines/game-components/src/components/Board";
-import {
-  generateCube,
-  dispenseOrder,
-  CUBE_STATES,
-} from "@lumines/game-components/src/components/Dispenser";
-import useTimer from "@lumines/core/src/hooks/useTimer";
-import useKey from "@lumines/core/src/hooks/useKey"; // todo: replace with context
-import * as swap from "Util/swap";
-import * as sounds from "Assets/sounds";
-import {
-  prepareForDeletion,
-  revertUncommittedMarks,
-  commitColumnAsSweeping,
-  clearSweptColumn,
-} from "Util/clear-blocks";
-
-const MAX_TICK = 160;
-const INITIAL_TICK = 0;
-
-function nop() {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, 0);
-  });
-}
+import { useGameSounds } from "./useGameSounds";
+import { useCubeState } from "./useCubeState";
+import { useGameLoop, MAX_TICK, INITIAL_TICK } from "./useGameLoop";
+import { useGameKeys } from "./useGameKeys";
 
 const GameView = (props) => {
-  const {
-    scoring: { addOne, multiplier, deletedBlocks, resetScore },
-    children,
-  } = props;
-
+  const { scoring: { deletedBlocks, multiplier, resetScore }, children } = props;
   const [pause, togglePause] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
-
-  const [currentCube, setCurrentCube] = useState(() => generateCube().next().value);
-  const [newCube, setNewCube] = useState(CUBE_STATES.WAITING);
   const [grid, setGrid] = useState(() => createEmptyGrid().next().value);
-  const [isSplit, setIsSplit] = useState(false);
-  const isSplitRef = useRef(false);
-  const setSplit = (val) => { isSplitRef.current = val; setIsSplit(val); };
-  const [isHardDropping, setIsHardDropping] = useState(false);
-  const [speed, setSpeed] = useState(35);
-  const [dropCount, setDropCount] = useState(0);
-  const [playRotate] = useSound(sounds.waterDrop);
-  const [playDrop] = useSound(sounds.lazer2);
-  const [playMove] = useSound(sounds.drip);
-  const [currentDeleted, setCurrentDeleted] = useState(0);
-  const prevSwiperColRef = useRef(null);
 
-  const [tick, setTick] = useState(INITIAL_TICK);
-
-  const startDrop = async () => {
-    setNewCube(CUBE_STATES.DROP);
-    setSplit(false);
-  };
-
-  const drop = async () => {
-    if (newCube !== CUBE_STATES.DROP) {
-      return null;
-    }
-    try {
-      const [updatedGrid, dest, outOfBounds] = await swap.moveDown(
-        grid,
-        currentCube,
-      );
-      if (outOfBounds === swap.errors.OUT_OF_BOUNDS) {
-        setNewCube(CUBE_STATES.NEW);
-        setDropCount(0);
-        setIsHardDropping(false);
-        return null;
-      }
-
-      if (typeof dest !== "undefined") {
-        if (Math.abs(dest?.bottomLeft?.y - dest?.bottomRight?.y) > 0) {
-          setSplit(true);
-        }
-        setCurrentCube({ ...dest });
-      }
-      setGrid([...updatedGrid]);
-      await nop();
-      return dest || null;
-    } catch (e) {
-      return null;
-    }
-  };
-
-  useTimer(async () => {
-    if (pause || isGameOver) {
-      return;
-    }
-
-    setTick(tick + 1 === MAX_TICK ? INITIAL_TICK : tick + 1);
-
-    if (dropCount === MAX_TICK / 2) {
-      await startDrop();
-    } else if (isHardDropping || tick % 10 === 0) {
-      const liveCube = await drop();
-
-      const swiperCol = Math.floor(tick / 10);
-      const prevSwiperCol = prevSwiperColRef.current;
-      let score = 0;
-
-      await revertUncommittedMarks(grid);
-      await prepareForDeletion(grid);
-      await commitColumnAsSweeping(grid, swiperCol);
-
-      if (prevSwiperCol !== null && prevSwiperCol !== swiperCol) {
-        score += await clearSweptColumn(grid, prevSwiperCol, liveCube);
-      }
-      prevSwiperColRef.current = swiperCol;
-
-      deletedBlocks(score);
-      setCurrentDeleted(currentDeleted + score);
-      multiplier(score);
-    }
-
-    if (tick === MAX_TICK - 1) {
-      setCurrentDeleted(0);
-    }
-
-    if (dropCount >= MAX_TICK) {
-      setDropCount(0);
-    }
-
-    setGrid([...grid]);
-  }, speed);
-
-  useKey(
-    async (key) => {
-      if (key === "p") {
-        togglePause(!pause);
-      }
-      if (pause) {
-        return;
-      }
-      try {
-        if (isSplitRef.current) {
-          return;
-        }
-        let updatedGrid, dest, outOfBounds;
-        switch (key) {
-          case "ArrowLeft":
-            playMove();
-            [updatedGrid, dest] = await swap.moveLeft(grid, currentCube);
-            await nop();
-            break;
-          case "ArrowRight":
-            playMove();
-            [updatedGrid, dest] = await swap.moveRight(grid, currentCube);
-            await nop();
-            break;
-          case "ArrowDown":
-            playDrop();
-            await startDrop();
-            setIsHardDropping(true);
-            return;
-          default:
-            break;
-        }
-        setGrid([...updatedGrid]);
-        if (outOfBounds === swap.errors.OUT_OF_BOUNDS) {
-          setNewCube(CUBE_STATES.NEW);
-          setDropCount(0);
-          return;
-        }
-        if (typeof dest !== "undefined") {
-          setCurrentCube({ ...dest });
-        }
-      } catch (ex) {}
-    },
-    async (key) => {
-      if (isSplitRef.current || pause) {
-        return;
-      }
-      try {
-        let updatedGrid, dest, outOfBounds;
-        switch (key) {
-          case "ArrowLeft":
-            break;
-          case "ArrowRight":
-            break;
-          case " ": // space
-          case "ArrowUp":
-            playRotate();
-            [updatedGrid, dest] = await swap.rotate(grid, currentCube);
-            await nop();
-            break;
-          default:
-            break;
-        }
-
-        setGrid([...updatedGrid]);
-        if (outOfBounds === swap.errors.OUT_OF_BOUNDS) {
-          setNewCube(CUBE_STATES.NEW);
-          setDropCount(0);
-          return;
-        }
-        if (typeof dest !== "undefined") {
-          setCurrentCube({ ...dest });
-        }
-      } catch (ex) {}
-    },
-  );
-
-  useEffect(() => {
-    if (newCube === CUBE_STATES.READY) {
-      const spawnBlocked = dispenseOrder.some((order) => {
-        const block = currentCube[order];
-        return grid[block.x]?.[block.y] !== 0;
-      });
-      if (spawnBlocked) {
-        setIsGameOver(true);
-        return;
-      }
-      dispenseOrder.map((order, idx) => {
-        const block = currentCube[order];
-        grid[block.x][block.y] = block.Block;
-      });
-      setGrid([...grid]);
-      setSplit(false);
-      setNewCube(CUBE_STATES.WAITING);
-    }
-    return () => {};
-  }, [newCube]);
-
-  useEffect(() => {
-    setNewCube(CUBE_STATES.NEW);
-    return () => {};
-  }, []);
-
-  useEffect(() => {
-    if (tick % 10) {
-      setDropCount(dropCount + 1);
-    }
-    return () => {};
-  }, [tick]);
+  const sounds = useGameSounds();
+  const cube = useCubeState({ grid, setGrid, setIsGameOver });
+  const { tick, currentDeleted } = useGameLoop({ grid, setGrid, pause, isGameOver, cube, scoring: { deletedBlocks, multiplier } });
+  useGameKeys({ grid, setGrid, cube, pause, togglePause, sounds });
 
   return (
     <>
       {children({
-        currentCube,
-        setCurrentCube,
+        currentCube: cube.currentCube,
+        setCurrentCube: cube.setCurrentCube,
         grid,
         setGrid,
-        newCube,
-        setNewCube,
+        newCube: cube.newCube,
+        setNewCube: cube.setNewCube,
         tick,
         currentDeleted,
         pause,

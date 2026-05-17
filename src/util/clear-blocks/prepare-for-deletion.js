@@ -65,13 +65,7 @@ function prepareForDeletion(array) {
       const match = (v) => colorTypes.includes(v);
       for (let x = 0; x < width - 1; x++) {
         for (let y = height; y > 3; y--) {
-          if (
-            typeof array[x][y + 1] !== "undefined" &&
-            array[x][y + 1] === EMPTY &&
-            typeof array[x + 1][y + 1] !== "undefined" &&
-            array[x + 1][y + 1] === EMPTY
-          )
-            continue;
+          if (array[x][y + 1] === EMPTY && array[x + 1][y + 1] === EMPTY) continue;
 
           if (
             match(array[x][y]) &&
@@ -79,19 +73,14 @@ function prepareForDeletion(array) {
             match(array[x][y - 1]) &&
             match(array[x + 1][y - 1])
           ) {
-            const hasSpecial =
-              array[x][y] === specialType ||
-              array[x][y] === specialDeletionType ||
-              array[x][y] === specialSweepType ||
-              array[x + 1][y] === specialType ||
-              array[x + 1][y] === specialDeletionType ||
-              array[x + 1][y] === specialSweepType ||
-              array[x][y - 1] === specialType ||
-              array[x][y - 1] === specialDeletionType ||
-              array[x][y - 1] === specialSweepType ||
-              array[x + 1][y - 1] === specialType ||
-              array[x + 1][y - 1] === specialDeletionType ||
-              array[x + 1][y - 1] === specialSweepType;
+            const isSpecialCell = (v) =>
+              v === specialType || v === specialDeletionType || v === specialSweepType;
+            const hasSpecial = [
+              array[x][y],
+              array[x + 1][y],
+              array[x][y - 1],
+              array[x + 1][y - 1],
+            ].some(isSpecialCell);
 
             const markCell = (cx, cy) => {
               const v = array[cx][cy];

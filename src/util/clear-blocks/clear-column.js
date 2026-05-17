@@ -21,7 +21,7 @@ function clearColumn(array, x) {
     for (; i >= 0; i--) {
       newColumn[i] = column[i];
     }
-    array[x] = [...newColumn];
+    array[x] = newColumn;
     resolve(count);
   });
 }
