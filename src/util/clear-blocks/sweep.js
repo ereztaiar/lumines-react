@@ -1,0 +1,66 @@
+import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board/block-types";
+import { isBeingSwept } from "./predicates.js";
+import { getCubeAnchors, applyGravity } from "./gravity.js";
+
+const {
+  EMPTY,
+  DELETION_TYPE_A,
+  DELETION_TYPE_B,
+  DELETION_TYPE_A_SPECIAL,
+  DELETION_TYPE_B_SPECIAL,
+  SWEEP_TYPE_A,
+  SWEEP_TYPE_B,
+  SWEEP_TYPE_A_SPECIAL,
+  SWEEP_TYPE_B_SPECIAL,
+} = BLOCKS_TYPES;
+
+function commitColumnAsSweeping(array, col) {
+  return new Promise((resolve) => {
+    if (col < 0 || col >= array.length) {
+      resolve(0);
+      return;
+    }
+    const column = array[col];
+    let count = 0;
+    for (let y = 0; y < column.length; y++) {
+      const v = column[y];
+      if (v === DELETION_TYPE_A) {
+        column[y] = SWEEP_TYPE_A;
+        count++;
+      } else if (v === DELETION_TYPE_B) {
+        column[y] = SWEEP_TYPE_B;
+        count++;
+      } else if (v === DELETION_TYPE_A_SPECIAL) {
+        column[y] = SWEEP_TYPE_A_SPECIAL;
+        count++;
+      } else if (v === DELETION_TYPE_B_SPECIAL) {
+        column[y] = SWEEP_TYPE_B_SPECIAL;
+        count++;
+      }
+    }
+    resolve(count);
+  });
+}
+
+function clearSweptColumn(array, col, cube = null) {
+  return new Promise((resolve) => {
+    if (col < 0 || col >= array.length) {
+      resolve(0);
+      return;
+    }
+    const column = array[col];
+    let count = 0;
+    for (let y = 0; y < column.length; y++) {
+      if (isBeingSwept(column[y])) {
+        column[y] = EMPTY;
+        count++;
+      }
+    }
+    if (count > 0) {
+      applyGravity(array, new Set([col]), getCubeAnchors(cube, array));
+    }
+    resolve(count);
+  });
+}
+
+export { commitColumnAsSweeping, clearSweptColumn };
