@@ -107,6 +107,35 @@ describe('clearSweptColumn', () => {
         expect(array[1][5]).toBe(1);
     });
 
+    it('block directly below cube does not fall when SWEEP is cleared further below it', async () => {
+        // Col 7: cube bottom at y=2, real block at y=3 (touching cube), SWEEP at y=4
+        // Col 8: cube bottom at y=2, real block at y=3 (touching cube), no SWEEP
+        // After clearing col 7, the block at y=3 must NOT fall to y=4 —
+        // otherwise the next moveDown sees an asymmetric surface and splits the cube.
+        const array = Array.from({ length: 16 }, () => new Array(10).fill(0));
+        array[7][1] = 1; array[7][2] = 1; // cube left col, rows 1-2
+        array[8][1] = 2; array[8][2] = 2; // cube right col, rows 1-2
+        array[7][3] = 1; // block touching cube bottom-left
+        array[8][3] = 2; // block touching cube bottom-right
+        array[7][4] = 9; // SWEEP below the touching block in left col only
+
+        const cube = {
+            topLeft:     { x: 7, y: 1 },
+            topRight:    { x: 8, y: 1 },
+            bottomLeft:  { x: 7, y: 2 },
+            bottomRight: { x: 8, y: 2 },
+        };
+
+        const count = await clearSweptColumn(array, 7, cube);
+
+        // Only the SWEEP cell was cleared
+        expect(count).toBe(1);
+        // Block directly below cube must stay — landing surface must stay symmetric
+        expect(array[7][3]).toBe(1);
+        // SWEEP cleared
+        expect(array[7][4]).toBe(0);
+    });
+
     it('is a no-op for out-of-range columns', async () => {
         const array = makeGrid(3, 4);
         array[0] = [9, 9, 0, 0];
