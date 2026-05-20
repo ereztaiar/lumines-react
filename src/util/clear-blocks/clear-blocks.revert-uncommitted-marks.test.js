@@ -1,6 +1,6 @@
 import "babel-polyfill";
 import { revertUncommittedMarks } from './index.js';
-import { g } from '../grid-test-helpers.js';
+import { g, s } from '../grid-test-helpers.js';
 
 
 describe('revertUncommittedMarks', () => {
@@ -13,7 +13,12 @@ describe('revertUncommittedMarks', () => {
         ]);
 
         await revertUncommittedMarks(array);
-        expect(array[3]).toEqual(['A', 'B', '@', '%']);
+        expect(s(array)).toStrictEqual([
+            '|||A||',
+            '|||B||',
+            '|||@||',
+            '|||%||',
+        ]);
     });
 
     it('reverts deletion marks in every column regardless of position', async () => {
@@ -25,8 +30,12 @@ describe('revertUncommittedMarks', () => {
         ]);
 
         await revertUncommittedMarks(array);
-        expect(array[0]).toEqual(['A', 'B', '@', '%']);
-        expect(array[5]).toEqual(['A', 'B', '@', '%']);
+        expect(s(array)).toStrictEqual([
+            'A||||A',
+            'B||||B',
+            '@||||@',
+            '%||||%',
+        ]);
     });
 
     it('does not touch SWEEP cells', async () => {
@@ -38,7 +47,12 @@ describe('revertUncommittedMarks', () => {
         ]);
 
         await revertUncommittedMarks(array);
-        expect(array[2]).toEqual(['S', 's', '#', '$']);
+        expect(s(array)).toStrictEqual([
+            '||S|',
+            '||s|',
+            '||#|',
+            '||$|',
+        ]);
     });
 
     it('leaves non-deletion values untouched', async () => {
@@ -51,7 +65,13 @@ describe('revertUncommittedMarks', () => {
         ]);
 
         await revertUncommittedMarks(array);
-        expect(array[2]).toEqual(['|', 'A', 'B', '@', '%']);
+        expect(s(array)).toStrictEqual([
+            '||||',
+            '||A|',
+            '||B|',
+            '||@|',
+            '||%|',
+        ]);
     });
 
     it('reverts a mixed column of DELETION and SWEEP correctly', async () => {
@@ -63,6 +83,11 @@ describe('revertUncommittedMarks', () => {
         ]);
 
         await revertUncommittedMarks(array);
-        expect(array[1]).toEqual(['A', 'S', 'B', 's']);
+        expect(s(array)).toStrictEqual([
+            '|A||',
+            '|S||',
+            '|B||',
+            '|s||',
+        ]);
     });
 });

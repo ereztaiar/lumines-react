@@ -1,6 +1,6 @@
 import "babel-polyfill";
 import { clearSweptColumn } from './index.js';
-import { g } from '../grid-test-helpers.js';
+import { g, s } from '../grid-test-helpers.js';
 
 
 describe('clearSweptColumn', () => {
@@ -16,7 +16,14 @@ describe('clearSweptColumn', () => {
 
         const count = await clearSweptColumn(array, 2);
         expect(count).toBe(2);
-        expect(array[2]).toEqual(['|', '|', '|', '|', '|', '|']);
+        expect(s(array)).toStrictEqual([
+            '||||',
+            '||||',
+            '||||',
+            '||||',
+            '||||',
+            '||||',
+        ]);
     });
 
     it('clears all four sweep types', async () => {
@@ -29,7 +36,12 @@ describe('clearSweptColumn', () => {
 
         const count = await clearSweptColumn(array, 1);
         expect(count).toBe(4);
-        expect(array[1]).toEqual(['|', '|', '|', '|']);
+        expect(s(array)).toStrictEqual([
+            '||||',
+            '||||',
+            '||||',
+            '||||',
+        ]);
     });
 
     it('leaves DELETION cells untouched', async () => {
@@ -42,7 +54,12 @@ describe('clearSweptColumn', () => {
 
         const count = await clearSweptColumn(array, 2);
         expect(count).toBe(0);
-        expect(array[2]).toEqual(['a', 'b', '*', '~']);
+        expect(s(array)).toStrictEqual([
+            '||a|',
+            '||b|',
+            '||*|',
+            '||~|',
+        ]);
     });
 
     it('does not touch other columns', async () => {
@@ -55,7 +72,12 @@ describe('clearSweptColumn', () => {
 
         const count = await clearSweptColumn(array, 2);
         expect(count).toBe(2);
-        expect(array[0]).toEqual(['S', 'S', '|', '|']);
+        expect(s(array)).toStrictEqual([
+            'S|||',
+            'S|||',
+            '||||',
+            '||||',
+        ]);
     });
 
     it('applies gravity within the column after clearing', async () => {
@@ -70,7 +92,14 @@ describe('clearSweptColumn', () => {
 
         const count = await clearSweptColumn(array, 1);
         expect(count).toBe(2);
-        expect(array[1]).toEqual(['|', '|', '|', '|', '|', 'A']);
+        expect(s(array)).toStrictEqual([
+            '||||',
+            '||||',
+            '||||',
+            '||||',
+            '||||',
+            '|A||',
+        ]);
     });
 
     it('respects cube anchors when applying gravity', async () => {
@@ -92,12 +121,14 @@ describe('clearSweptColumn', () => {
 
         const count = await clearSweptColumn(array, 1, cube);
         expect(count).toBe(2);
-        expect(array[1][2]).toBe('A');
-        expect(array[1][3]).toBe('A');
-        expect(array[1][1]).toBe('A');
-        expect(array[1][0]).toBe('|');
-        expect(array[1][4]).toBe('|');
-        expect(array[1][5]).toBe('|');
+        expect(s(array)).toStrictEqual([
+            '||||',
+            '|A||',
+            '|AA|',
+            '|AA|',
+            '||||',
+            '||||',
+        ]);
     });
 
     it('restores cube cells from SWEEP to their base type instead of clearing them', async () => {
@@ -120,10 +151,14 @@ describe('clearSweptColumn', () => {
         const count = await clearSweptColumn(array, 1, cube);
 
         expect(count).toBe(1);
-        expect(array[1][2]).toBe('A');
-        expect(array[1][3]).toBe('A');
-        expect(array[1][4]).toBe('|');
-        expect(array[1][5]).toBe('A');
+        expect(s(array)).toStrictEqual([
+            '||||',
+            '||||',
+            '|A||',
+            '|A||',
+            '||||',
+            '|A||',
+        ]);
     });
 
     it('block directly below cube does not fall when SWEEP is cleared further below it', async () => {
@@ -150,8 +185,18 @@ describe('clearSweptColumn', () => {
         const count = await clearSweptColumn(array, 7, cube);
 
         expect(count).toBe(1);
-        expect(array[7][3]).toBe('A');
-        expect(array[7][4]).toBe('|');
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '|||||||AB|||||||',
+            '|||||||AB|||||||',
+            '|||||||AB|||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+        ]);
     });
 
     it('is a no-op for out-of-range columns', async () => {
@@ -166,7 +211,12 @@ describe('clearSweptColumn', () => {
         const countAbove = await clearSweptColumn(array, 3);
         expect(countBelow).toBe(0);
         expect(countAbove).toBe(0);
-        expect(array[0]).toEqual(['S', 'S', '|', '|']);
+        expect(s(array)).toStrictEqual([
+            'S||',
+            'S||',
+            '|||',
+            '|||',
+        ]);
     });
 
     it('returns 0 when no SWEEP cells exist', async () => {
@@ -179,6 +229,11 @@ describe('clearSweptColumn', () => {
 
         const count = await clearSweptColumn(array, 1);
         expect(count).toBe(0);
-        expect(array[1]).toEqual(['A', 'A', '|', '|']);
+        expect(s(array)).toStrictEqual([
+            '|A||',
+            '|A||',
+            '||||',
+            '||||',
+        ]);
     });
 });

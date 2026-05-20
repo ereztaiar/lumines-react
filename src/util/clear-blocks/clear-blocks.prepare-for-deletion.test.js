@@ -51,12 +51,18 @@ describe('prepareForDeletion', () => {
             '||||||||ABA|||||',
         ]);
         await prepareForDeletion(array);
-        expect(array[8][8]).toBe('@');
-        expect(array[8][9]).toBe('A');
-        expect(array[9][8]).toBe('A');
-        expect(array[9][9]).toBe('B');
-        expect(array[10][8]).toBe('A');
-        expect(array[10][9]).toBe('A');
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||@AA|||||',
+            '||||||||ABA|||||',
+        ]);
     });
 
     it('special block flood fill stops at adjacent different-color block', async () => {
@@ -73,12 +79,18 @@ describe('prepareForDeletion', () => {
             '||||||||AAB|||||',
         ]);
         await prepareForDeletion(array);
-        expect(array[8][8]).toBe('*');
-        expect(array[8][9]).toBe('a');
-        expect(array[9][8]).toBe('a');
-        expect(array[9][9]).toBe('a');
-        expect(array[10][8]).toBe('a');
-        expect(array[10][9]).toBe('B');
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||*aa|||||',
+            '||||||||aaB|||||',
+        ]);
     });
 
     it('special block triggers chain deletion of adjacent same-color blocks', async () => {
@@ -95,12 +107,18 @@ describe('prepareForDeletion', () => {
             '||||||||AAA|||||',
         ]);
         await prepareForDeletion(array);
-        expect(array[8][8]).toBe('*');
-        expect(array[8][9]).toBe('a');
-        expect(array[9][8]).toBe('a');
-        expect(array[9][9]).toBe('a');
-        expect(array[10][8]).toBe('a');
-        expect(array[10][9]).toBe('a');
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||*aa|||||',
+            '||||||||aaa|||||',
+        ]);
     });
 
     it('group formed mid-swiper: cols behind swiper revert, cols ahead are swept', async () => {
@@ -121,13 +139,18 @@ describe('prepareForDeletion', () => {
         await commitColumnAsSweeping(array, 10);
         await revertUncommittedMarks(array);
 
-        expect(array[8][8]).toBe('@');
-        expect(array[8][9]).toBe('A');
-
-        expect(array[9][8]).toBe('S');
-        expect(array[9][9]).toBe('S');
-        expect(array[10][8]).toBe('S');
-        expect(array[10][9]).toBe('S');
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||@SS|||||',
+            '||||||||ASS|||||',
+        ]);
     });
 
     it('mixed 1+3 square is detected as color A deletion', async () => {
@@ -144,10 +167,18 @@ describe('prepareForDeletion', () => {
             '||||||||A@||||||',
         ]);
         await prepareForDeletion(array);
-        expect(array[8][8]).toBe('*');
-        expect(array[9][8]).toBe('a');
-        expect(array[8][9]).toBe('a');
-        expect(array[9][9]).toBe('*');
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||*a||||||',
+            '||||||||a*||||||',
+        ]);
     });
 
     it('special block chains across multiple columns and marks all via flood fill', async () => {
@@ -166,12 +197,17 @@ describe('prepareForDeletion', () => {
 
         await prepareForDeletion(array);
 
-        expect(array[3][8]).toBe('*');
-        expect(array[3][9]).toBe('a');
-        expect(array[4][8]).toBe('a');
-        expect(array[4][9]).toBe('a');
-        expect(array[5][8]).toBe('a');
-        expect(array[6][8]).toBe('a');
-        expect(array[7][8]).toBe('a');
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '|||*aaaa||||||||',
+            '|||aa|||||||||||',
+        ]);
     });
 });

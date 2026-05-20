@@ -51,23 +51,33 @@ describe('clearAllMarked', () => {
 
         await prepareForDeletion(array);
 
-        expect(array[3][8]).toBe('*');
-        expect(array[3][9]).toBe('a');
-        expect(array[4][8]).toBe('a');
-        expect(array[4][9]).toBe('a');
-        expect(array[5][8]).toBe('a');
-        expect(array[6][8]).toBe('a');
-        expect(array[7][8]).toBe('a');
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '|||*aaaa||||||||',
+            '|||aa|||||||||||',
+        ]);
 
         const total = await clearAllMarked(array);
 
         expect(total).toEqual(7);
-        expect(array[3][8]).toBe('|');
-        expect(array[3][9]).toBe('|');
-        expect(array[4][8]).toBe('|');
-        expect(array[4][9]).toBe('|');
-        expect(array[5][8]).toBe('|');
-        expect(array[6][8]).toBe('|');
-        expect(array[7][8]).toBe('|');
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+        ]);
     });
 });

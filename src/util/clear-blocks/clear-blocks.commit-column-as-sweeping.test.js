@@ -1,6 +1,6 @@
 import "babel-polyfill";
 import { commitColumnAsSweeping } from './index.js';
-import { g } from '../grid-test-helpers.js';
+import { g, s } from '../grid-test-helpers.js';
 
 
 describe('commitColumnAsSweeping', () => {
@@ -14,7 +14,12 @@ describe('commitColumnAsSweeping', () => {
 
         const count = await commitColumnAsSweeping(array, 2);
         expect(count).toBe(2);
-        expect(array[2]).toEqual(['|', 'S', 'S', '|']);
+        expect(s(array)).toStrictEqual([
+            '||||',
+            '||S|',
+            '||S|',
+            '||||',
+        ]);
     });
 
     it('converts all four deletion types to their matching sweep types', async () => {
@@ -27,7 +32,12 @@ describe('commitColumnAsSweeping', () => {
 
         const count = await commitColumnAsSweeping(array, 1);
         expect(count).toBe(4);
-        expect(array[1]).toEqual(['S', 's', '#', '$']);
+        expect(s(array)).toStrictEqual([
+            '|S||',
+            '|s||',
+            '|#||',
+            '|$||',
+        ]);
     });
 
     it('does not touch other columns', async () => {
@@ -40,8 +50,12 @@ describe('commitColumnAsSweeping', () => {
 
         const count = await commitColumnAsSweeping(array, 2);
         expect(count).toBe(2);
-        expect(array[0]).toEqual(['a', 'a', '|', '|']);
-        expect(array[2]).toEqual(['S', 'S', '|', '|']);
+        expect(s(array)).toStrictEqual([
+            'a|S|',
+            'a|S|',
+            '||||',
+            '||||',
+        ]);
     });
 
     it('leaves non-deletion values untouched', async () => {
@@ -55,7 +69,13 @@ describe('commitColumnAsSweeping', () => {
 
         const count = await commitColumnAsSweeping(array, 1);
         expect(count).toBe(0);
-        expect(array[1]).toEqual(['|', 'A', 'B', '@', '%']);
+        expect(s(array)).toStrictEqual([
+            '||||',
+            '|A||',
+            '|B||',
+            '|@||',
+            '|%||',
+        ]);
     });
 
     it('is a no-op for out-of-range columns', async () => {
@@ -70,7 +90,12 @@ describe('commitColumnAsSweeping', () => {
         const countAbove = await commitColumnAsSweeping(array, 3);
         expect(countBelow).toBe(0);
         expect(countAbove).toBe(0);
-        expect(array[0]).toEqual(['a', 'a', '|', '|']);
+        expect(s(array)).toStrictEqual([
+            'a||',
+            'a||',
+            '|||',
+            '|||',
+        ]);
     });
 
     it('leaves already-committed SWEEP cells unchanged', async () => {
@@ -83,6 +108,11 @@ describe('commitColumnAsSweeping', () => {
 
         const count = await commitColumnAsSweeping(array, 1);
         expect(count).toBe(0);
-        expect(array[1]).toEqual(['S', 's', '#', '$']);
+        expect(s(array)).toStrictEqual([
+            '|S||',
+            '|s||',
+            '|#||',
+            '|$||',
+        ]);
     });
 });

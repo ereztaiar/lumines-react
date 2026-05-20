@@ -46,9 +46,17 @@ describe('clearFromDeletion', () => {
             '||||||||~b||||||',
         ]);
         await clearFromDeletion(array);
-        expect(array[8][8]).toBe('@');
-        expect(array[8][9]).toBe('%');
-        expect(array[9][8]).toBe('A');
-        expect(array[9][9]).toBe('B');
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||@A||||||',
+            '||||||||%B||||||',
+        ]);
     });
 });
