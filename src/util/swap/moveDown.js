@@ -19,8 +19,8 @@ function moveDown(array, cube, rate = DROP_DEFAULT) {
         try {
             const rightVal = array[cube.bottomRight.x][cube.bottomRight.y + rate];
             const leftVal  = array[cube.bottomLeft.x][cube.bottomLeft.y + rate];
-            const right = rightVal !== 0 && !isBeingSwept(rightVal);
-            const left  = leftVal  !== 0 && !isBeingSwept(leftVal);
+            const right = rightVal !== EMPTY && !isBeingSwept(rightVal);
+            const left  = leftVal  !== EMPTY && !isBeingSwept(leftVal);
             if (right) {
                 dest.topRight = {x: cube.topRight.x, y: cube.topRight.y};
                 dest.bottomRight = {x: cube.bottomRight.x, y: cube.bottomRight.y};

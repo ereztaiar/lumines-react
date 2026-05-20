@@ -4,8 +4,11 @@ import {
   dispenseOrder,
   CUBE_STATES,
 } from "@lumines/game-components/src/components/Dispenser";
+import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board/block-types";
 import * as swap from "Util/swap";
 import { nop } from "./nop";
+
+const { EMPTY } = BLOCKS_TYPES;
 
 const useCubeState = (props) => {
   const { grid, setGrid, setIsGameOver } = props;
@@ -62,7 +65,7 @@ const useCubeState = (props) => {
     if (newCube === CUBE_STATES.READY) {
       const spawnBlocked = dispenseOrder.some((order) => {
         const block = currentCube[order];
-        return grid[block.x]?.[block.y] !== 0;
+        return grid[block.x]?.[block.y] !== EMPTY;
       });
       if (spawnBlocked) {
         setIsGameOver(true);

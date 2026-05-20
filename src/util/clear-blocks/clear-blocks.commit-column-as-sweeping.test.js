@@ -6,63 +6,63 @@ import {
 
 describe('commitColumnAsSweeping', () => {
     const makeGrid = (cols, rows) =>
-        Array.from({ length: cols }, () => new Array(rows).fill(0));
+        Array.from({ length: cols }, () => new Array(rows).fill('|'));
 
-    it('converts DELETION_TYPE_A (5) cells in the column to SWEEP_TYPE_A (9)', async () => {
+    it('converts DELETION_TYPE_A cells in the column to SWEEP_TYPE_A', async () => {
         const array = makeGrid(4, 4);
-        array[2] = [0, 5, 5, 0];
+        array[2] = ['|', 'a', 'a', '|'];
 
         const count = await commitColumnAsSweeping(array, 2);
         expect(count).toBe(2);
-        expect(array[2]).toEqual([0, 9, 9, 0]);
+        expect(array[2]).toEqual(['|', 'S', 'S', '|']);
     });
 
     it('converts all four deletion types to their matching sweep types', async () => {
         const array = makeGrid(4, 4);
-        array[1] = [5, 6, 7, 8];
+        array[1] = ['a', 'b', '*', '~'];
 
         const count = await commitColumnAsSweeping(array, 1);
         expect(count).toBe(4);
-        expect(array[1]).toEqual([9, 10, 11, 12]);
+        expect(array[1]).toEqual(['S', 's', '#', '$']);
     });
 
     it('does not touch other columns', async () => {
         const array = makeGrid(4, 4);
-        array[0] = [5, 5, 0, 0];
-        array[2] = [5, 5, 0, 0];
+        array[0] = ['a', 'a', '|', '|'];
+        array[2] = ['a', 'a', '|', '|'];
 
         const count = await commitColumnAsSweeping(array, 2);
         expect(count).toBe(2);
-        expect(array[0]).toEqual([5, 5, 0, 0]);
-        expect(array[2]).toEqual([9, 9, 0, 0]);
+        expect(array[0]).toEqual(['a', 'a', '|', '|']);
+        expect(array[2]).toEqual(['S', 'S', '|', '|']);
     });
 
     it('leaves non-deletion values untouched', async () => {
         const array = makeGrid(4, 5);
-        array[1] = [0, 1, 2, 3, 4];
+        array[1] = ['|', 'A', 'B', '@', '%'];
 
         const count = await commitColumnAsSweeping(array, 1);
         expect(count).toBe(0);
-        expect(array[1]).toEqual([0, 1, 2, 3, 4]);
+        expect(array[1]).toEqual(['|', 'A', 'B', '@', '%']);
     });
 
     it('is a no-op for out-of-range columns', async () => {
         const array = makeGrid(3, 4);
-        array[0] = [5, 5, 0, 0];
+        array[0] = ['a', 'a', '|', '|'];
 
         const countBelow = await commitColumnAsSweeping(array, -1);
         const countAbove = await commitColumnAsSweeping(array, 3);
         expect(countBelow).toBe(0);
         expect(countAbove).toBe(0);
-        expect(array[0]).toEqual([5, 5, 0, 0]);
+        expect(array[0]).toEqual(['a', 'a', '|', '|']);
     });
 
     it('leaves already-committed SWEEP cells unchanged', async () => {
         const array = makeGrid(4, 4);
-        array[1] = [9, 10, 11, 12];
+        array[1] = ['S', 's', '#', '$'];
 
         const count = await commitColumnAsSweeping(array, 1);
         expect(count).toBe(0);
-        expect(array[1]).toEqual([9, 10, 11, 12]);
+        expect(array[1]).toEqual(['S', 's', '#', '$']);
     });
 });

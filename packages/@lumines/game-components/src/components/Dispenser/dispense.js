@@ -13,11 +13,11 @@ const BLOCKS = {
 
 const BLOCK_ASSOCIATION = {
   // todo:merge constants
-  0: BLOCKS.EMPTY,
-  1: BLOCKS.GREY,
-  2: BLOCKS.ORANGE,
-  5: BLOCKS.DELETION_GRAY,
-  6: BLOCKS.DELETION_ORANGE,
+  '|': BLOCKS.EMPTY,
+  'A': BLOCKS.GREY,
+  'B': BLOCKS.ORANGE,
+  'a': BLOCKS.DELETION_GRAY,
+  'b': BLOCKS.DELETION_ORANGE,
 };
 
 const CUBE_WIDTH = 2;
@@ -29,7 +29,7 @@ let randomBlockCount = 1;
 let nextSpecialBlock = BLOCKS_TYPES.TYPE_A_SPECIAL;
 
 const randomBlock = () => {
-  let block = Math.floor(Math.random() * 2 + 1);
+  let block = Math.random() < 0.5 ? BLOCKS_TYPES.TYPE_A : BLOCKS_TYPES.TYPE_B;
   if (randomBlockCount % 25 === 0) {
     block = nextSpecialBlock;
     if (nextSpecialBlock === BLOCKS_TYPES.TYPE_A_SPECIAL) {

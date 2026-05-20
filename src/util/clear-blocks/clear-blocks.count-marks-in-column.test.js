@@ -7,9 +7,9 @@ import {
 describe('countMarksInColumn', () => {
     it('counts all four deletion types without mutating the grid', async () => {
         let array = [
-            [0, 0, 0, 0, 0, 0, 5, 6, 7, 8],
-            [0, 0, 0, 0, 0, 0, 0, 1, 2, 3],
-            [0, 0, 0, 0, 0, 0, 5, 5, 5, 5],
+            ['|', '|', '|', '|', '|', '|', 'a', 'b', '*', '~'],
+            ['|', '|', '|', '|', '|', '|', '|', 'A', 'B', '@'],
+            ['|', '|', '|', '|', '|', '|', 'a', 'a', 'a', 'a'],
         ];
         const snapshot = JSON.parse(JSON.stringify(array));
 

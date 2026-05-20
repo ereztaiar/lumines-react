@@ -1,5 +1,8 @@
 import { WALL, OUT_OF_BOUNDS, leftOrder } from './constants.js';
 import { isSplit } from './isSplit.js';
+import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board/block-types";
+
+const { EMPTY } = BLOCKS_TYPES;
 
 function moveLeft(array, cube) {
     const src = {...cube};
@@ -13,7 +16,7 @@ function moveLeft(array, cube) {
             reject(OUT_OF_BOUNDS);
             return;
         }
-        if (array[cube.topLeft.x - 1][cube.topLeft.y] !== 0 || array[cube.bottomLeft.x - 1][cube.bottomLeft.y] !== 0) {
+        if (array[cube.topLeft.x - 1][cube.topLeft.y] !== EMPTY || array[cube.bottomLeft.x - 1][cube.bottomLeft.y] !== EMPTY) {
             reject(WALL);
             return;
         }
