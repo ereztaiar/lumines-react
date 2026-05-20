@@ -71,7 +71,20 @@ function clearSweptColumn(array, col, cube = null) {
       }
     }
     if (count > 0) {
-      applyGravity(array, new Set([col]), getCubeAnchors(cube, array));
+      const anchors = getCubeAnchors(cube, array);
+      if (cube) {
+        const colCells = ["topLeft", "topRight", "bottomLeft", "bottomRight"]
+          .filter((k) => cube[k] && cube[k].x === col)
+          .map((k) => cube[k].y);
+        if (colCells.length > 0) {
+          const belowRow = Math.max(...colCells) + 1;
+          if (belowRow < array[col].length) {
+            if (!anchors.has(col)) anchors.set(col, new Set());
+            anchors.get(col).add(belowRow);
+          }
+        }
+      }
+      applyGravity(array, new Set([col]), anchors);
     }
     resolve(count);
   });
