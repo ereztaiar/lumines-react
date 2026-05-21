@@ -13,10 +13,12 @@ describe('clearAllMarked', () => {
             '|||||',
             '|||||',
             '|||||',
-            '|a|||',
-            '|Ab*|',
-            '|aBA|',
+            '|AB||',
+            '|AA||',
+            '|AAA|',
         ]);
+
+        await prepareForDeletion(array);
 
         const total = await clearAllMarked(array);
 
@@ -45,8 +47,8 @@ describe('clearAllMarked', () => {
             '||||||||||||||||',
             '||||||||||||||||',
             '||||||||||||||||',
-            '|||@AAAA||||||||',
-            '|||AA|||||||||||',
+            '||||@A||||||||||',
+            '|||AAAAA||||||||',
         ]);
 
         await prepareForDeletion(array);
@@ -60,8 +62,8 @@ describe('clearAllMarked', () => {
             '||||||||||||||||',
             '||||||||||||||||',
             '||||||||||||||||',
-            '|||*aaaa||||||||',
-            '|||aa|||||||||||',
+            '||||*a||||||||||',
+            '|||aaaaa||||||||',
         ]);
 
         const total = await clearAllMarked(array);
