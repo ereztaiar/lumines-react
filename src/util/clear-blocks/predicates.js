@@ -9,10 +9,14 @@ const {
   DELETION_TYPE_B,
   DELETION_TYPE_A_SPECIAL,
   DELETION_TYPE_B_SPECIAL,
-  SWEEP_TYPE_A,
-  SWEEP_TYPE_B,
-  SWEEP_TYPE_A_SPECIAL,
-  SWEEP_TYPE_B_SPECIAL,
+  RECURSIVE_TYPE_A,
+  RECURSIVE_TYPE_B,
+  RECURSIVE_TYPE_A_SPECIAL,
+  RECURSIVE_TYPE_B_SPECIAL,
+  SWEEPING_TYPE_A,
+  SWEEPING_TYPE_B,
+  SWEEPING_TYPE_A_SPECIAL,
+  SWEEPING_TYPE_B_SPECIAL,
 } = BLOCKS_TYPES;
 
 const isMarkedForDeletion = (v) =>
@@ -21,18 +25,38 @@ const isMarkedForDeletion = (v) =>
   v === DELETION_TYPE_A_SPECIAL ||
   v === DELETION_TYPE_B_SPECIAL;
 
-const isBeingSwept = (v) =>
-  v === SWEEP_TYPE_A ||
-  v === SWEEP_TYPE_B ||
-  v === SWEEP_TYPE_A_SPECIAL ||
-  v === SWEEP_TYPE_B_SPECIAL;
+const isBeingRecursive = (v) =>
+  v === RECURSIVE_TYPE_A ||
+  v === RECURSIVE_TYPE_B ||
+  v === RECURSIVE_TYPE_A_SPECIAL ||
+  v === RECURSIVE_TYPE_B_SPECIAL;
 
-const sweepToNormal = (v) => {
-  if (v === SWEEP_TYPE_A) return TYPE_A;
-  if (v === SWEEP_TYPE_B) return TYPE_B;
-  if (v === SWEEP_TYPE_A_SPECIAL) return TYPE_A_SPECIAL;
-  if (v === SWEEP_TYPE_B_SPECIAL) return TYPE_B_SPECIAL;
+const isBeingSwept = (v) =>
+  v === SWEEPING_TYPE_A ||
+  v === SWEEPING_TYPE_B ||
+  v === SWEEPING_TYPE_A_SPECIAL ||
+  v === SWEEPING_TYPE_B_SPECIAL;
+
+const recursiveToNormal = (v) => {
+  if (v === RECURSIVE_TYPE_A) return TYPE_A;
+  if (v === RECURSIVE_TYPE_B) return TYPE_B;
+  if (v === RECURSIVE_TYPE_A_SPECIAL) return TYPE_A_SPECIAL;
+  if (v === RECURSIVE_TYPE_B_SPECIAL) return TYPE_B_SPECIAL;
   return v;
 };
 
-export { isMarkedForDeletion, isBeingSwept, sweepToNormal };
+const sweepingToNormal = (v) => {
+  if (v === SWEEPING_TYPE_A) return TYPE_A;
+  if (v === SWEEPING_TYPE_B) return TYPE_B;
+  if (v === SWEEPING_TYPE_A_SPECIAL) return TYPE_A_SPECIAL;
+  if (v === SWEEPING_TYPE_B_SPECIAL) return TYPE_B_SPECIAL;
+  return v;
+};
+
+export {
+  isMarkedForDeletion,
+  isBeingRecursive,
+  isBeingSwept,
+  recursiveToNormal,
+  sweepingToNormal,
+};

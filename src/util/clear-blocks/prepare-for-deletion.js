@@ -10,10 +10,10 @@ const {
   DELETION_TYPE_B,
   DELETION_TYPE_A_SPECIAL,
   DELETION_TYPE_B_SPECIAL,
-  SWEEP_TYPE_A,
-  SWEEP_TYPE_B,
-  SWEEP_TYPE_A_SPECIAL,
-  SWEEP_TYPE_B_SPECIAL,
+  RECURSIVE_TYPE_A,
+  RECURSIVE_TYPE_B,
+  RECURSIVE_TYPE_A_SPECIAL,
+  RECURSIVE_TYPE_B_SPECIAL,
 } = BLOCKS_TYPES;
 
 function prepareForDeletion(array) {
@@ -26,8 +26,8 @@ function prepareForDeletion(array) {
       colorTypes,
       normalType,
       specialType,
-      deletionType,
-      specialDeletionType,
+      recursiveType,
+      specialRecursiveType,
     ) => {
       const stack = [[startX, startY]];
       const visited = new Set();
@@ -39,8 +39,8 @@ function prepareForDeletion(array) {
         if (x < 0 || x >= width || y < 0 || y >= height) continue;
         const v = array[x][y];
         if (colorTypes.includes(v)) {
-          if (v === normalType) array[x][y] = deletionType;
-          else if (v === specialType) array[x][y] = specialDeletionType;
+          if (v === normalType) array[x][y] = recursiveType;
+          else if (v === specialType) array[x][y] = specialRecursiveType;
           stack.push([x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]);
         }
       }
@@ -51,16 +51,16 @@ function prepareForDeletion(array) {
       specialType,
       deletionType,
       specialDeletionType,
-      sweepType,
-      specialSweepType,
+      recursiveType,
+      specialRecursiveType,
     ) => {
       const colorTypes = [
         normalType,
         specialType,
         deletionType,
         specialDeletionType,
-        sweepType,
-        specialSweepType,
+        recursiveType,
+        specialRecursiveType,
       ];
       const match = (v) => colorTypes.includes(v);
       for (let x = 0; x < width - 1; x++) {
@@ -74,7 +74,7 @@ function prepareForDeletion(array) {
             match(array[x + 1][y - 1])
           ) {
             const isSpecialCell = (v) =>
-              v === specialType || v === specialDeletionType || v === specialSweepType;
+              v === specialType || v === specialDeletionType || v === specialRecursiveType;
             const hasSpecial = [
               array[x][y],
               array[x + 1][y],
@@ -84,8 +84,9 @@ function prepareForDeletion(array) {
 
             const markCell = (cx, cy) => {
               const v = array[cx][cy];
-              if (v === normalType) array[cx][cy] = deletionType;
-              else if (v === specialType) array[cx][cy] = specialDeletionType;
+              if (v === normalType || v === recursiveType) array[cx][cy] = deletionType;
+              else if (v === specialType || v === specialRecursiveType)
+                array[cx][cy] = specialDeletionType;
             };
             markCell(x, y);
             markCell(x + 1, y);
@@ -99,8 +100,8 @@ function prepareForDeletion(array) {
                 colorTypes,
                 normalType,
                 specialType,
-                deletionType,
-                specialDeletionType,
+                recursiveType,
+                specialRecursiveType,
               );
             }
           }
@@ -113,16 +114,16 @@ function prepareForDeletion(array) {
       TYPE_A_SPECIAL,
       DELETION_TYPE_A,
       DELETION_TYPE_A_SPECIAL,
-      SWEEP_TYPE_A,
-      SWEEP_TYPE_A_SPECIAL,
+      RECURSIVE_TYPE_A,
+      RECURSIVE_TYPE_A_SPECIAL,
     );
     checkSquares(
       TYPE_B,
       TYPE_B_SPECIAL,
       DELETION_TYPE_B,
       DELETION_TYPE_B_SPECIAL,
-      SWEEP_TYPE_B,
-      SWEEP_TYPE_B_SPECIAL,
+      RECURSIVE_TYPE_B,
+      RECURSIVE_TYPE_B_SPECIAL,
     );
 
     resolve([...array]);

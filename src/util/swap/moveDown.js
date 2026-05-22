@@ -47,8 +47,8 @@ function moveDown(array, cube, rate = DROP_DEFAULT) {
             const dstX = dest[block].x, dstY = dest[block].y;
             const tmp = array[srcX][srcY];
             if (isBeingSwept(array[dstX][dstY])) {
-                // Absorb the SWEEP block rather than swapping: the cube passes
-                // through it cleanly without bubbling SWEEP to a higher row.
+                // Absorb the swept block rather than swapping: the cube passes
+                // through it cleanly without bubbling swept marks to a higher row.
                 array[srcX][srcY] = EMPTY;
                 array[dstX][dstY] = tmp;
             } else {

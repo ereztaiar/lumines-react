@@ -1,5 +1,5 @@
 import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board/block-types";
-import { isBeingSwept, sweepToNormal } from "./predicates.js";
+import { isBeingSwept, sweepingToNormal } from "./predicates.js";
 import { getCubeAnchors, applyGravity } from "./gravity.js";
 
 const {
@@ -8,10 +8,14 @@ const {
   DELETION_TYPE_B,
   DELETION_TYPE_A_SPECIAL,
   DELETION_TYPE_B_SPECIAL,
-  SWEEP_TYPE_A,
-  SWEEP_TYPE_B,
-  SWEEP_TYPE_A_SPECIAL,
-  SWEEP_TYPE_B_SPECIAL,
+  RECURSIVE_TYPE_A,
+  RECURSIVE_TYPE_B,
+  RECURSIVE_TYPE_A_SPECIAL,
+  RECURSIVE_TYPE_B_SPECIAL,
+  SWEEPING_TYPE_A,
+  SWEEPING_TYPE_B,
+  SWEEPING_TYPE_A_SPECIAL,
+  SWEEPING_TYPE_B_SPECIAL,
 } = BLOCKS_TYPES;
 
 function commitColumnAsSweeping(array, col) {
@@ -24,17 +28,17 @@ function commitColumnAsSweeping(array, col) {
     let count = 0;
     for (let y = 0; y < column.length; y++) {
       const v = column[y];
-      if (v === DELETION_TYPE_A) {
-        column[y] = SWEEP_TYPE_A;
+      if (v === DELETION_TYPE_A || v === RECURSIVE_TYPE_A) {
+        column[y] = SWEEPING_TYPE_A;
         count++;
-      } else if (v === DELETION_TYPE_B) {
-        column[y] = SWEEP_TYPE_B;
+      } else if (v === DELETION_TYPE_B || v === RECURSIVE_TYPE_B) {
+        column[y] = SWEEPING_TYPE_B;
         count++;
-      } else if (v === DELETION_TYPE_A_SPECIAL) {
-        column[y] = SWEEP_TYPE_A_SPECIAL;
+      } else if (v === DELETION_TYPE_A_SPECIAL || v === RECURSIVE_TYPE_A_SPECIAL) {
+        column[y] = SWEEPING_TYPE_A_SPECIAL;
         count++;
-      } else if (v === DELETION_TYPE_B_SPECIAL) {
-        column[y] = SWEEP_TYPE_B_SPECIAL;
+      } else if (v === DELETION_TYPE_B_SPECIAL || v === RECURSIVE_TYPE_B_SPECIAL) {
+        column[y] = SWEEPING_TYPE_B_SPECIAL;
         count++;
       }
     }
@@ -64,7 +68,7 @@ function clearSweptColumn(array, col, cube = null) {
       if (cubeRows.has(y)) {
         // Restore the cube's cell to its base type — the falling cube is
         // immune to being swept mid-flight; only landed blocks get cleared.
-        column[y] = sweepToNormal(column[y]);
+        column[y] = sweepingToNormal(column[y]);
       } else {
         column[y] = EMPTY;
         count++;

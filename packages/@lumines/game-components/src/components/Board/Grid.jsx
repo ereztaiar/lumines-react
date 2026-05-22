@@ -6,7 +6,11 @@ import {
   ROWS,
   BLOCKS_TYPES,
 } from "@lumines/game-components/src/components/Board";
-import { isMarkedForDeletion, isBeingSwept } from "Util/clear-blocks/predicates";
+import {
+  isMarkedForDeletion,
+  isBeingRecursive,
+  isBeingSwept,
+} from "Util/clear-blocks/predicates";
 
 const calcGhostRow = (grid, cube) => {
   const leftX = cube.topLeft.x;
@@ -60,12 +64,14 @@ const Grid = (props) => {
 
         const cellValue = grid[x][y];
         const isMarked = isMarkedForDeletion(cellValue);
+        const isRecursive = isBeingRecursive(cellValue);
         const isSwept = isBeingSwept(cellValue);
 
         const cellClass = [
           gridStyle.gridItem,
           isGhost && gridStyle.ghostBlock,
           isMarked && gridStyle.markedForDeletion,
+          isRecursive && gridStyle.beingRecursive,
           isSwept && gridStyle.beingSwept,
         ]
           .filter(Boolean)
@@ -82,15 +88,19 @@ const Grid = (props) => {
         } else if (
           cellValue === BLOCKS_TYPES.DELETION_TYPE_A ||
           cellValue === BLOCKS_TYPES.DELETION_TYPE_A_SPECIAL ||
-          cellValue === BLOCKS_TYPES.SWEEP_TYPE_A ||
-          cellValue === BLOCKS_TYPES.SWEEP_TYPE_A_SPECIAL
+          cellValue === BLOCKS_TYPES.RECURSIVE_TYPE_A ||
+          cellValue === BLOCKS_TYPES.RECURSIVE_TYPE_A_SPECIAL ||
+          cellValue === BLOCKS_TYPES.SWEEPING_TYPE_A ||
+          cellValue === BLOCKS_TYPES.SWEEPING_TYPE_A_SPECIAL
         ) {
           gridColumns += `<div class="${cellClass}"><img src="${paths.darkA}"/></div>`;
         } else if (
           cellValue === BLOCKS_TYPES.DELETION_TYPE_B ||
           cellValue === BLOCKS_TYPES.DELETION_TYPE_B_SPECIAL ||
-          cellValue === BLOCKS_TYPES.SWEEP_TYPE_B ||
-          cellValue === BLOCKS_TYPES.SWEEP_TYPE_B_SPECIAL
+          cellValue === BLOCKS_TYPES.RECURSIVE_TYPE_B ||
+          cellValue === BLOCKS_TYPES.RECURSIVE_TYPE_B_SPECIAL ||
+          cellValue === BLOCKS_TYPES.SWEEPING_TYPE_B ||
+          cellValue === BLOCKS_TYPES.SWEEPING_TYPE_B_SPECIAL
         ) {
           gridColumns += `<div class="${cellClass}"><img src="${paths.darkB}"/></div>`;
         } else {
