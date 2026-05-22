@@ -16,7 +16,7 @@ const useGameLoop = (props) => {
 
   const [tick, setTick] = useState(INITIAL_TICK);
   const [currentDeleted, setCurrentDeleted] = useState(0);
-  const prevSwiperColRef = useRef(null);
+  const prevSwiperColRef = useRef(-1);
   const speed = 35;
 
   useTimer(async () => {
@@ -39,7 +39,7 @@ const useGameLoop = (props) => {
       await prepareForDeletion(grid);
       await commitColumnAsSweeping(grid, swiperCol);
 
-      if (prevSwiperCol !== null && prevSwiperCol !== swiperCol) {
+      if (prevSwiperCol !== swiperCol) {
         score += await clearSweptColumn(grid, prevSwiperCol, liveCube);
       }
       prevSwiperColRef.current = swiperCol;

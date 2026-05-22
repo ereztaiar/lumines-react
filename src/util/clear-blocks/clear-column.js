@@ -1,5 +1,5 @@
 import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board/block-types";
-import { isMarkedForDeletion } from "./predicates.js";
+import { isMarkedForDeletion, isBeingRecursive } from "./predicates.js";
 
 const { EMPTY } = BLOCKS_TYPES;
 
@@ -12,7 +12,7 @@ function clearColumn(array, x) {
     const newColumn = new Array(column.length).fill(EMPTY);
     for (; column[i] !== EMPTY; i--) {
       if (i <= 1) break;
-      if (isMarkedForDeletion(column[i])) {
+      if (isMarkedForDeletion(column[i]) || isBeingRecursive(column[i])) {
         count++;
         continue;
       }
@@ -31,7 +31,7 @@ function countMarksInColumn(array, x) {
   return new Promise((resolve) => {
     let count = 0;
     for (let i = 0; i < column.length; i++) {
-      if (isMarkedForDeletion(column[i])) count++;
+      if (isMarkedForDeletion(column[i]) || isBeingRecursive(column[i])) count++;
     }
     resolve(count);
   });

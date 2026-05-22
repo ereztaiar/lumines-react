@@ -1,5 +1,5 @@
 import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board/block-types";
-import { isMarkedForDeletion } from "./predicates.js";
+import { isMarkedForDeletion, isBeingRecursive } from "./predicates.js";
 
 const { EMPTY } = BLOCKS_TYPES;
 
@@ -13,7 +13,7 @@ function clearFromColumn(array, startCol) {
       for (let i = column.length - 1; i >= 0; i--) {
         const v = column[i];
         if (v === EMPTY) continue;
-        if (isMarkedForDeletion(v)) { total++; continue; }
+        if (isMarkedForDeletion(v) || isBeingRecursive(v)) { total++; continue; }
         newColumn[j--] = v;
       }
       array[x] = newColumn;
