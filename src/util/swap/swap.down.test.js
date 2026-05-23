@@ -142,7 +142,7 @@ describe('move block down', () => {
         expect(array[8][1]).toBe('|');
     });
 
-    it('treats SWEEP as transparent on one side and real block on other — produces split', async () => {
+    it('lands whole cube when SWEEP is transparent on one side but real block on the other', async () => {
         const array = g([
             '||||||||||||||||',
             '|||||||AB|||||||',
@@ -162,14 +162,17 @@ describe('move block down', () => {
             bottomRight: { x: 8, y: 2 },
         };
 
-        const [, dest, outOfBounds] = await moveDown(array, cube);
+        const [, , outOfBounds] = await moveDown(array, cube);
 
-        expect(outOfBounds).toBeUndefined();
-        expect(dest.bottomLeft.y).toBe(3);
-        expect(dest.bottomRight.y).toBe(2);
+        expect(outOfBounds).toBe(errors.OUT_OF_BOUNDS);
+        // grid must be unchanged — cube lands in place without splitting
+        expect(array[7][1]).toBe('A');
+        expect(array[7][2]).toBe('A');
+        expect(array[8][1]).toBe('B');
+        expect(array[8][2]).toBe('B');
     });
 
-    it('move block down by 1 column — split when left blocked', async () => {
+    it('lands whole cube when left is blocked by solid block', async () => {
         const array = g([
             '||||||||||||||||',
             '||||||||||||||||',
@@ -188,15 +191,17 @@ describe('move block down', () => {
             bottomLeft:  { x: 7, y: 4 },
             bottomRight: { x: 8, y: 4 },
         };
-        await moveDown(array, cube);
+        const [, , outOfBounds] = await moveDown(array, cube);
 
+        expect(outOfBounds).toBe(errors.OUT_OF_BOUNDS);
+        // grid must be unchanged — cube lands in place as a unit
         expect(s(array)).toStrictEqual([
             '||||||||||||||||',
             '||||||||||||||||',
             '||||||||||||||||',
-            '|||||||A||||||||',
-            '||||||%BA|||||||',
-            '||||||%@B|||||||',
+            '|||||||AA|||||||',
+            '||||||%BB|||||||',
+            '||||||%@||||||||',
             '||||||%@||||||||',
             '||||||%@||||||||',
             '||||||%@||||||||',

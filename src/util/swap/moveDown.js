@@ -21,6 +21,12 @@ function moveDown(array, cube, rate = DROP_DEFAULT) {
             const leftVal  = array[cube.bottomLeft.x][cube.bottomLeft.y + rate];
             const right = rightVal !== EMPTY && !isBeingSwept(rightVal);
             const left  = leftVal  !== EMPTY && !isBeingSwept(leftVal);
+            // Cube moves as a rigid unit until it splits: if either side hits a
+            // solid block while both halves are still level, land the whole cube.
+            if (src.bottomLeft.y === src.bottomRight.y && (left || right)) {
+                resolve([array, dest, OUT_OF_BOUNDS]);
+                return;
+            }
             if (right) {
                 dest.topRight = {x: cube.topRight.x, y: cube.topRight.y};
                 dest.bottomRight = {x: cube.bottomRight.x, y: cube.bottomRight.y};
