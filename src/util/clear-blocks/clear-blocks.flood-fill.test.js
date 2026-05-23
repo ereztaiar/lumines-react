@@ -15,8 +15,8 @@ describe('floodFill (via prepareForDeletion)', () => {
             '||||||||||||||||',
             '||||||||||||||||',
             '||||||||A|||||||',
-            '|||||||||@A|||||',
-            '|||||||||AA|||||',
+            '||||||||B@A|||||',
+            '||||||||BAA|||||',
         ]);
         await prepareForDeletion(array);
         expect(s(array)).toStrictEqual([
@@ -28,8 +28,8 @@ describe('floodFill (via prepareForDeletion)', () => {
             '||||||||||||||||',
             '||||||||||||||||',
             '||||||||A|||||||',
-            '|||||||||*a|||||',
-            '|||||||||aa|||||',
+            '||||||||B*a|||||',
+            '||||||||Baa|||||',
         ]);
     });
 
@@ -46,7 +46,7 @@ describe('floodFill (via prepareForDeletion)', () => {
             '||||||||||||||||',
             '||||||||||||||||',
             '||||@A@|||||||||',
-            '||||AA||||||||||',
+            '||||AAB|||||||||',
         ]);
         await prepareForDeletion(array);
         expect(s(array)).toStrictEqual([
@@ -59,7 +59,7 @@ describe('floodFill (via prepareForDeletion)', () => {
             '||||||||||||||||',
             '||||||||||||||||',
             '||||*a+|||||||||',
-            '||||aa||||||||||',
+            '||||aaB|||||||||',
         ]);
     });
 
@@ -90,6 +90,35 @@ describe('floodFill (via prepareForDeletion)', () => {
             '||||||||||||||||',
             '||||||||*a||||||',
             '||||||||aa||||||',
+        ]);
+    });
+
+    it('full board scenario', async () => {
+        // A more realistic scenario with a full board and a special block in the middle of a 2×2.
+        const array = g([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||BA||||B||B||||',
+            '||BBB|||@ABAB|||',
+            '|@ABB%||AAAAAB||',
+        ]);
+        await prepareForDeletion(array);
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||BA||||B||B||||',
+            '||Bbb|||*aBXB|||',
+            '|@Abb%||aaXXXB||',
         ]);
     });
 });
