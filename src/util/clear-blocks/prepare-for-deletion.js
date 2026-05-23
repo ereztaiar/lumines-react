@@ -14,6 +14,10 @@ const {
   RECURSIVE_TYPE_B,
   RECURSIVE_TYPE_A_SPECIAL,
   RECURSIVE_TYPE_B_SPECIAL,
+  SWEEPING_TYPE_A,
+  SWEEPING_TYPE_B,
+  SWEEPING_TYPE_A_SPECIAL,
+  SWEEPING_TYPE_B_SPECIAL,
 } = BLOCKS_TYPES;
 
 // colorTypes includes deletion and recursive variants so the fill traverses
@@ -58,9 +62,14 @@ function checkSquares(
   specialDeletionType,
   recursiveType,
   specialRecursiveType,
+  sweepingType,
+  specialSweepingType,
 ) {
   const width = array.length;
   const height = array[0].length;
+  // Sweeping types are already committed by the swiper but still represent
+  // the same color — including them lets a partially-swept group re-mark its
+  // remaining columns on the next tick after revertUncommittedMarks runs.
   const colorTypes = [
     normalType,
     specialType,
@@ -68,6 +77,8 @@ function checkSquares(
     specialDeletionType,
     recursiveType,
     specialRecursiveType,
+    sweepingType,
+    specialSweepingType,
   ];
   const match = (v) => colorTypes.includes(v);
   for (let x = 0; x < width - 1; x++) {
@@ -127,6 +138,8 @@ function prepareForDeletion(array) {
       DELETION_TYPE_A_SPECIAL,
       RECURSIVE_TYPE_A,
       RECURSIVE_TYPE_A_SPECIAL,
+      SWEEPING_TYPE_A,
+      SWEEPING_TYPE_A_SPECIAL,
     );
     checkSquares(
       array,
@@ -136,6 +149,8 @@ function prepareForDeletion(array) {
       DELETION_TYPE_B_SPECIAL,
       RECURSIVE_TYPE_B,
       RECURSIVE_TYPE_B_SPECIAL,
+      SWEEPING_TYPE_B,
+      SWEEPING_TYPE_B_SPECIAL,
     );
     resolve([...array]);
   });

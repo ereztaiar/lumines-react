@@ -59,7 +59,7 @@ describe('full board sweep', () => {
         ]);
     });
 
-    it('sweeps all 16 columns: only the first column of each group is committed per pass, remaining columns revert and survive', async () => {
+    it('sweeps all 16 columns: all columns of each matched group are committed and cleared', async () => {
         const grid = g(BOARD);
 
         let totalScore = 0;
@@ -72,11 +72,14 @@ describe('full board sweep', () => {
 
         totalScore += await clearSweptColumn(grid, 15, CUBE);
 
-        // SWEEPING_TYPE_* is excluded from colorTypes in prepareForDeletion, so once a
-        // column is committed the 2x2 breaks and the remaining columns of the group are
-        // not re-marked. Only col 1 (A group1), col 4 (B group), and col 12 (A group2)
-        // are cleared — 2 cells each = 6 total.
-        expect(totalScore).toEqual(6);
+        // Each group is fully cleared:
+        //   A group1 (cols 1-2, rows 8-9): 4 cells
+        //   B group  (cols 4-5, rows 8-9): 4 cells
+        //     (cols 6-9 row 9 were recursive B but cannot re-detect because
+        //      row 8 of those cols is TYPE_A — they survive as live blocks)
+        //   A group2 (cols 12-13 rows 8-9, plus col 13 row 7 via flood fill): 5 cells
+        // Total: 13
+        expect(totalScore).toEqual(13);
 
         expect(s(grid)).toStrictEqual([
             '||||||||||||||||',  // row 0
@@ -85,10 +88,10 @@ describe('full board sweep', () => {
             '||||||BA||||||||',  // row 3  cube preserved
             '||||||AB||||||||',  // row 4  cube preserved
             '||||||||||||||||',  // row 5
-            '||||||||A||||B||',  // row 6  unchanged
-            '|||||||BBB|||A||',  // row 7  unchanged
-            '||A||BAAAAB||A||',  // row 8  cols 1,4,12 swept
-            '||A||%BBBBA||@||',  // row 9  cols 1,4,12 swept; cols 5-9 B/% survive
+            '||||||||A|||||||',  // row 6  col 13's B fell to row 9 via gravity
+            '|||||||BBB||||||',  // row 7  col 13's A was swept
+            '||||||AAAAB|||||',  // row 8  cols 1,2,4,5,12 swept; 6-10 survive
+            '||||||BBBBA||B||',  // row 9  cols 1,2,4,5,12 swept; B survivors 6-9, A at 10, fallen B at 13
         ]);
     });
 });
