@@ -20,8 +20,8 @@ function clampRateAtBottom(array, cube, rate) {
     return rate;
 }
 
-// Sweep marks are semi-transparent — the cube can pass through them, so they
-// don't count as obstacles. Only solid, non-swept cells block movement.
+// Sweeping marks are cells committed for deletion; the cube can pass through
+// them as a game rule. Only solid, non-swept cells block movement.
 function detectObstacles(array, cube, rate) {
     const rightVal = array[cube.bottomRight.x][cube.bottomRight.y + rate];
     const leftVal  = array[cube.bottomLeft.x][cube.bottomLeft.y + rate];
