@@ -16,11 +16,24 @@ const useCubeState = (props) => {
   const [currentCube, setCurrentCube] = useState(
     () => generateCube().next().value,
   );
-  const [newCube, setNewCube] = useState(CUBE_STATES.WAITING);
+  const [newCube, setNewCubeState] = useState(CUBE_STATES.WAITING);
+  const newCubeRef = useRef(CUBE_STATES.WAITING);
   const [isSplit, setIsSplit] = useState(false);
   const isSplitRef = useRef(false);
   const [isHardDropping, setIsHardDropping] = useState(false);
-  const [dropCount, setDropCount] = useState(0);
+  const [dropCount, setDropCountState] = useState(0);
+  const dropCountRef = useRef(0);
+
+  const setNewCube = (val) => {
+    newCubeRef.current = val;
+    setNewCubeState(val);
+  };
+
+  const setDropCount = (valOrFn) => {
+    const next = typeof valOrFn === "function" ? valOrFn(dropCountRef.current) : valOrFn;
+    dropCountRef.current = next;
+    setDropCountState(next);
+  };
 
   const setSplit = (val) => {
     isSplitRef.current = val;
@@ -28,12 +41,13 @@ const useCubeState = (props) => {
   };
 
   const startDrop = async () => {
+    setIsHardDropping(false);
     setNewCube(CUBE_STATES.DROP);
     setSplit(false);
   };
 
   const drop = async () => {
-    if (newCube !== CUBE_STATES.DROP) {
+    if (newCubeRef.current !== CUBE_STATES.DROP) {
       return null;
     }
     try {
@@ -98,6 +112,7 @@ const useCubeState = (props) => {
     isHardDropping,
     setIsHardDropping,
     dropCount,
+    dropCountRef,
     setDropCount,
     startDrop,
     drop,

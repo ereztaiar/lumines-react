@@ -26,7 +26,7 @@ const useGameLoop = (props) => {
 
     setTick(tick + 1 === MAX_TICK ? INITIAL_TICK : tick + 1);
 
-    if (cube.dropCount === MAX_TICK / 2) {
+    if (cube.dropCountRef.current === MAX_TICK / 2) {
       await cube.startDrop();
     } else if (cube.isHardDropping || tick % 10 === 0) {
       const liveCube = await cube.drop();
@@ -53,7 +53,7 @@ const useGameLoop = (props) => {
       setCurrentDeleted(0);
     }
 
-    if (cube.dropCount >= MAX_TICK) {
+    if (cube.dropCountRef.current >= MAX_TICK) {
       cube.setDropCount(0);
     }
 
@@ -62,7 +62,7 @@ const useGameLoop = (props) => {
 
   useEffect(() => {
     if (tick % 10) {
-      cube.setDropCount(cube.dropCount + 1);
+      cube.setDropCount((prev) => prev + 1);
     }
     return () => {};
   }, [tick]);
