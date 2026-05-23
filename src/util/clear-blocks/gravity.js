@@ -15,6 +15,27 @@ function getCubeAnchors(cube, array) {
   return map;
 }
 
+// Iterates bottom-up so relative block order is preserved while packing toward end.
+function compactSegmentTowardBottom(column, newColumn, start, end) {
+  let j = end;
+  for (let i = end; i >= start; i--) {
+    if (column[i] !== EMPTY) newColumn[j--] = column[i];
+  }
+}
+
+// Anchor rows are pinned (landed cube cells that must not shift). Each segment
+// between consecutive anchors compacts independently so the cube stays in place.
+function compactColumnWithAnchors(column, newColumn, anchorSet) {
+  const sortedAnchors = [...anchorSet].sort((a, b) => a - b);
+  let segStart = 0;
+  for (const ay of sortedAnchors) {
+    compactSegmentTowardBottom(column, newColumn, segStart, ay - 1);
+    newColumn[ay] = column[ay];
+    segStart = ay + 1;
+  }
+  compactSegmentTowardBottom(column, newColumn, segStart, column.length - 1);
+}
+
 function applyGravity(array, affectedCols, anchors = new Map()) {
   for (const col of affectedCols) {
     const column = array[col];
@@ -22,28 +43,11 @@ function applyGravity(array, affectedCols, anchors = new Map()) {
     const newColumn = new Array(column.length).fill(EMPTY);
 
     if (!anchorSet || anchorSet.size === 0) {
-      let j = column.length - 1;
-      for (let i = column.length - 1; i >= 0; i--) {
-        if (column[i] !== EMPTY) newColumn[j--] = column[i];
-      }
-      array[col] = newColumn;
-      continue;
+      compactSegmentTowardBottom(column, newColumn, 0, column.length - 1);
+    } else {
+      compactColumnWithAnchors(column, newColumn, anchorSet);
     }
 
-    const sortedAnchors = [...anchorSet].sort((a, b) => a - b);
-    let segStart = 0;
-    for (const ay of sortedAnchors) {
-      let j = ay - 1;
-      for (let i = ay - 1; i >= segStart; i--) {
-        if (column[i] !== EMPTY) newColumn[j--] = column[i];
-      }
-      newColumn[ay] = column[ay];
-      segStart = ay + 1;
-    }
-    let j = column.length - 1;
-    for (let i = column.length - 1; i >= segStart; i--) {
-      if (column[i] !== EMPTY) newColumn[j--] = column[i];
-    }
     array[col] = newColumn;
   }
 }
