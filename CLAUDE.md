@@ -31,23 +31,31 @@ React 17 / Webpack 5 Lumines game, Yarn workspaces monorepo. App shell in `src/`
 ```
 Screens subscribe to `useKeys()` and react in `useEffect([key])` — no central dispatcher. Key bindings dispatch from the provider owning the relevant state, not leaf components.
 
-**Game loop** (`GameView.jsx`): ~35ms tick-driven via `useTimer`. Grid cells are integers — see block types below. Per tick at `tick % 10 === 0`: drop cube, run `prepareForDeletion()` (swiper sweeps left-to-right), `clearColumn(grid, tick/10)`. At `tick === 1`: `clearFromDeletion()` reverts any unswept deletion marks. At `dropCount === MAX_TICK / 2`: spawn new cube. Cube ops in `src/util/swap.js` mutate grid and return `dest` descriptor; callers must update both `setGrid()` and `setCurrentCube()`. `moveDown` resolves `OUT_OF_BOUNDS` when landed.
+**Game loop** (`GameView.jsx`): ~35ms tick-driven via `useTimer`. Grid cells are single-character strings — see block types below. Per tick at `tick % 10 === 0`: drop cube, run `prepareForDeletion()` (swiper sweeps left-to-right), `commitColumnAsSweeping(grid, col)`, `clearSweptColumn(grid, prevCol, cube)`. At `tick === 1`: `revertUncommittedMarks()` reverts any unswept DELETION/RECURSIVE marks. At `dropCount === MAX_TICK / 2`: spawn new cube. Cube ops in `src/util/swap.js` mutate grid and return `dest` descriptor; callers must update both `setGrid()` and `setCurrentCube()`. `moveDown` resolves `OUT_OF_BOUNDS` when landed.
 
-**Block types** (`packages/@lumines/game-components/src/components/Board/logic.js`):
+**Block types** (`packages/@lumines/game-components/src/components/Board/block-types.js`):
 
 | Value | Constant | Meaning |
 |-------|----------|---------|
-| `0` | `EMPTY` | Empty cell |
-| `1` | `TYPE_A` | Color A block |
-| `2` | `TYPE_B` | Color B block |
-| `3` | `TYPE_A_SPECIAL` | Special color A block |
-| `4` | `TYPE_B_SPECIAL` | Special color B block |
-| `5` | `DELETION_TYPE_A` | Normal color A pending deletion |
-| `6` | `DELETION_TYPE_B` | Normal color B pending deletion |
-| `7` | `DELETION_TYPE_A_SPECIAL` | Special color A pending deletion |
-| `8` | `DELETION_TYPE_B_SPECIAL` | Special color B pending deletion |
+| `'\|'` | `EMPTY` | Empty cell |
+| `'A'` | `TYPE_A` | Color A block |
+| `'B'` | `TYPE_B` | Color B block |
+| `'@'` | `TYPE_A_SPECIAL` | Special color A — flood-fills neighbors when in a 2×2 |
+| `'%'` | `TYPE_B_SPECIAL` | Special color B |
+| `'a'` | `DELETION_TYPE_A` | Color A corner of matched 2×2 — orange glow, tentative |
+| `'b'` | `DELETION_TYPE_B` | Color B corner of matched 2×2 — tentative |
+| `'*'` | `DELETION_TYPE_A_SPECIAL` | Special A corner of matched 2×2 — tentative |
+| `'~'` | `DELETION_TYPE_B_SPECIAL` | Special B corner of matched 2×2 — tentative |
+| `'X'` | `RECURSIVE_TYPE_A` | Color A reached by flood fill — 0.5 opacity, tentative |
+| `'x'` | `RECURSIVE_TYPE_B` | Color B reached by flood fill — 0.5 opacity, tentative |
+| `'+'` | `RECURSIVE_TYPE_A_SPECIAL` | Special A reached by flood fill — tentative |
+| `'='` | `RECURSIVE_TYPE_B_SPECIAL` | Special B reached by flood fill — tentative |
+| `'S'` | `SWEEPING_TYPE_A` | Color A committed by swiper — 0.45 opacity, NOT reverted |
+| `'s'` | `SWEEPING_TYPE_B` | Color B committed by swiper |
+| `'#'` | `SWEEPING_TYPE_A_SPECIAL` | Special A committed by swiper |
+| `'$'` | `SWEEPING_TYPE_B_SPECIAL` | Special B committed by swiper |
 
-Types `1` and `3` are the same color (A); types `2` and `4` are the same color (B). A 2×2 square can be any mix of the two same-color types. When a square contains a special block (`3` or `4`), `prepareForDeletion` BFS flood-fills all connected same-color blocks and marks them for deletion — normal blocks become `5`/`6`, special blocks become `7`/`8`. Using separate markers for specials allows `clearFromDeletion` to revert `7`→`3` and `8`→`4`, so the special block retains its type across swiper cycles and the flood fill re-triggers correctly on each pass.
+`'A'` and `'@'` are the same color (A); `'B'` and `'%'` are the same color (B). DELETION and RECURSIVE marks are tentative — `revertUncommittedMarks` clears them each tick. SWEEPING marks are committed and persist until `clearSweptColumn` removes them. When a 2×2 contains a special block, `prepareForDeletion` BFS flood-fills connected same-color blocks into RECURSIVE state; DELETION/RECURSIVE are both promoted to SWEEPING by `commitColumnAsSweeping`.
 
 **Skins** (`core/src/hooks/useSkin.js`): Cycles `default`, `purple`, `yellow` (via `Skins` alias). Folders export `BackgroundComponent` + `.less` styles + SVG paths. Auto-rotates on score changes or `s` key.
 

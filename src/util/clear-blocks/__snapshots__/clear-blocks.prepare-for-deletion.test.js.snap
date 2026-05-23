@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`prepareForDeletion 3-wide same-color column (overlapping 2x2s) marks all cells (dense grid) 1`] = `
+Array [
+  "||||||||||||||||",
+  "||||||||||||||||",
+  "||||||||||||||||",
+  "||||||||||||||||",
+  "||||aabb||||bbaa",
+  "||||aabb||||bbaa",
+  "||||aabb||||bbaa",
+  "aaaabbbbaaaabbbb",
+  "aaaabbbbaaaabbbb",
+  "aaaabbbbaaaabbbb",
+]
+`;
+
+exports[`prepareForDeletion A-over-B stacked groups are both marked (dense grid) 1`] = `
+Array [
+  "||||||||||||||||",
+  "||||||||||||||||",
+  "AABBAABBAABBAABB",
+  "aabbaabbaabbaabb",
+  "aabbaabbaabbaabb",
+  "aabbaabbaabbaabb",
+  "bbaabbaabbaabbaa",
+  "bbaabbaabbaabbaa",
+  "bbaabbaabbaabbaa",
+  "bbaabbaabbaabbaa",
+]
+`;
+
+
+exports[`prepareForDeletion B-type special percent flood-fills connected B-color blocks (dense grid) 1`] = `
+Array [
+  "||||||||||||||||",
+  "||||||||||||||||",
+  "||||||||||||||||",
+  "AbbaabbA||||||||",
+  "AbbaabbA||||||||",
+  "AbbaabbA||||||||",
+  "AbbaabbA||||||||",
+  "AbbaabbA||||||||",
+  "AbbA~bbb||||||||",
+  "AbbAbbbb||||||||",
+]
+`;
+
+exports[`prepareForDeletion floating 2x2 with empty below both columns is not marked (dense rest of grid) 1`] = `
+Array [
+  "||||AA||||||||||",
+  "||||AA||||||||||",
+  "||||||||||||||||",
+  "||||||||||||||||",
+  "||||||||aabb||||",
+  "||||||||aabb||||",
+  "aabbaabbaabbaabb",
+  "aabbaabbaabbaabb",
+  "aabbaabbaabbaabb",
+  "aabbaabbaabbaabb",
+]
+`;
+
+exports[`prepareForDeletion multiple independent A and B groups on same grid are all marked (dense grid) 1`] = `
+Array [
+  "||||||||||||||||",
+  "||||||||||||||||",
+  "||||||||||||||||",
+  "||||||||||||||||",
+  "aabb||||bbaa||||",
+  "aabb||||bbaa||||",
+  "aabb||||bbaa||||",
+  "aabbaabbaabbaabb",
+  "aabbaabbaabbaabb",
+  "aabbaabbaabbaabb",
+]
+`;
+
+exports[`prepareForDeletion special flood fill extends upward through a column of same-color blocks (dense grid) 1`] = `
+Array [
+  "||||||||||||||||",
+  "||||||||||||||||",
+  "||||XBBX||||||||",
+  "||||XbbX||||||||",
+  "||||XbbX||||||||",
+  "AbbaabbaabbA||||",
+  "AbbaabbaabbA||||",
+  "Abba*aBaabbA||||",
+  "AbbaaaaabbA|||||",
+  "AbbaaaaabbA|||||",
+]
+`;

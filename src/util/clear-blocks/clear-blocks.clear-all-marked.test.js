@@ -63,7 +63,7 @@ describe('clearAllMarked', () => {
             '||||||||||||||||',
             '||||||||||||||||',
             '||||*a||||||||||',
-            '|||aaaaa||||||||',
+            '|||XaaXX||||||||',
         ]);
 
         const total = await clearAllMarked(array);

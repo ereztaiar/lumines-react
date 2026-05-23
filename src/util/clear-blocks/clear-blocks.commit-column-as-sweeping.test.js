@@ -4,7 +4,7 @@ import { g, s } from '../grid-test-helpers.js';
 
 
 describe('commitColumnAsSweeping', () => {
-    it('converts DELETION_TYPE_A cells in the column to SWEEP_TYPE_A', async () => {
+    it('converts DELETION_TYPE_A cells in the column to SWEEPING_TYPE_A', async () => {
         const array = g([
             '||||',
             '||a|',
@@ -95,6 +95,24 @@ describe('commitColumnAsSweeping', () => {
             'a||',
             '|||',
             '|||',
+        ]);
+    });
+
+    it('converts RECURSIVE_TYPE_* cells in the column to their matching SWEEPING_TYPE_*', async () => {
+        const array = g([
+            '|X||',
+            '|x||',
+            '|+||',
+            '|=||',
+        ]);
+
+        const count = await commitColumnAsSweeping(array, 1);
+        expect(count).toBe(4);
+        expect(s(array)).toStrictEqual([
+            '|S||',
+            '|s||',
+            '|#||',
+            '|$||',
         ]);
     });
 
