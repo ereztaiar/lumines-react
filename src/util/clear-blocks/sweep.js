@@ -48,48 +48,59 @@ function commitColumnAsSweeping(array, col) {
   });
 }
 
+function collectCubeRowsInCol(cube, col) {
+  const rows = new Set();
+  if (!cube) return rows;
+  for (const key of ["topLeft", "topRight", "bottomLeft", "bottomRight"]) {
+    const cell = cube[key];
+    if (cell && cell.x === col) rows.add(cell.y);
+  }
+  return rows;
+}
+
+// Cube cells that overlap this column are restored to their base type rather than
+// cleared — the falling cube is immune to being swept mid-flight.
+function eraseSweptCells(column, cubeRows) {
+  let count = 0;
+  for (let y = 0; y < column.length; y++) {
+    if (!isBeingSwept(column[y])) continue;
+    if (cubeRows.has(y)) {
+      column[y] = sweepingToNormal(column[y]);
+    } else {
+      column[y] = EMPTY;
+      count++;
+    }
+  }
+  return count;
+}
+
+// After clearing, gravity would pull blocks down into the cube's current position.
+// Pinning an anchor one row below the cube's lowest cell in this column stops
+// blocks from falling into the gap the cube still occupies.
+function addBelowCubeAnchor(anchors, cube, col, colLength) {
+  if (!cube) return;
+  const colCells = ["topLeft", "topRight", "bottomLeft", "bottomRight"]
+    .filter((k) => cube[k] && cube[k].x === col)
+    .map((k) => cube[k].y);
+  if (colCells.length === 0) return;
+  const belowRow = Math.max(...colCells) + 1;
+  if (belowRow < colLength) {
+    if (!anchors.has(col)) anchors.set(col, new Set());
+    anchors.get(col).add(belowRow);
+  }
+}
+
 function clearSweptColumn(array, col, cube = null) {
   return new Promise((resolve) => {
     if (col < 0 || col >= array.length) {
       resolve(0);
       return;
     }
-    const column = array[col];
-    let count = 0;
-
-    const cubeRows = new Set();
-    if (cube) {
-      for (const key of ["topLeft", "topRight", "bottomLeft", "bottomRight"]) {
-        const cell = cube[key];
-        if (cell && cell.x === col) cubeRows.add(cell.y);
-      }
-    }
-
-    for (let y = 0; y < column.length; y++) {
-      if (!isBeingSwept(column[y])) continue;
-      if (cubeRows.has(y)) {
-        // Restore the cube's cell to its base type — the falling cube is
-        // immune to being swept mid-flight; only landed blocks get cleared.
-        column[y] = sweepingToNormal(column[y]);
-      } else {
-        column[y] = EMPTY;
-        count++;
-      }
-    }
+    const cubeRows = collectCubeRowsInCol(cube, col);
+    const count = eraseSweptCells(array[col], cubeRows);
     if (count > 0) {
       const anchors = getCubeAnchors(cube, array);
-      if (cube) {
-        const colCells = ["topLeft", "topRight", "bottomLeft", "bottomRight"]
-          .filter((k) => cube[k] && cube[k].x === col)
-          .map((k) => cube[k].y);
-        if (colCells.length > 0) {
-          const belowRow = Math.max(...colCells) + 1;
-          if (belowRow < array[col].length) {
-            if (!anchors.has(col)) anchors.set(col, new Set());
-            anchors.get(col).add(belowRow);
-          }
-        }
-      }
+      addBelowCubeAnchor(anchors, cube, col, array[col].length);
       applyGravity(array, new Set([col]), anchors);
     }
     resolve(count);
