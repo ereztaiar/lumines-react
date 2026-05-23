@@ -65,6 +65,8 @@ function checkSquares(
   sweepingType,
   specialSweepingType,
 ) {
+  const isSpecialCell = (v) =>
+    v === specialType || v === specialDeletionType || v === specialRecursiveType;
   const width = array.length;
   const height = array[0].length;
   // Sweeping types are already committed by the swiper but still represent
@@ -91,8 +93,6 @@ function checkSquares(
         match(array[x][y - 1]) &&
         match(array[x + 1][y - 1])
       ) {
-        const isSpecialCell = (v) =>
-          v === specialType || v === specialDeletionType || v === specialRecursiveType;
         const hasSpecial = [
           array[x][y],
           array[x + 1][y],
@@ -102,7 +102,8 @@ function checkSquares(
 
         const markCell = (cx, cy) => {
           const v = array[cx][cy];
-          if (v === normalType || v === recursiveType) array[cx][cy] = deletionType;
+          if (v === normalType || v === recursiveType)
+            array[cx][cy] = deletionType;
           else if (v === specialType || v === specialRecursiveType)
             array[cx][cy] = specialDeletionType;
         };
