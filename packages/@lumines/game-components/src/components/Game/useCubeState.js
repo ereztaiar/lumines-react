@@ -30,7 +30,8 @@ const useCubeState = (props) => {
   };
 
   const setDropCount = (valOrFn) => {
-    const next = typeof valOrFn === "function" ? valOrFn(dropCountRef.current) : valOrFn;
+    const next =
+      typeof valOrFn === "function" ? valOrFn(dropCountRef.current) : valOrFn;
     dropCountRef.current = next;
     setDropCountState(next);
   };
