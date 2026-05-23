@@ -4,65 +4,97 @@ import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board/bloc
 
 const { EMPTY } = BLOCKS_TYPES;
 
-function moveDown(array, cube, rate = DROP_DEFAULT) {
-    const src = {...cube};
-    const dest = {};
-    return new Promise((resolve, reject) => {
-        if (typeof array[cube.bottomLeft.x] === 'undefined' || typeof array[cube.bottomLeft.x][cube.bottomLeft.y + 2] === 'undefined') {
-            if (typeof array[cube.bottomLeft.x][cube.bottomLeft.y + 1] !== 'undefined') {
-                rate = DROP_DEFAULT;
-            } else {
-                resolve([array, dest, OUT_OF_BOUNDS]);
-                return;
-            }
+// When the cube is one row from the bottom a 2-step drop would overshoot; clamp
+// to 1. Returns null when the cube is already past the last row (truly OOB).
+function clampRateAtBottom(array, cube, rate) {
+    const col = array[cube.bottomLeft.x];
+    if (typeof col === 'undefined' || typeof col[cube.bottomLeft.y + 2] === 'undefined') {
+        if (typeof col[cube.bottomLeft.y + 1] !== 'undefined') {
+            return DROP_DEFAULT;
         }
+        return null;
+    }
+    return rate;
+}
+
+// Sweep marks are semi-transparent — the cube can pass through them, so they
+// don't count as obstacles. Only solid, non-swept cells block movement.
+function detectObstacles(array, cube, rate) {
+    const rightVal = array[cube.bottomRight.x][cube.bottomRight.y + rate];
+    const leftVal  = array[cube.bottomLeft.x][cube.bottomLeft.y + rate];
+    return {
+        leftBlocked:  leftVal  !== EMPTY && !isBeingSwept(leftVal),
+        rightBlocked: rightVal !== EMPTY && !isBeingSwept(rightVal),
+    };
+}
+
+// A blocked side stays at its current position; a free side advances by rate.
+function computeDest(cube, leftBlocked, rightBlocked, rate) {
+    const dest = {};
+    if (rightBlocked) {
+        dest.topRight    = { x: cube.topRight.x,    y: cube.topRight.y };
+        dest.bottomRight = { x: cube.bottomRight.x, y: cube.bottomRight.y };
+    } else {
+        dest.topRight    = { x: cube.topRight.x,    y: cube.topRight.y    + rate };
+        dest.bottomRight = { x: cube.bottomRight.x, y: cube.bottomRight.y + rate };
+    }
+    if (leftBlocked) {
+        dest.topLeft    = { x: cube.topLeft.x,   y: cube.topLeft.y };
+        dest.bottomLeft = { x: cube.bottomLeft.x, y: cube.bottomLeft.y };
+    } else {
+        dest.topLeft    = { x: cube.topLeft.x,   y: cube.topLeft.y    + rate };
+        dest.bottomLeft = { x: cube.bottomLeft.x, y: cube.bottomLeft.y + rate };
+    }
+    return dest;
+}
+
+// Swept marks are absorbed rather than swapped: clear the source cell and write
+// the cube block into the destination so the swept mark doesn't bubble upward.
+function applyMoveToGrid(array, src, dest) {
+    for (const block of downOrder) {
+        const srcX = src[block].x, srcY = src[block].y;
+        const dstX = dest[block].x, dstY = dest[block].y;
+        const tmp = array[srcX][srcY];
+        if (isBeingSwept(array[dstX][dstY])) {
+            array[srcX][srcY] = EMPTY;
+            array[dstX][dstY] = tmp;
+        } else {
+            array[srcX][srcY] = array[dstX][dstY];
+            array[dstX][dstY] = tmp;
+        }
+    }
+}
+
+function moveDown(array, cube, rate = DROP_DEFAULT) {
+    const src = { ...cube };
+    return new Promise((resolve, reject) => {
+        const clampedRate = clampRateAtBottom(array, cube, rate);
+        if (clampedRate === null) {
+            resolve([array, {}, OUT_OF_BOUNDS]);
+            return;
+        }
+        rate = clampedRate;
+
+        let dest;
         try {
-            const rightVal = array[cube.bottomRight.x][cube.bottomRight.y + rate];
-            const leftVal  = array[cube.bottomLeft.x][cube.bottomLeft.y + rate];
-            const right = rightVal !== EMPTY && !isBeingSwept(rightVal);
-            const left  = leftVal  !== EMPTY && !isBeingSwept(leftVal);
-            // Cube moves as a rigid unit until it splits: if either side hits a
-            // solid block while both halves are still level, land the whole cube.
-            if (src.bottomLeft.y === src.bottomRight.y && (left || right)) {
-                resolve([array, dest, OUT_OF_BOUNDS]);
+            const { leftBlocked, rightBlocked } = detectObstacles(array, cube, rate);
+
+            // Land the whole cube as a rigid unit when both sides are level and
+            // either hits a solid block — no asymmetric split on first contact.
+            if (src.bottomLeft.y === src.bottomRight.y && (leftBlocked || rightBlocked)) {
+                resolve([array, {}, OUT_OF_BOUNDS]);
                 return;
             }
-            if (right) {
-                dest.topRight = {x: cube.topRight.x, y: cube.topRight.y};
-                dest.bottomRight = {x: cube.bottomRight.x, y: cube.bottomRight.y};
-            } else {
-                dest.topRight = {x: cube.topRight.x, y: cube.topRight.y + rate};
-                dest.bottomRight = {x: cube.bottomRight.x, y: cube.bottomRight.y + rate};
-            }
 
-            if (left) {
-                dest.topLeft = {x: cube.topLeft.x, y: cube.topLeft.y};
-                dest.bottomLeft = {x: cube.bottomLeft.x, y: cube.bottomLeft.y};
-            } else {
-                dest.topLeft = {x: cube.topLeft.x, y: cube.topLeft.y + rate};
-                dest.bottomLeft = {x: cube.bottomLeft.x, y: cube.bottomLeft.y + rate};
-            }
-
+            dest = computeDest(cube, leftBlocked, rightBlocked, rate);
         } catch (ex) {
             reject(ex);
             return;
         }
 
-        for (const block of downOrder) {
-            const srcX = src[block].x, srcY = src[block].y;
-            const dstX = dest[block].x, dstY = dest[block].y;
-            const tmp = array[srcX][srcY];
-            if (isBeingSwept(array[dstX][dstY])) {
-                // Absorb the swept block rather than swapping: the cube passes
-                // through it cleanly without bubbling swept marks to a higher row.
-                array[srcX][srcY] = EMPTY;
-                array[dstX][dstY] = tmp;
-            } else {
-                array[srcX][srcY] = array[dstX][dstY];
-                array[dstX][dstY] = tmp;
-            }
-        }
+        applyMoveToGrid(array, src, dest);
 
+        // Neither side actually moved — cube is fully landed.
         if (src.bottomLeft.y === dest.bottomLeft.y && src.bottomRight.y === dest.bottomRight.y) {
             resolve([array, dest, OUT_OF_BOUNDS]);
             return;
