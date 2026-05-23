@@ -31,10 +31,9 @@ async function gameTick(grid, cube, swiperCol, prevSwiperCol) {
 
 
 describe('cube + swiper interaction (realistic stacks)', () => {
-    it('cube falling toward an uneven stack does not split when one column is shorter', async () => {
-        // realistic: cube starts at top, stack at the bottom.
+    it('cube splits when one column is shorter — free side falls to the deeper stack', async () => {
         // col 7 stack tops at row 7 (rows 7-9). col 8 stack tops at row 5 (rows 5-9).
-        // when cube reaches the stack, col 8 has support sooner than col 7.
+        // right side hits col 8 first and stops; left side continues falling to col 7 stack.
         const grid = g([
             '|||||||AB|||||||',  // 0 cube
             '|||||||AB|||||||',  // 1 cube
@@ -59,15 +58,13 @@ describe('cube + swiper interaction (realistic stacks)', () => {
         for (let swiperCol = 0; swiperCol < 16; swiperCol++) {
             lastResult = await gameTick(grid, cube, swiperCol, prevSwiperCol);
             cube = lastResult.cube;
-            // The cube must never become split mid-fall.
-            expect(cube.bottomLeft.y).toBe(cube.bottomRight.y);
             prevSwiperCol = swiperCol;
             if (lastResult.outOfBounds) break;
         }
-        // when the cube lands, it should land sitting on the SHORTER stack
-        // (right side, col 8 at row 5). Bottom of cube at row 4.
-        expect(cube.bottomLeft.y).toBe(4);
+        expect(lastResult.outOfBounds).toBe(true);
+        // right stopped on the shorter (col 8) stack; left fell two rows deeper to col 7 stack
         expect(cube.bottomRight.y).toBe(4);
+        expect(cube.bottomLeft.y).toBe(6);
     });
 
     it('cube does not split when swiper clears a 2x2 in the stack below it, leaving asymmetric gap', async () => {
@@ -107,11 +104,10 @@ describe('cube + swiper interaction (realistic stacks)', () => {
         }
     });
 
-    it('reproduces the user-reported behavior: floating cube cell after asymmetric land + later gravity sweep', async () => {
-        // setup: cube above an uneven stack
-        // col 7 stack: rows 5-9 (top row 5)
-        // col 8 stack: rows 8-9 (top row 8)
-        // col 7 has a matched 2x2 with col 6 at rows 4-5 — will be swept
+    it('cube splits when falling toward an asymmetric stack and both sides eventually land', async () => {
+        // col 6 stack: rows 5-8. col 7 stack: rows 6-9. col 8 stack: rows 8-9.
+        // cols 6-7 rows 6-7 form a 2x2 match — deletion marks block the left side early,
+        // causing a split; right side falls deeper to col 8 stack.
         const grid = g([
             '|||||||AB|||||||',  // 0 cube
             '|||||||AB|||||||',  // 1 cube
@@ -119,10 +115,10 @@ describe('cube + swiper interaction (realistic stacks)', () => {
             '||||||||||||||||',  // 3
             '||||||||||||||||',  // 4
             '||||||A|||||||||',  // 5 col 6 top
-            '||||||AA||||||||',  // 6 paired with col 7 row 6 for sweep
-            '||||||AA||||||||',  // 7 the 2x2 AA AA = match (cols 6-7, rows 6-7)
-            '||||||AAA|||||||',  // 8
-            '|||||||BB|||||||',  // 9 col 8 ends here
+            '||||||AA||||||||',  // 6 cols 6-7
+            '||||||AA||||||||',  // 7 2x2 match (cols 6-7, rows 6-7)
+            '||||||AAA|||||||',  // 8 col 8 top
+            '|||||||BB|||||||',  // 9
         ]);
         let cube = {
             topLeft:     { x: 7, y: 0 },
@@ -132,24 +128,16 @@ describe('cube + swiper interaction (realistic stacks)', () => {
         };
 
         let prevSwiperCol = null;
-        const trace = [];
         let lastResult = null;
         for (let swiperCol = 0; swiperCol < 16; swiperCol++) {
             lastResult = await gameTick(grid, cube, swiperCol, prevSwiperCol);
             cube = lastResult.cube;
-            trace.push({
-                swiperCol,
-                cubeY: [cube.bottomLeft.y, cube.bottomRight.y],
-                outOfBounds: lastResult.outOfBounds,
-                grid7: grid[7].join(''),
-                grid8: grid[8].join(''),
-            });
-            // CRITICAL: cube must stay level (no split)
-            if (cube.bottomLeft.y !== cube.bottomRight.y) {
-                console.log('SPLIT DETECTED at swiperCol=', swiperCol, trace);
-                throw new Error(`cube split: ${JSON.stringify(cube)}`);
-            }
             prevSwiperCol = swiperCol;
+            if (lastResult.outOfBounds) break;
         }
+        expect(lastResult.outOfBounds).toBe(true);
+        // left blocked by deletion marks above col 7 stack; right fell to col 8 stack
+        expect(cube.bottomLeft.y).toBe(5);
+        expect(cube.bottomRight.y).toBe(7);
     });
 });

@@ -142,7 +142,7 @@ describe('move block down', () => {
         expect(array[8][1]).toBe('|');
     });
 
-    it('lands whole cube when SWEEP is transparent on one side but real block on the other', async () => {
+    it('splits when SWEEP is transparent on one side but real block on the other', async () => {
         const array = g([
             '||||||||||||||||',
             '|||||||AB|||||||',
@@ -162,17 +162,22 @@ describe('move block down', () => {
             bottomRight: { x: 8, y: 2 },
         };
 
-        const [, , outOfBounds] = await moveDown(array, cube);
+        const [, dest, outOfBounds] = await moveDown(array, cube);
 
-        expect(outOfBounds).toBe(errors.OUT_OF_BOUNDS);
-        // grid must be unchanged — cube lands in place without splitting
-        expect(array[7][1]).toBe('A');
+        // right is blocked by solid B; left passes through the SWEEP mark — cube splits
+        expect(outOfBounds).toBeUndefined();
+        expect(dest.bottomLeft.y).toBe(3);
+        expect(dest.bottomRight.y).toBe(2);
+        // left side moved down through the sweep (sweep absorbed, not bubbled)
+        expect(array[7][1]).toBe('|');
         expect(array[7][2]).toBe('A');
+        expect(array[7][3]).toBe('A');
+        // right side stayed in place
         expect(array[8][1]).toBe('B');
         expect(array[8][2]).toBe('B');
     });
 
-    it('lands whole cube when left is blocked by solid block', async () => {
+    it('splits when left is blocked by solid block but right is free', async () => {
         const array = g([
             '||||||||||||||||',
             '||||||||||||||||',
@@ -191,21 +196,18 @@ describe('move block down', () => {
             bottomLeft:  { x: 7, y: 4 },
             bottomRight: { x: 8, y: 4 },
         };
-        const [, , outOfBounds] = await moveDown(array, cube);
+        const [, dest, outOfBounds] = await moveDown(array, cube);
 
-        expect(outOfBounds).toBe(errors.OUT_OF_BOUNDS);
-        // grid must be unchanged — cube lands in place as a unit
-        expect(s(array)).toStrictEqual([
-            '||||||||||||||||',
-            '||||||||||||||||',
-            '||||||||||||||||',
-            '|||||||AA|||||||',
-            '||||||%BB|||||||',
-            '||||||%@||||||||',
-            '||||||%@||||||||',
-            '||||||%@||||||||',
-            '||||||%@||||||||',
-            '||||||%@||||||||',
-        ]);
+        // left is blocked by '@' at row 5; right is free — cube splits
+        expect(outOfBounds).toBeUndefined();
+        expect(dest.bottomLeft.y).toBe(4);
+        expect(dest.bottomRight.y).toBe(5);
+        // left side stays in place
+        expect(array[7][3]).toBe('A');
+        expect(array[7][4]).toBe('B');
+        // right side moved down one row
+        expect(array[8][3]).toBe('|');
+        expect(array[8][4]).toBe('A');
+        expect(array[8][5]).toBe('B');
     });
 });

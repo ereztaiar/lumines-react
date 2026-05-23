@@ -5,15 +5,18 @@ import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board/bloc
 const { EMPTY } = BLOCKS_TYPES;
 
 // When the cube is one row from the bottom a 2-step drop would overshoot; clamp
-// to 1. Returns null when the cube is already past the last row (truly OOB).
+// to 1. Returns null only when both sides are past the last row (truly OOB).
+// Must check both sides: a split cube can have one side at the floor while the
+// other is still in the air.
 function clampRateAtBottom(array, cube, rate) {
-    const col = array[cube.bottomLeft.x];
-    if (typeof col === 'undefined' || typeof col[cube.bottomLeft.y + 2] === 'undefined') {
-        if (typeof col[cube.bottomLeft.y + 1] !== 'undefined') {
-            return DROP_DEFAULT;
-        }
-        return null;
-    }
+    const leftCol  = array[cube.bottomLeft.x];
+    const rightCol = array[cube.bottomRight.x];
+    const leftOOB  = !leftCol  || typeof leftCol[cube.bottomLeft.y   + 1] === 'undefined';
+    const rightOOB = !rightCol || typeof rightCol[cube.bottomRight.y + 1] === 'undefined';
+    if (leftOOB && rightOOB) return null;
+    const leftNeedsClamp  = !leftCol  || typeof leftCol[cube.bottomLeft.y   + 2] === 'undefined';
+    const rightNeedsClamp = !rightCol || typeof rightCol[cube.bottomRight.y + 2] === 'undefined';
+    if (leftNeedsClamp || rightNeedsClamp) return DROP_DEFAULT;
     return rate;
 }
 
@@ -79,9 +82,10 @@ function moveDown(array, cube, rate = DROP_DEFAULT) {
         try {
             const { leftBlocked, rightBlocked } = detectObstacles(array, cube, rate);
 
-            // Land the whole cube as a rigid unit when both sides are level and
-            // either hits a solid block — no asymmetric split on first contact.
-            if (src.bottomLeft.y === src.bottomRight.y && (leftBlocked || rightBlocked)) {
+            // Land the whole cube as a rigid unit only when both sides are level
+            // and BOTH hit a solid block simultaneously. One blocked side means
+            // the other is free to keep falling — that produces the split.
+            if (src.bottomLeft.y === src.bottomRight.y && leftBlocked && rightBlocked) {
                 resolve([array, {}, OUT_OF_BOUNDS]);
                 return;
             }
