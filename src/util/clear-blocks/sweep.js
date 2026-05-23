@@ -18,6 +18,17 @@ const {
   SWEEPING_TYPE_B_SPECIAL,
 } = BLOCKS_TYPES;
 
+// Both DELETION (matched corner) and RECURSIVE (flood-filled neighbor) collapse to
+// the same SWEEPING variant — the swiper treats them identically once committed.
+// Returns null for cells that are not pending deletion.
+function promoteToSweeping(v) {
+  if (v === DELETION_TYPE_A || v === RECURSIVE_TYPE_A) return SWEEPING_TYPE_A;
+  if (v === DELETION_TYPE_B || v === RECURSIVE_TYPE_B) return SWEEPING_TYPE_B;
+  if (v === DELETION_TYPE_A_SPECIAL || v === RECURSIVE_TYPE_A_SPECIAL) return SWEEPING_TYPE_A_SPECIAL;
+  if (v === DELETION_TYPE_B_SPECIAL || v === RECURSIVE_TYPE_B_SPECIAL) return SWEEPING_TYPE_B_SPECIAL;
+  return null;
+}
+
 function commitColumnAsSweeping(array, col) {
   return new Promise((resolve) => {
     if (col < 0 || col >= array.length) {
@@ -27,18 +38,9 @@ function commitColumnAsSweeping(array, col) {
     const column = array[col];
     let count = 0;
     for (let y = 0; y < column.length; y++) {
-      const v = column[y];
-      if (v === DELETION_TYPE_A || v === RECURSIVE_TYPE_A) {
-        column[y] = SWEEPING_TYPE_A;
-        count++;
-      } else if (v === DELETION_TYPE_B || v === RECURSIVE_TYPE_B) {
-        column[y] = SWEEPING_TYPE_B;
-        count++;
-      } else if (v === DELETION_TYPE_A_SPECIAL || v === RECURSIVE_TYPE_A_SPECIAL) {
-        column[y] = SWEEPING_TYPE_A_SPECIAL;
-        count++;
-      } else if (v === DELETION_TYPE_B_SPECIAL || v === RECURSIVE_TYPE_B_SPECIAL) {
-        column[y] = SWEEPING_TYPE_B_SPECIAL;
+      const swept = promoteToSweeping(column[y]);
+      if (swept !== null) {
+        column[y] = swept;
         count++;
       }
     }
