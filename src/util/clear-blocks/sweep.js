@@ -60,9 +60,11 @@ function collectCubeRowsInCol(cube, col) {
 
 // Cube cells that overlap this column are restored to their base type rather than
 // cleared — the falling cube is immune to being swept mid-flight.
-function eraseSweptCells(column, cubeRows) {
+// startRow skips cells above the sweep region so a separate upper sweep group
+// is not erased by this pass.
+function eraseSweptCells(column, cubeRows, startRow = 0) {
   let count = 0;
-  for (let y = 0; y < column.length; y++) {
+  for (let y = startRow; y < column.length; y++) {
     if (!isBeingSwept(column[y])) continue;
     if (cubeRows.has(y)) {
       column[y] = sweepingToNormal(column[y]);
@@ -90,18 +92,45 @@ function addBelowCubeAnchor(anchors, cube, col, colLength) {
   }
 }
 
+// Find the row at which the bottom sweep region starts. Scan upward from the
+// last non-empty row; the first empty cell encountered is the gap that separates
+// the sweep region from any upper-group sweep cells above it.
+function findSweepStartRow(column) {
+  let lastNonEmpty = -1;
+  for (let y = 0; y < column.length; y++) {
+    if (column[y] !== EMPTY) lastNonEmpty = y;
+  }
+  if (lastNonEmpty < 0) return 0;
+  for (let y = lastNonEmpty; y >= 0; y--) {
+    if (column[y] === EMPTY) return y + 1;
+  }
+  return 0;
+}
+
 function clearSweptColumn(array, col, cube = null) {
   return new Promise((resolve) => {
     if (col < 0 || col >= array.length) {
       resolve(0);
       return;
     }
+    const column = array[col];
+    const startRow = findSweepStartRow(column);
+
     const cubeRows = collectCubeRowsInCol(cube, col);
-    const count = eraseSweptCells(array[col], cubeRows);
+    const count = eraseSweptCells(column, cubeRows, startRow);
     if (count > 0) {
       const anchors = getCubeAnchors(cube, array);
-      addBelowCubeAnchor(anchors, cube, col, array[col].length);
-      applyGravity(array, new Set([col]), anchors);
+      addBelowCubeAnchor(anchors, cube, col, column.length);
+      // Sweep cells sitting above the gap (rows 0..startRow-1) belong to a
+      // different group — pin them so gravity does not collapse them into the
+      // space freed by this pass.
+      for (let y = 0; y < startRow; y++) {
+        if (isBeingSwept(column[y])) {
+          if (!anchors.has(col)) anchors.set(col, new Set());
+          anchors.get(col).add(y);
+        }
+      }
+      applyGravity(array, new Set([col]), anchors);// Gravity may cause new cells to become swept if they fall onto a pending deletion.
     }
     resolve(count);
   });

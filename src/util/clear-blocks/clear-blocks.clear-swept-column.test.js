@@ -236,4 +236,39 @@ describe('clearSweptColumn', () => {
             '||||',
         ]);
     });
+
+    it('does not clear SWEEP cells above the last empty row', async () => {
+        const array = g([
+            '|s|',
+            '|S|',
+            '|||',
+            '|||',
+            '|||',
+            '|||',
+            '|S|',
+            '|S|',
+            '|S|',
+            '|s|',
+            '|s|',
+            '|s|',
+        ]);
+
+        const count = await clearSweptColumn(array, 1);
+        expect(count).toBe(6);
+        // Rows 0-1 are above the last empty — they must not be erased or moved.
+        expect(s(array)).toStrictEqual([
+            '|s|',
+            '|S|',
+            '|||',
+            '|||',
+            '|||',
+            '|||',
+            '|||',
+            '|||',
+            '|||',
+            '|||',
+            '|||',
+            '|||',
+        ]);
+    });
 });
