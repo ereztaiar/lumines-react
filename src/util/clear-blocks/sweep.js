@@ -92,6 +92,16 @@ function addBelowCubeAnchor(anchors, cube, col, colLength) {
   }
 }
 
+// Returns the other column the cube occupies, or null if the cube is not in col.
+function getCubePartnerCol(cube, col) {
+  if (!cube) return null;
+  const leftCol  = cube.topLeft?.x;
+  const rightCol = cube.topRight?.x;
+  if (leftCol  === col) return rightCol  ?? null;
+  if (rightCol === col) return leftCol   ?? null;
+  return null;
+}
+
 // Find the row at which the bottom sweep region starts. Scan upward from the
 // last non-empty row; the first empty cell encountered is the gap that separates
 // the sweep region from any upper-group sweep cells above it.
@@ -117,7 +127,7 @@ function clearSweptColumn(array, col, cube = null) {
     const startRow = findSweepStartRow(column);
 
     const cubeRows = collectCubeRowsInCol(cube, col);
-    const count = eraseSweptCells(column, cubeRows, startRow);
+    let count = eraseSweptCells(column, cubeRows, startRow);
     if (count > 0) {
       const anchors = getCubeAnchors(cube, array);
       addBelowCubeAnchor(anchors, cube, col, column.length);
@@ -130,7 +140,34 @@ function clearSweptColumn(array, col, cube = null) {
           anchors.get(col).add(y);
         }
       }
-      applyGravity(array, new Set([col]), anchors);// Gravity may cause new cells to become swept if they fall onto a pending deletion.
+
+      const affectedCols = new Set([col]);
+
+      // When the cube straddles this column and its partner, clearing only one
+      // column creates an asymmetric landing surface for the next moveDown tick:
+      // blocks above the swept zone fall here but stay put in the partner column
+      // (whose sweep cells are still present). Erase and compact the partner now
+      // so both columns settle to the same height in the same pass.
+      const partnerCol = getCubePartnerCol(cube, col);
+      if (partnerCol !== null && partnerCol >= 0 && partnerCol < array.length) {
+        const partnerColumn   = array[partnerCol];
+        const partnerStart    = findSweepStartRow(partnerColumn);
+        const partnerCubeRows = collectCubeRowsInCol(cube, partnerCol);
+        const partnerCount    = eraseSweptCells(partnerColumn, partnerCubeRows, partnerStart);
+        if (partnerCount > 0) {
+          addBelowCubeAnchor(anchors, cube, partnerCol, partnerColumn.length);
+          for (let y = 0; y < partnerStart; y++) {
+            if (isBeingSwept(partnerColumn[y])) {
+              if (!anchors.has(partnerCol)) anchors.set(partnerCol, new Set());
+              anchors.get(partnerCol).add(y);
+            }
+          }
+          count += partnerCount;
+          affectedCols.add(partnerCol);
+        }
+      }
+
+      applyGravity(array, affectedCols, anchors);
     }
     resolve(count);
   });
