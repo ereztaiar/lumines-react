@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import useTimer from "@lumines/core/src/hooks/useTimer";
+import { CUBE_STATES } from "@lumines/game-components/src/components/Dispenser";
 import {
   prepareForDeletion,
   revertUncommittedMarks,
   commitColumnAsSweeping,
-  clearSweptColumn,
+  clearAllSweptCells,
 } from "Util/clear-blocks";
 
 const MAX_TICK = 160;
@@ -30,6 +31,13 @@ const useGameLoop = (props) => {
       await cube.startDrop();
     } else if (cube.isHardDropping || tick % 10 === 0) {
       const liveCube = await cube.drop();
+      // drop() returns null both for a landed cube (which must fall with
+      // gravity like any stack block) and for a WAITING cube that is already
+      // drawn in the grid but not dropping yet — that one must stay pinned or
+      // its grid cells fall away from the currentCube descriptor.
+      const anchorCube =
+        liveCube ||
+        (cube.newCube === CUBE_STATES.WAITING ? cube.currentCube : null);
 
       const swiperCol = Math.floor(tick / 10);
       const prevSwiperCol = prevSwiperColRef.current;
@@ -37,10 +45,22 @@ const useGameLoop = (props) => {
 
       await revertUncommittedMarks(grid);
       await prepareForDeletion(grid);
-      await commitColumnAsSweeping(grid, swiperCol);
 
-      if (prevSwiperCol !== swiperCol) {
-        score += await clearSweptColumn(grid, prevSwiperCol, liveCube);
+      const swiperAdvanced = prevSwiperCol !== swiperCol;
+      // Wrap (last col → 0): flush any group left at the right edge of the board
+      // before this pass commits new marks that would blend into it.
+      if (swiperAdvanced && swiperCol < prevSwiperCol) {
+        score += await clearAllSweptCells(grid, anchorCube);
+      }
+
+      const committed = await commitColumnAsSweeping(grid, swiperCol);
+
+      // The swiper entered a column with nothing to promote, so every SWEEPING
+      // cell to its left belongs to a fully-passed group — erase them together.
+      // Sweeping is deferred this way so a marked group only vanishes (and
+      // gravity only runs) once the swiper has crossed all of it.
+      if (swiperAdvanced && committed === 0) {
+        score += await clearAllSweptCells(grid, anchorCube);
       }
       prevSwiperColRef.current = swiperCol;
 

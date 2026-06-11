@@ -60,11 +60,9 @@ function collectCubeRowsInCol(cube, col) {
 
 // Cube cells that overlap this column are restored to their base type rather than
 // cleared — the falling cube is immune to being swept mid-flight.
-// startRow skips cells above the sweep region so a separate upper sweep group
-// is not erased by this pass.
-function eraseSweptCells(column, cubeRows, startRow = 0) {
+function eraseSweptCells(column, cubeRows) {
   let count = 0;
-  for (let y = startRow; y < column.length; y++) {
+  for (let y = 0; y < column.length; y++) {
     if (!isBeingSwept(column[y])) continue;
     if (cubeRows.has(y)) {
       column[y] = sweepingToNormal(column[y]);
@@ -92,85 +90,33 @@ function addBelowCubeAnchor(anchors, cube, col, colLength) {
   }
 }
 
-// Returns the other column the cube occupies, or null if the cube is not in col.
-function getCubePartnerCol(cube, col) {
-  if (!cube) return null;
-  const leftCol  = cube.topLeft?.x;
-  const rightCol = cube.topRight?.x;
-  if (leftCol  === col) return rightCol  ?? null;
-  if (rightCol === col) return leftCol   ?? null;
-  return null;
-}
-
-// Find the row at which the bottom sweep region starts. Scan upward from the
-// last non-empty row; the first empty cell encountered is the gap that separates
-// the sweep region from any upper-group sweep cells above it.
-function findSweepStartRow(column) {
-  let lastNonEmpty = -1;
-  for (let y = 0; y < column.length; y++) {
-    if (column[y] !== EMPTY) lastNonEmpty = y;
-  }
-  if (lastNonEmpty < 0) return 0;
-  for (let y = lastNonEmpty; y >= 0; y--) {
-    if (column[y] === EMPTY) return y + 1;
-  }
-  return 0;
-}
-
-function clearSweptColumn(array, col, cube = null) {
+// Erases every committed SWEEPING cell in the grid in a single pass, then applies
+// gravity once across all affected columns. Called only when the swiper has fully
+// passed the marked group (or wrapped), so the whole group vanishes atomically —
+// clearing column-by-column would stagger gravity and present a falling cube with
+// an artificially uneven floor, splitting it.
+function clearAllSweptCells(array, cube = null) {
   return new Promise((resolve) => {
-    if (col < 0 || col >= array.length) {
-      resolve(0);
-      return;
+    let count = 0;
+    const affectedCols = new Set();
+    const anchors = getCubeAnchors(cube, array);
+
+    for (let col = 0; col < array.length; col++) {
+      const column = array[col];
+      const cubeRows = collectCubeRowsInCol(cube, col);
+      const cleared = eraseSweptCells(column, cubeRows);
+      if (cleared > 0) {
+        addBelowCubeAnchor(anchors, cube, col, column.length);
+        affectedCols.add(col);
+        count += cleared;
+      }
     }
-    const column = array[col];
-    const startRow = findSweepStartRow(column);
 
-    const cubeRows = collectCubeRowsInCol(cube, col);
-    let count = eraseSweptCells(column, cubeRows, startRow);
     if (count > 0) {
-      const anchors = getCubeAnchors(cube, array);
-      addBelowCubeAnchor(anchors, cube, col, column.length);
-      // Sweep cells sitting above the gap (rows 0..startRow-1) belong to a
-      // different group — pin them so gravity does not collapse them into the
-      // space freed by this pass.
-      for (let y = 0; y < startRow; y++) {
-        if (isBeingSwept(column[y])) {
-          if (!anchors.has(col)) anchors.set(col, new Set());
-          anchors.get(col).add(y);
-        }
-      }
-
-      const affectedCols = new Set([col]);
-
-      // When the cube straddles this column and its partner, clearing only one
-      // column creates an asymmetric landing surface for the next moveDown tick:
-      // blocks above the swept zone fall here but stay put in the partner column
-      // (whose sweep cells are still present). Erase and compact the partner now
-      // so both columns settle to the same height in the same pass.
-      const partnerCol = getCubePartnerCol(cube, col);
-      if (partnerCol !== null && partnerCol >= 0 && partnerCol < array.length) {
-        const partnerColumn   = array[partnerCol];
-        const partnerStart    = findSweepStartRow(partnerColumn);
-        const partnerCubeRows = collectCubeRowsInCol(cube, partnerCol);
-        const partnerCount    = eraseSweptCells(partnerColumn, partnerCubeRows, partnerStart);
-        if (partnerCount > 0) {
-          addBelowCubeAnchor(anchors, cube, partnerCol, partnerColumn.length);
-          for (let y = 0; y < partnerStart; y++) {
-            if (isBeingSwept(partnerColumn[y])) {
-              if (!anchors.has(partnerCol)) anchors.set(partnerCol, new Set());
-              anchors.get(partnerCol).add(y);
-            }
-          }
-          count += partnerCount;
-          affectedCols.add(partnerCol);
-        }
-      }
-
       applyGravity(array, affectedCols, anchors);
     }
     resolve(count);
   });
 }
 
-export { commitColumnAsSweeping, clearSweptColumn };
+export { commitColumnAsSweeping, clearAllSweptCells };

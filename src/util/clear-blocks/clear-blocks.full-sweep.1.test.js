@@ -3,7 +3,7 @@ import {
     prepareForDeletion,
     revertUncommittedMarks,
     commitColumnAsSweeping,
-    clearSweptColumn,
+    clearAllSweptCells,
 } from './index.js';
 import { g, s } from '../grid-test-helpers.js';
 import { moveDown } from '../swap/moveDown.js';
@@ -13,11 +13,17 @@ import { OUT_OF_BOUNDS } from '../swap/constants.js';
 async function sweepStep(grid, swiperCol, prevSwiperCol, cube) {
     await revertUncommittedMarks(grid);
     await prepareForDeletion(grid);
-    await commitColumnAsSweeping(grid, swiperCol);
-    if (prevSwiperCol !== null) {
-        return clearSweptColumn(grid, prevSwiperCol, cube);
+
+    let score = 0;
+    const advanced = prevSwiperCol !== swiperCol;
+    if (advanced && prevSwiperCol !== null && swiperCol < prevSwiperCol) {
+        score += await clearAllSweptCells(grid, cube);
     }
-    return 0;
+    const committed = await commitColumnAsSweeping(grid, swiperCol);
+    if (advanced && committed === 0) {
+        score += await clearAllSweptCells(grid, cube);
+    }
+    return score;
 }
 
 
@@ -309,9 +315,9 @@ describe('full board sweep 1 — ABBA cube at top-middle, sweep starts at column
         ]);
     });
 
-    it('step 16: commit col 6, clear col 5, final clear col 6, cube rests at rows 8–9', async () => {
+    it('step 16: commit col 6, final flush, cube rests at rows 8–9', async () => {
         const { grid, cube } = await sweepAndDrop(15);
-        await clearSweptColumn(grid, 6, cube);
+        await clearAllSweptCells(grid, cube);
         expect(s(grid)).toStrictEqual([
             '||||||||||||||||',
             '||||||||||||||||',

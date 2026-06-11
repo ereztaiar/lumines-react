@@ -4,7 +4,7 @@ import {
     prepareForDeletion,
     revertUncommittedMarks,
     commitColumnAsSweeping,
-    clearSweptColumn,
+    clearAllSweptCells,
 } from '../clear-blocks';
 import { g, s } from '../grid-test-helpers.js';
 
@@ -16,11 +16,15 @@ async function gameTick(grid, cube, swiperCol, prevSwiperCol) {
 
     await revertUncommittedMarks(grid);
     await prepareForDeletion(grid);
-    await commitColumnAsSweeping(grid, swiperCol);
 
     let score = 0;
-    if (prevSwiperCol !== null && prevSwiperCol !== swiperCol) {
-        score = await clearSweptColumn(grid, prevSwiperCol, liveCube);
+    const advanced = prevSwiperCol !== swiperCol;
+    if (advanced && prevSwiperCol !== null && swiperCol < prevSwiperCol) {
+        score += await clearAllSweptCells(grid, liveCube);
+    }
+    const committed = await commitColumnAsSweeping(grid, swiperCol);
+    if (advanced && committed === 0) {
+        score += await clearAllSweptCells(grid, liveCube);
     }
     return {
         cube: liveCube || cube,

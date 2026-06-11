@@ -116,6 +116,38 @@ describe('prepareForDeletion re-detects groups with a partially-swept column', (
         expect(array[8][9]).toBe('S');
     });
 
+    it('flood fill re-marks the tail of a fully-swept special group — sweeping special counts as special', async () => {
+        // Both columns of the special 2x2 (cols 4-5) are already committed; the
+        // '$' (SWEEPING_TYPE_B_SPECIAL) must still trigger the flood so the
+        // connected B tail (cols 6-7) is re-marked RECURSIVE each tick until
+        // the swiper commits it.
+        const array = g([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||ss||||||||||',
+            '||||s$BB||||||||',
+        ]);
+        await prepareForDeletion(array);
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||ss||||||||||',
+            '||||s$xx||||||||',
+        ]);
+    });
+
     it('full cycle: mark → commit left col → revert → prepareForDeletion re-marks right col', async () => {
         // Simulate one game-loop tick: prepareForDeletion detects a 2x2, the
         // swiper commits col 8, then the next tick reverts col 9's mark and

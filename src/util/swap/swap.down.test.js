@@ -109,7 +109,7 @@ describe('move block down', () => {
         ]);
     });
 
-    it('passes through a SWEEP block below both sides without false OUT_OF_BOUNDS', async () => {
+    it('lands whole on a SWEEP group below both sides — no sinking into committed blocks', async () => {
         const array = g([
             '||||||||||||||||',
             '|||||||AB|||||||',
@@ -129,20 +129,20 @@ describe('move block down', () => {
             bottomRight: { x: 8, y: 2 },
         };
 
-        const [, dest, outOfBounds] = await moveDown(array, cube);
+        const [, , outOfBounds] = await moveDown(array, cube);
 
-        expect(outOfBounds).toBeUndefined();
-        expect(dest.bottomLeft.y).toBe(3);
-        expect(dest.bottomRight.y).toBe(3);
+        // Committed SWEEP cells are solid until the group is erased; the cube
+        // rests on top of them and stays whole.
+        expect(outOfBounds).toBe(errors.OUT_OF_BOUNDS);
+        expect(array[7][1]).toBe('A');
         expect(array[7][2]).toBe('A');
-        expect(array[7][3]).toBe('A');
+        expect(array[8][1]).toBe('B');
         expect(array[8][2]).toBe('B');
-        expect(array[8][3]).toBe('B');
-        expect(array[7][1]).toBe('|');
-        expect(array[8][1]).toBe('|');
+        expect(array[7][3]).toBe('S');
+        expect(array[8][3]).toBe('S');
     });
 
-    it('splits when SWEEP is transparent on one side but real block on the other', async () => {
+    it('does not sink into a SWEEP cell — committed blocks stay solid until erased', async () => {
         const array = g([
             '||||||||||||||||',
             '|||||||AB|||||||',
@@ -162,19 +162,17 @@ describe('move block down', () => {
             bottomRight: { x: 8, y: 2 },
         };
 
-        const [, dest, outOfBounds] = await moveDown(array, cube);
+        const [, , outOfBounds] = await moveDown(array, cube);
 
-        // right is blocked by solid B; left passes through the SWEEP mark — cube splits
-        expect(outOfBounds).toBeUndefined();
-        expect(dest.bottomLeft.y).toBe(3);
-        expect(dest.bottomRight.y).toBe(2);
-        // left side moved down through the sweep (sweep absorbed, not bubbled)
-        expect(array[7][1]).toBe('|');
+        // The SWEEP mark blocks like the solid B: the cube lands whole on top
+        // of the group instead of sinking into the committed column.
+        expect(outOfBounds).toBe(errors.OUT_OF_BOUNDS);
+        expect(array[7][1]).toBe('A');
         expect(array[7][2]).toBe('A');
-        expect(array[7][3]).toBe('A');
-        // right side stayed in place
+        expect(array[7][3]).toBe('S');
         expect(array[8][1]).toBe('B');
         expect(array[8][2]).toBe('B');
+        expect(array[8][3]).toBe('B');
     });
 
     it('splits when left is blocked by solid block but right is free', async () => {

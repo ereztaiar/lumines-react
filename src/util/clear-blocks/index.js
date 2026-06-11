@@ -2,4 +2,4 @@ export { prepareForDeletion } from "./prepare-for-deletion.js";
 export { clearFromDeletion, revertUncommittedMarks } from "./revert-marks.js";
 export { clearColumn, countMarksInColumn } from "./clear-column.js";
 export { clearAllMarked, clearFromColumn } from "./clear-all-marked.js";
-export { commitColumnAsSweeping, clearSweptColumn } from "./sweep.js";
+export { commitColumnAsSweeping, clearAllSweptCells } from "./sweep.js";

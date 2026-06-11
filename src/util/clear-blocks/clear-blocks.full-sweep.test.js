@@ -3,19 +3,29 @@ import {
     prepareForDeletion,
     revertUncommittedMarks,
     commitColumnAsSweeping,
-    clearSweptColumn,
+    clearAllSweptCells,
 } from './index.js';
 import { g, s } from '../grid-test-helpers.js';
 
 
+// One swiper step of useGameLoop: marks revert and re-detect every tick, the
+// current column is committed, and the board is only cleared when the swiper
+// enters a column with nothing to promote (the group has been fully passed)
+// or wraps back to the left edge.
 async function sweepStep(grid, swiperCol, prevSwiperCol, cube) {
     await revertUncommittedMarks(grid);
     await prepareForDeletion(grid);
-    await commitColumnAsSweeping(grid, swiperCol);
-    if (prevSwiperCol !== null) {
-        return clearSweptColumn(grid, prevSwiperCol, cube);
+
+    let score = 0;
+    const advanced = prevSwiperCol !== swiperCol;
+    if (advanced && prevSwiperCol !== null && swiperCol < prevSwiperCol) {
+        score += await clearAllSweptCells(grid, cube);
     }
-    return 0;
+    const committed = await commitColumnAsSweeping(grid, swiperCol);
+    if (advanced && committed === 0) {
+        score += await clearAllSweptCells(grid, cube);
+    }
+    return score;
 }
 
 
@@ -29,7 +39,7 @@ const BOARD = [
     '||||||||||||||||',  // row 5
     '||||||||A||||B||',  // row 6
     '|||||||BBB|||A||',  // row 7
-    '|AA|BBAAAAB|AA||',  // row 8 
+    '|AA|BBAAAAB|AA||',  // row 8
     '|AA|B%BBBBA|A@||',  // row 9  ← board floor
 ];
 
@@ -59,27 +69,34 @@ describe('full board sweep', () => {
         ]);
     });
 
-    it('sweeps all 16 columns: all columns of each matched group are committed and cleared', async () => {
+    it('sweeps all 16 columns: each group is cleared in one piece after the swiper passes it', async () => {
         const grid = g(BOARD);
 
         let totalScore = 0;
+        const stepScores = [];
         let prevSwiperCol = null;
 
         for (let swiperCol = 0; swiperCol < 16; swiperCol++) {
-            totalScore += await sweepStep(grid, swiperCol, prevSwiperCol, CUBE);
+            const stepScore = await sweepStep(grid, swiperCol, prevSwiperCol, CUBE);
+            stepScores.push(stepScore);
+            totalScore += stepScore;
             prevSwiperCol = swiperCol;
         }
 
-        totalScore += await clearSweptColumn(grid, 15, CUBE);
+        totalScore += await clearAllSweptCells(grid, CUBE);
 
-        // Each group is fully cleared:
-        //   A group1 (cols 1-2, rows 8-9): 4 cells
-        //   B group  (cols 4-5, rows 8-9): 4 cells
-        //     (cols 6-9 row 9 were recursive B but cannot re-detect because
-        //      row 8 of those cols is TYPE_A — they survive as live blocks)
-        //   A group2 (cols 12-13 rows 8-9, plus col 13 row 7 via flood fill): 5 cells
-        // Total: 13
-        expect(totalScore).toEqual(13);
+        // Each group is erased as a whole, one tick after its last column is
+        // committed:
+        //   A group1 (cols 1-2, rows 8-9): 4 cells       → cleared at col 3
+        //   B group  (cols 4-5, rows 8-9 + flood tail cols 6-9 row 9): 8 cells
+        //     (the sweeping special '$' keeps the flood re-marking the tail
+        //      each tick until the swiper commits cols 6-9)  → cleared at col 10
+        //   A group2 (cols 12-13 rows 8-9 + col 13 row 7 via flood): 5 cells
+        //                                                  → cleared at col 14
+        expect(stepScores[3]).toBe(4);
+        expect(stepScores[10]).toBe(8);
+        expect(stepScores[14]).toBe(5);
+        expect(totalScore).toEqual(17);
 
         expect(s(grid)).toStrictEqual([
             '||||||||||||||||',  // row 0
@@ -88,10 +105,10 @@ describe('full board sweep', () => {
             '||||||BA||||||||',  // row 3  cube preserved
             '||||||AB||||||||',  // row 4  cube preserved
             '||||||||||||||||',  // row 5
-            '||||||||A|||||||',  // row 6  col 13's B fell to row 9 via gravity
-            '|||||||BBB||||||',  // row 7  col 13's A was swept
-            '||||||AAAAB|||||',  // row 8  cols 1,2,4,5,12 swept; 6-10 survive
-            '||||||BBBBA||B||',  // row 9  cols 1,2,4,5,12 swept; B survivors 6-9, A at 10, fallen B at 13
+            '||||||||||||||||',  // row 6
+            '||||||||A|||||||',  // row 7  col 8's survivors compacted down
+            '|||||||BBBB|||||',  // row 8  rows above the flood tail fell one row
+            '||||||AAAAA||B||',  // row 9  col 13's B fell to the floor
         ]);
     });
 });

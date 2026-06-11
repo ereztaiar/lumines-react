@@ -65,8 +65,14 @@ function checkSquares(
   sweepingType,
   specialSweepingType,
 ) {
+  // Sweeping specials count too: once both columns of a special 2×2 are
+  // committed, the flood-filled neighbors beyond it must keep re-marking each
+  // tick until the swiper reaches them, or the group's tail would never commit.
   const isSpecialCell = (v) =>
-    v === specialType || v === specialDeletionType || v === specialRecursiveType;
+    v === specialType ||
+    v === specialDeletionType ||
+    v === specialRecursiveType ||
+    v === specialSweepingType;
   const width = array.length;
   const height = array[0].length;
   // Sweeping types are already committed by the swiper but still represent

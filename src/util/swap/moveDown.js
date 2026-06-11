@@ -1,5 +1,4 @@
 import { OUT_OF_BOUNDS, DROP_DEFAULT, downOrder } from './constants.js';
-import { isBeingSwept } from '../clear-blocks/predicates.js';
 import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board/block-types";
 
 const { EMPTY } = BLOCKS_TYPES;
@@ -20,14 +19,16 @@ function clampRateAtBottom(array, cube, rate) {
     return rate;
 }
 
-// Sweeping marks are cells committed for deletion; the cube can pass through
-// them as a game rule. Only solid, non-swept cells block movement.
+// Every non-empty cell blocks — including SWEEPING marks: committed blocks stay
+// solid until the whole group is erased, so the cube rests on them and falls
+// symmetrically when the group vanishes instead of sinking into committed
+// columns one at a time.
 function detectObstacles(array, cube, rate) {
     const rightVal = array[cube.bottomRight.x][cube.bottomRight.y + rate];
     const leftVal  = array[cube.bottomLeft.x][cube.bottomLeft.y + rate];
     return {
-        leftBlocked:  leftVal  !== EMPTY && !isBeingSwept(leftVal),
-        rightBlocked: rightVal !== EMPTY && !isBeingSwept(rightVal),
+        leftBlocked:  leftVal  !== EMPTY,
+        rightBlocked: rightVal !== EMPTY,
     };
 }
 
@@ -51,20 +52,13 @@ function computeDest(cube, leftBlocked, rightBlocked, rate) {
     return dest;
 }
 
-// Swept marks are absorbed rather than swapped: clear the source cell and write
-// the cube block into the destination so the swept mark doesn't bubble upward.
 function applyMoveToGrid(array, src, dest) {
     for (const block of downOrder) {
         const srcX = src[block].x, srcY = src[block].y;
         const dstX = dest[block].x, dstY = dest[block].y;
         const tmp = array[srcX][srcY];
-        if (isBeingSwept(array[dstX][dstY])) {
-            array[srcX][srcY] = EMPTY;
-            array[dstX][dstY] = tmp;
-        } else {
-            array[srcX][srcY] = array[dstX][dstY];
-            array[dstX][dstY] = tmp;
-        }
+        array[srcX][srcY] = array[dstX][dstY];
+        array[dstX][dstY] = tmp;
     }
 }
 
