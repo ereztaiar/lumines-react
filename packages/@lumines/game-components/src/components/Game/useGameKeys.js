@@ -8,7 +8,7 @@ const useGameKeys = (props) => {
   const { playRotate, playDrop, playMove } = sounds;
 
   useKey(
-    async (key) => {
+    async (key, repeat) => {
       if (key === "p") {
         togglePause(!pause);
       }
@@ -32,6 +32,11 @@ const useGameKeys = (props) => {
             await nop();
             break;
           case "ArrowDown":
+            // Auto-repeat from a held key must not start the next cube the
+            // instant it spawns — only a fresh press begins a hard drop.
+            if (repeat) {
+              return;
+            }
             playDrop();
             await cube.startDrop();
             cube.setIsHardDropping(true);

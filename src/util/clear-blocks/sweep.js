@@ -74,22 +74,6 @@ function eraseSweptCells(column, cubeRows) {
   return count;
 }
 
-// After clearing, gravity would pull blocks down into the cube's current position.
-// Pinning an anchor one row below the cube's lowest cell in this column stops
-// blocks from falling into the gap the cube still occupies.
-function addBelowCubeAnchor(anchors, cube, col, colLength) {
-  if (!cube) return;
-  const colCells = ["topLeft", "topRight", "bottomLeft", "bottomRight"]
-    .filter((k) => cube[k] && cube[k].x === col)
-    .map((k) => cube[k].y);
-  if (colCells.length === 0) return;
-  const belowRow = Math.max(...colCells) + 1;
-  if (belowRow < colLength) {
-    if (!anchors.has(col)) anchors.set(col, new Set());
-    anchors.get(col).add(belowRow);
-  }
-}
-
 // Erases every committed SWEEPING cell in the grid in a single pass, then applies
 // gravity once across all affected columns. Called only when the swiper has fully
 // passed the marked group (or wrapped), so the whole group vanishes atomically —
@@ -106,7 +90,6 @@ function clearAllSweptCells(array, cube = null) {
       const cubeRows = collectCubeRowsInCol(cube, col);
       const cleared = eraseSweptCells(column, cubeRows);
       if (cleared > 0) {
-        addBelowCubeAnchor(anchors, cube, col, column.length);
         affectedCols.add(col);
         count += cleared;
       }

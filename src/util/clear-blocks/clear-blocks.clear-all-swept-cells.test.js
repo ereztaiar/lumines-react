@@ -169,7 +169,7 @@ describe('clearAllSweptCells', () => {
         ]);
     });
 
-    it('block directly below cube does not fall when SWEEP is cleared further below it', async () => {
+    it('block directly below cube falls when SWEEP beneath it clears; cube stays anchored', async () => {
         const array = g([
             '||||||||||||||||',
             '|||||||AB|||||||',
@@ -197,14 +197,64 @@ describe('clearAllSweptCells', () => {
             '||||||||||||||||',
             '|||||||AB|||||||',
             '|||||||AB|||||||',
-            '|||||||AB|||||||',
+            '||||||||B|||||||',
             '||||||||||||||||',
             '||||||||||||||||',
             '||||||||||||||||',
             '||||||||||||||||',
             '||||||||||||||||',
-            '||||||||||||||||',
+            '|||||||A||||||||',
         ]);
+    });
+
+    it('leaves no floating non-cube block after clearing under a resting cube', async () => {
+        // Cube rests on a B whose support is a sweep group; once the group
+        // clears, the B must settle to the floor instead of hanging mid-air.
+        const array = g([
+            '||||||||||||||||',
+            '||||AB||||||||||',
+            '||||AB||||||||||',
+            '||||B|||||||||||',
+            '||||S|||||||||||',
+            '||||S|||||||||||',
+            '||||sA||||||||||',
+            '||||sA||||||||||',
+            '||||AB||||||||||',
+            '||||AB||||||||||',
+        ]);
+
+        const cube = {
+            topLeft:     { x: 4, y: 1 },
+            topRight:    { x: 5, y: 1 },
+            bottomLeft:  { x: 4, y: 2 },
+            bottomRight: { x: 5, y: 2 },
+        };
+
+        const count = await clearAllSweptCells(array, cube);
+
+        expect(count).toBe(4);
+        expect(s(array)).toStrictEqual([
+            '||||||||||||||||',
+            '||||AB||||||||||',
+            '||||AB||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '||||||||||||||||',
+            '|||||A||||||||||',
+            '||||BA||||||||||',
+            '||||AB||||||||||',
+            '||||AB||||||||||',
+        ]);
+
+        // No non-cube block may sit above an EMPTY cell in its column.
+        const cubeCells = new Set(['4,1', '5,1', '4,2', '5,2']);
+        for (let x = 0; x < array.length; x++) {
+            for (let y = 0; y < array[x].length - 1; y++) {
+                if (array[x][y] !== '|' && !cubeCells.has(`${x},${y}`)) {
+                    expect(array[x][y + 1]).not.toBe('|');
+                }
+            }
+        }
     });
 
     it('settles both cube columns in the same pass — no asymmetric floor', async () => {
