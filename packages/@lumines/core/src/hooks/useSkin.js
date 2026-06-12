@@ -1,52 +1,51 @@
-import {useEffect, useState} from "react";
-import * as defaultSkin from 'Skins/default';
-import * as purple from 'Skins/purple';
-import * as yellow from 'Skins/yellow';
-import * as midnightNeon from 'Skins/midnight-neon';
-import * as cherryBlossom from 'Skins/cherry-blossom';
-import * as poker from 'Skins/poker';
-import * as sakura from 'Skins/sakura';
-import * as tropical from 'Skins/tropical';
+import {useEffect, useRef, useState} from "react";
+import {SKINS_BY_ID, SKIN_IDS} from 'Skins/index';
+import {getSkinSettings, normalizeSettings} from 'Util/skinSettings';
+import {getUnlockedSkinIds, unlockSkin} from 'Util/skinUnlocks';
+import {buildPlaylist, advanceIndex, advanceIndexBy} from './skinRotation';
 import useKey from "@lumines/core/src/hooks/useKey";// todo: replace with context
 
-const skins = [
-    defaultSkin,
-    purple,
-    yellow,
-    midnightNeon,
-    cherryBlossom,
-    poker,
-    sakura,
-    tropical,
-];
+// settings are read once per game mount — menu and game never coexist
+const initRotation = () => {
+    const settings = normalizeSettings(getSkinSettings(), SKIN_IDS, getUnlockedSkinIds());
+    return {
+        mode: settings.mode,
+        playlist: buildPlaylist(settings, SKIN_IDS),
+    };
+};
 
 const useSkin = props => {
 
     const {score = 0} = props;
-    const [skinIndex, setSkinIndex] = useState(0);
-    const [skin, setSkin] = useState(skins[0]);
+    const [{mode, playlist}] = useState(initRotation);
+    const [playlistIndex, setPlaylistIndex] = useState(0);
 
+    const currentSkinId = playlist[playlistIndex % playlist.length];
+    const skin = SKINS_BY_ID[currentSkinId].module;
 
     useKey((key) => {
         if (key === 's') {
-            setSkinIndex(skinIndex + 1);
+            setPlaylistIndex((i) => advanceIndex(mode, i, playlist.length));
         }
     });
 
     useEffect(() => {
-        const newSkin = skins[skinIndex % skins.length];
-        setSkin(
-            newSkin
-        );
-    }, [skinIndex]);
+        unlockSkin(currentSkinId);
+    }, [currentSkinId]);
 
+    // score jumps by the clear size, so it rarely equals a multiple of 100 —
+    // advance one skin per 100-point stage boundary crossed instead
+    const stage = Math.floor(score / 100);
+    const prevStageRef = useRef(0);
 
     useEffect(() => {
-            if (score > 0 && score % 100 === 0) {
-                setSkinIndex(prev => prev + 1);
+            const steps = stage - prevStageRef.current;
+            prevStageRef.current = stage; // also resyncs after a score reset
+            if (steps > 0) {
+                setPlaylistIndex((i) => advanceIndexBy(mode, i, playlist.length, steps));
             }
         },
-        [score])
+        [stage])
 
     return {
         skin
