@@ -26,6 +26,7 @@ const Menu = props => {
                 clearTimeout(idleTimerRef.current);
                 idleTimerRef.current = null;
             }
+            dispatch({ type: 'menu_reset' });
             return;
         }
 

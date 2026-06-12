@@ -67,4 +67,18 @@ describe('menuReducer', () => {
             expect(menuReducer(state, { type: 'menu_exit' })).toBe(state);
         });
     });
+
+    describe('reset', () => {
+        it('menu_reset restores pristine state from a navigated state', () => {
+            const state = { ...defaultState, highlightIndex: 2 };
+            const next = menuReducer(state, { type: 'menu_reset' });
+            expect(next).toEqual(defaultState);
+        });
+
+        it('menu_reset clears a locked selection (bypasses the selected guard)', () => {
+            const state = { ...defaultState, highlightIndex: 3, selected: 'play', menuLocked: true };
+            const next = menuReducer(state, { type: 'menu_reset' });
+            expect(next).toEqual(defaultState);
+        });
+    });
 });

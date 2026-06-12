@@ -11,7 +11,7 @@ const menuReducer = (state, action) => {
     const { type } = action;
     const { selected, highlightIndex } = state;
 
-    if (selected !== null && type !== 'menu_exit') {
+    if (selected !== null && type !== 'menu_exit' && type !== 'menu_reset') {
         return state;
     }
 
@@ -34,6 +34,9 @@ const menuReducer = (state, action) => {
                 selected: MENU_ITEMS[highlightIndex].name,
                 menuLocked: true,
             };
+        }
+        case 'menu_reset': {
+            return { ...defaultState };
         }
         case 'menu_exit': {
             if (selected === null) {
