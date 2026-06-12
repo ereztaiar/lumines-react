@@ -13,8 +13,8 @@ const Pause = ({ pause }) => {
     const { state: { key } } = useKeys();
 
     const menuItems = [
-        { label: 'Continue', action: () => togglePause(false) },
-        { label: 'Quit', action: () => {
+        { label: 'CONTINUE', action: () => togglePause(false) },
+        { label: 'QUIT', action: () => {
             resetScore();
             dispatch({ type: 'menu' });
         } }
