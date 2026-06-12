@@ -3,3 +3,4 @@ export { clearFromDeletion, revertUncommittedMarks } from "./revert-marks.js";
 export { clearColumn, countMarksInColumn } from "./clear-column.js";
 export { clearAllMarked, clearFromColumn } from "./clear-all-marked.js";
 export { commitColumnAsSweeping, clearAllSweptCells } from "./sweep.js";
+export { resolveAnchorCube } from "./resolve-anchor-cube.js";

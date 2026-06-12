@@ -7,15 +7,9 @@ import generateCube, {
 
 // import context from "@lumines/core/src/context";
 import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board";
+import { CUBE_STATES } from "@lumines/game-components/src/components/Dispenser/cube-states";
 
 const WELL_SIZE = 3;
-
-const CUBE_STATES = {
-  NEW: 1,
-  READY: 2,
-  WAITING: 3,
-  DROP: 4,
-};
 
 const _cubes = [];
 for (let i = 0; i < WELL_SIZE; i++) {

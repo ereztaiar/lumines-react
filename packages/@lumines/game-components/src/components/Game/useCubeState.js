@@ -11,11 +11,16 @@ import { nop } from "./nop";
 const { EMPTY } = BLOCKS_TYPES;
 
 const useCubeState = (props) => {
-  const { grid, setGrid, setIsGameOver } = props;
+  const { gridRef, setGrid, setIsGameOver } = props;
 
-  const [currentCube, setCurrentCube] = useState(
+  const [currentCube, setCurrentCubeState] = useState(
     () => generateCube().next().value,
   );
+  // Mutation paths (game loop, key handlers, drop) must read the cube and its
+  // state through refs: render-closure state goes stale mid-tick when landing
+  // flushes the spawn chain or a key event interleaves at a nop() yield, and a
+  // stale descriptor is what let gravity rip a freshly spawned cube in half.
+  const currentCubeRef = useRef(currentCube);
   const [newCube, setNewCubeState] = useState(CUBE_STATES.WAITING);
   const newCubeRef = useRef(CUBE_STATES.WAITING);
   const [isSplit, setIsSplit] = useState(false);
@@ -27,6 +32,11 @@ const useCubeState = (props) => {
   const setNewCube = (val) => {
     newCubeRef.current = val;
     setNewCubeState(val);
+  };
+
+  const setCurrentCube = (val) => {
+    currentCubeRef.current = val;
+    setCurrentCubeState(val);
   };
 
   const setDropCount = (valOrFn) => {
@@ -53,8 +63,8 @@ const useCubeState = (props) => {
     }
     try {
       const [updatedGrid, dest, outOfBounds] = await swap.moveDown(
-        grid,
-        currentCube,
+        gridRef.current,
+        currentCubeRef.current,
       );
       if (outOfBounds === swap.errors.OUT_OF_BOUNDS) {
         setNewCube(CUBE_STATES.NEW);
@@ -78,8 +88,10 @@ const useCubeState = (props) => {
 
   useEffect(() => {
     if (newCube === CUBE_STATES.READY) {
+      const grid = gridRef.current;
+      const cube = currentCubeRef.current;
       const spawnBlocked = dispenseOrder.some((order) => {
-        const block = currentCube[order];
+        const block = cube[order];
         return grid[block.x]?.[block.y] !== EMPTY;
       });
       if (spawnBlocked) {
@@ -87,7 +99,7 @@ const useCubeState = (props) => {
         return;
       }
       dispenseOrder.map((order) => {
-        const block = currentCube[order];
+        const block = cube[order];
         grid[block.x][block.y] = block.Block;
       });
       setGrid([...grid]);
@@ -104,8 +116,10 @@ const useCubeState = (props) => {
 
   return {
     currentCube,
+    currentCubeRef,
     setCurrentCube,
     newCube,
+    newCubeRef,
     setNewCube,
     isSplit,
     setSplit,

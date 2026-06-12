@@ -4,7 +4,7 @@ import * as swap from "Util/swap";
 import { nop } from "./nop";
 
 const useGameKeys = (props) => {
-  const { grid, setGrid, cube, pause, togglePause, sounds } = props;
+  const { gridRef, setGrid, cube, pause, togglePause, sounds } = props;
   const { playRotate, playDrop, playMove } = sounds;
 
   useKey(
@@ -23,12 +23,21 @@ const useGameKeys = (props) => {
         switch (key) {
           case "ArrowLeft":
             playMove();
-            [updatedGrid, dest] = await swap.moveLeft(grid, cube.currentCube);
+            // Refs, not closure state: a handler can fire inside a tick's
+            // nop() yield, after the cube has already moved — swapping cells
+            // at the closure's stale position orphans half the cube.
+            [updatedGrid, dest] = await swap.moveLeft(
+              gridRef.current,
+              cube.currentCubeRef.current,
+            );
             await nop();
             break;
           case "ArrowRight":
             playMove();
-            [updatedGrid, dest] = await swap.moveRight(grid, cube.currentCube);
+            [updatedGrid, dest] = await swap.moveRight(
+              gridRef.current,
+              cube.currentCubeRef.current,
+            );
             await nop();
             break;
           case "ArrowDown":
@@ -69,7 +78,10 @@ const useGameKeys = (props) => {
           case " ": // space
           case "ArrowUp":
             playRotate();
-            [updatedGrid, dest] = await swap.rotate(grid, cube.currentCube);
+            [updatedGrid, dest] = await swap.rotate(
+              gridRef.current,
+              cube.currentCubeRef.current,
+            );
             await nop();
             break;
           default:

@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import useTimer from "@lumines/core/src/hooks/useTimer";
-import { CUBE_STATES } from "@lumines/game-components/src/components/Dispenser";
 import {
   prepareForDeletion,
   revertUncommittedMarks,
   commitColumnAsSweeping,
   clearAllSweptCells,
+  resolveAnchorCube,
 } from "Util/clear-blocks";
 
 const MAX_TICK = 160;
 const INITIAL_TICK = 0;
 
 const useGameLoop = (props) => {
-  const { grid, setGrid, pause, isGameOver, cube, scoring } = props;
+  const { gridRef, setGrid, pause, isGameOver, cube, scoring } = props;
   const { deletedBlocks, multiplier } = scoring;
 
   const [tick, setTick] = useState(INITIAL_TICK);
@@ -30,15 +30,17 @@ const useGameLoop = (props) => {
     if (cube.dropCountRef.current === MAX_TICK / 2) {
       await cube.startDrop();
     } else if (cube.isHardDropping || tick % 10 === 0) {
-      const liveCube = await cube.drop();
-      // drop() returns null both for a landed cube (which must fall with
-      // gravity like any stack block) and for a WAITING cube that is already
-      // drawn in the grid but not dropping yet — that one must stay pinned or
-      // its grid cells fall away from the currentCube descriptor.
-      const anchorCube =
-        liveCube ||
-        (cube.newCube === CUBE_STATES.WAITING ? cube.currentCube : null);
+      await cube.drop();
+      // The anchor pins the live cube's cells against sweep-clears and gravity.
+      // It is resolved from refs at clear time, never from render-closure state:
+      // landing flushes the spawn chain (NEW → READY → draw → WAITING) in the
+      // middle of this very tick, and a key event can move the cube during a
+      // nop() yield — a closure-based anchor misses both and lets gravity pull
+      // a drawn cube's columns into the stack, splitting it.
+      const anchorCube = () =>
+        resolveAnchorCube(cube.newCubeRef.current, cube.currentCubeRef.current);
 
+      const grid = gridRef.current;
       const swiperCol = Math.floor(tick / 10);
       const prevSwiperCol = prevSwiperColRef.current;
       let score = 0;
@@ -50,7 +52,7 @@ const useGameLoop = (props) => {
       // Wrap (last col → 0): flush any group left at the right edge of the board
       // before this pass commits new marks that would blend into it.
       if (swiperAdvanced && swiperCol < prevSwiperCol) {
-        score += await clearAllSweptCells(grid, anchorCube);
+        score += await clearAllSweptCells(grid, anchorCube());
       }
 
       const committed = await commitColumnAsSweeping(grid, swiperCol);
@@ -60,7 +62,7 @@ const useGameLoop = (props) => {
       // Sweeping is deferred this way so a marked group only vanishes (and
       // gravity only runs) once the swiper has crossed all of it.
       if (swiperAdvanced && committed === 0) {
-        score += await clearAllSweptCells(grid, anchorCube);
+        score += await clearAllSweptCells(grid, anchorCube());
       }
       prevSwiperColRef.current = swiperCol;
 
@@ -77,7 +79,7 @@ const useGameLoop = (props) => {
       cube.setDropCount(0);
     }
 
-    setGrid([...grid]);
+    setGrid([...gridRef.current]);
   }, speed);
 
   useEffect(() => {
