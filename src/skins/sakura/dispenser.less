@@ -1,0 +1,38 @@
+@import "Skins/common.less";
+
+.dispenser {
+  width: @grid-item-width * 2; grid-column-start: 1; grid-row-start: 2;
+  margin: 0 auto; align-self: start;
+
+  .cube {
+    margin-bottom: @grid-item-height; position: relative;
+    &:after { clear: both; content: ''; display: block; }
+
+    /* Blossom silhouette drifts outwards from the cube and fades like a released petal */
+    @keyframes dispenserSakura {
+      from { -webkit-transform: scale(1) rotate(0deg); transform: scale(1) rotate(0deg); opacity: 0.9; }
+      to   { -webkit-transform: scale(4) rotate(90deg); transform: scale(4) rotate(90deg); opacity: 0; }
+    }
+
+    &:before {
+      position: absolute; content: ' '; display: block;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-repeat: no-repeat; background-position: center; background-size: contain;
+      -webkit-animation: dispenserSakura 1.8s ease-out infinite;
+      animation: dispenserSakura 1.8s ease-out infinite;
+    }
+
+    /* pink, white, and blue blossoms — one per queue slot */
+    &:nth-of-type(3n+1):before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23f48fb1'%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5'/%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5' transform='rotate(72 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5' transform='rotate(144 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5' transform='rotate(216 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5' transform='rotate(288 12 12)'/%3E%3C/g%3E%3Ccircle cx='12' cy='12' r='2.2' fill='%23fff0f6'/%3E%3C/svg%3E");
+    }
+    &:nth-of-type(3n+2):before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23fff0f6'%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5'/%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5' transform='rotate(72 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5' transform='rotate(144 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5' transform='rotate(216 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5' transform='rotate(288 12 12)'/%3E%3C/g%3E%3Ccircle cx='12' cy='12' r='2.2' fill='%23f48fb1'/%3E%3C/svg%3E");
+    }
+    &:nth-of-type(3n):before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%239cc4e4'%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5'/%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5' transform='rotate(72 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5' transform='rotate(144 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5' transform='rotate(216 12 12)'/%3E%3Cellipse cx='12' cy='6.5' rx='3.2' ry='5' transform='rotate(288 12 12)'/%3E%3C/g%3E%3Ccircle cx='12' cy='12' r='2.2' fill='%23fff0f6'/%3E%3C/svg%3E");
+    }
+
+    .grid-item { border: 0; img { width: 100%; } &:first-child { border: 0; } }
+  }
+}

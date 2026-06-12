@@ -5,6 +5,7 @@ import * as yellow from 'Skins/yellow';
 import * as midnightNeon from 'Skins/midnight-neon';
 import * as cherryBlossom from 'Skins/cherry-blossom';
 import * as poker from 'Skins/poker';
+import * as sakura from 'Skins/sakura';
 import useKey from "@lumines/core/src/hooks/useKey";// todo: replace with context
 
 const skins = [
@@ -14,6 +15,7 @@ const skins = [
     midnightNeon,
     cherryBlossom,
     poker,
+    sakura,
 ];
 
 const useSkin = props => {

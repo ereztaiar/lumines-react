@@ -1,0 +1,101 @@
+.background {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  transform: scale(1.5);
+
+  &:before, &:after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; content: ''; display: block; }
+
+  &:before {
+    /* Hokusai dusk — Prussian blue washing into a rosy dawn band */
+    background: linear-gradient(135deg, #1b3556 0%, #8a5577 50%, #1b3556 100%);
+    background-size: 400% 400%;
+    z-index: -20;
+
+    @keyframes BgMoveSakura {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 51%; }
+      100% { background-position: 0% 50%; }
+    }
+    -webkit-animation: BgMoveSakura 10s ease infinite;
+    animation: BgMoveSakura 10s ease infinite;
+  }
+
+  &:after {
+    z-index: -10;
+    background: url('../../assets/images/scan-mask.png') repeat;
+    opacity: 0.3;
+  }
+}
+
+/* Icon scene layer — holds all background react-icons */
+.scene {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+
+  svg { position: absolute; }
+}
+
+/* Soft glow for any icon — uses the icon's own color */
+.glow {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.floatSlow {
+  @keyframes floatSlowSakura { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  -webkit-animation: floatSlowSakura 6s ease-in-out infinite;
+  animation: floatSlowSakura 6s ease-in-out infinite;
+}
+
+.pulse {
+  @keyframes pulseSakura { 0%,100%{opacity:1} 50%{opacity:0.55} }
+  -webkit-animation: pulseSakura 5s ease-in-out infinite;
+  animation: pulseSakura 5s ease-in-out infinite;
+}
+
+.driftSlow {
+  @keyframes driftSlowSakura { 0%,100%{transform:translate(0,0)} 50%{transform:translate(14px,10px)} }
+  -webkit-animation: driftSlowSakura 9s ease-in-out infinite;
+  animation: driftSlowSakura 9s ease-in-out infinite;
+}
+
+/* Petal-fall variants — petals start above the viewport, tumble and sway down;
+   negative delays spread them mid-fall on load */
+.fall1 {
+  @keyframes fall1Sakura {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    50%  { transform: translate(2.5vw, 65vh) rotate(180deg); }
+    100% { transform: translate(-1vw, 130vh) rotate(360deg); }
+  }
+  -webkit-animation: fall1Sakura 8s linear -2s infinite;
+  animation: fall1Sakura 8s linear -2s infinite;
+}
+
+.fall2 {
+  @keyframes fall2Sakura {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    50%  { transform: translate(-2vw, 65vh) rotate(-160deg); }
+    100% { transform: translate(1.5vw, 130vh) rotate(-330deg); }
+  }
+  -webkit-animation: fall2Sakura 11s linear -6s infinite;
+  animation: fall2Sakura 11s linear -6s infinite;
+}
+
+.fall3 {
+  @keyframes fall3Sakura {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    50%  { transform: translate(3vw, 65vh) rotate(140deg); }
+    100% { transform: translate(0.5vw, 130vh) rotate(300deg); }
+  }
+  -webkit-animation: fall3Sakura 9.5s linear -4.5s infinite;
+  animation: fall3Sakura 9.5s linear -4.5s infinite;
+}
+
+.fall4 {
+  @keyframes fall4Sakura {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    50%  { transform: translate(-3vw, 65vh) rotate(200deg); }
+    100% { transform: translate(-0.5vw, 130vh) rotate(380deg); }
+  }
+  -webkit-animation: fall4Sakura 13s linear -8s infinite;
+  animation: fall4Sakura 13s linear -8s infinite;
+}
