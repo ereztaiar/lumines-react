@@ -11,18 +11,7 @@ import {
   isBeingRecursive,
   isBeingSwept,
 } from "Util/clear-blocks/predicates";
-
-const calcGhostRow = (grid, cube) => {
-  const leftX = cube.topLeft.x;
-  const rightX = cube.topRight.x;
-  const startY = cube.bottomLeft.y + 1;
-  for (let y = startY; y < ROWS + READY_GRID; y++) {
-    if (grid[leftX][y] !== 0 || grid[rightX][y] !== 0) {
-      return y - 1;
-    }
-  }
-  return ROWS + READY_GRID - 1;
-};
+import { calcGhostRow } from "@lumines/game-components/src/components/Board/calcGhostRow";
 
 const Grid = (props) => {
   const {
