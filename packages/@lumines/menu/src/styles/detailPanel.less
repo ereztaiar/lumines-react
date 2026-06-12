@@ -1,0 +1,84 @@
+@-webkit-keyframes panel-expand {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 60vh;
+    opacity: 1;
+  }
+}
+
+@keyframes panel-expand {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 60vh;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes panel-collapse {
+  from {
+    max-height: 60vh;
+    opacity: 1;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes panel-collapse {
+  from {
+    max-height: 60vh;
+    opacity: 1;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+  }
+}
+
+.root {
+  color: white;
+  padding: 0 4rem 0 2rem;
+}
+
+.title {
+  margin: 0 0 0.5rem;
+  font-size: 2.4rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-shadow: 0 0 18px rgba(0, 0, 0, 0.6);
+  transition: color 250ms ease;
+}
+
+.description {
+  margin: 0;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.body {
+  max-height: 0;
+  opacity: 0;
+  overflow-y: auto;
+  margin-top: 1rem;
+
+  a {
+    color: var(--accent);
+  }
+}
+
+.expanded {
+  -webkit-animation: panel-expand 400ms ease forwards;
+  animation: panel-expand 400ms ease forwards;
+}
+
+.collapsed {
+  -webkit-animation: panel-collapse 400ms ease forwards;
+  animation: panel-collapse 400ms ease forwards;
+}

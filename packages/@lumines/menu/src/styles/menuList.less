@@ -1,0 +1,30 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-left: 3rem;
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.item {
+  transform: rotate(-10deg);
+  transform-origin: left center;
+  transition: transform 200ms ease, color 200ms ease, opacity 200ms ease;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+}
+
+.highlighted {
+  transform: rotate(-10deg) translateX(2.2rem) scale(1.45);
+  color: var(--accent);
+  font-weight: 700;
+  text-shadow: 0 0 12px var(--accent);
+}
+
+.dimmed {
+  opacity: 0.35;
+  transform: translateX(-1.5rem);
+}

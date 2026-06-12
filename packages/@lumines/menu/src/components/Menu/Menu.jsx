@@ -1,79 +1,37 @@
-import React, { useEffect } from "react";
-import {
-  Play,
-  Settings,
-  Skin,
-  Github,
-  Scores,
-} from "@lumines/menu/src/components/Menu/Items";
+import React from "react";
+
+import MenuList from "@lumines/menu/src/components/Menu/MenuList";
+import MenuTile from "@lumines/menu/src/components/Menu/MenuTile";
+import DetailPanel from "@lumines/menu/src/components/Menu/DetailPanel";
+import HintsBar from "@lumines/menu/src/components/Menu/HintsBar";
+import { getMenuItems } from "@lumines/menu/src/components/Menu/itemRegistry";
 
 import menuStyle from "@lumines/menu/src/styles/menu.less";
 import { useMenu } from "@lumines/menu/index";
+
+const menuItems = getMenuItems();
 
 const Menu = (props) => {
   const {} = props;
 
   const {
-    state: { menuOrder, selected, menuLocked },
+    state: { highlightIndex, selected, menuLocked },
   } = useMenu();
 
-  const menuItems = menuOrder.map((item, index) => {
-    switch (item) {
-      case "play": {
-        return (
-          <Play key={"play"} selected={index === 0 && selected === "play"} />
-        );
-      }
-      case "setting": {
-        return (
-          <Settings
-            key={"setting"}
-            selected={index === 0 && selected === "setting"}
-          />
-        );
-      }
-      case "skin": {
-        return (
-          <Skin key={"skin"} selected={index === 0 && selected === "skin"} />
-        );
-      }
-      case "github": {
-        return (
-          <Github
-            key={"github"}
-            selected={index === 0 && selected === "github"}
-          />
-        );
-      }
-      case "scores": {
-        return (
-          <Scores
-            key={"scores"}
-            selected={index === 0 && selected === "scores"}
-          />
-        );
-      }
-    }
-  });
-
-  let lockedClass;
-
-  if (menuLocked === null) {
-    lockedClass = "";
-  } else if (menuLocked === true) {
-    lockedClass = menuStyle.locked;
-  } else if (menuLocked === false) {
-    lockedClass = menuStyle.unlocked;
-  }
+  const activeItem = menuItems[highlightIndex];
 
   return (
-    <div className={menuStyle.root}>
-      <div className={menuStyle.menu}>
-        <div className={menuStyle.title}>MENU</div>
-        <div className={[menuStyle["menu-items"], lockedClass].join(" ")}>
-          {menuItems}
-        </div>
-      </div>
+    <div className={menuStyle.root} style={{ "--accent": activeItem.color }}>
+      <div className={menuStyle.accentSeam}></div>
+      <div className={menuStyle.logo}>LUMINES</div>
+      <MenuList
+        items={menuItems}
+        highlightIndex={highlightIndex}
+        dimmed={menuLocked === true}
+      />
+      <MenuTile item={activeItem} />
+      <DetailPanel item={activeItem} selected={selected} menuLocked={menuLocked} />
+      <HintsBar />
     </div>
   );
 };

@@ -2,70 +2,10 @@ import React, { useEffect, createContext, useContext, useReducer, useRef } from 
 import { useKeys, KEYS } from "@lumines/core";
 
 import { useRouter } from "@lumines/game-router/src/context/routerContext";
+import { menuReducer, defaultState } from "@lumines/menu/src/context/menuReducer";
 
 const MenuContext = createContext({});
 const { Provider: MenuProvider } = MenuContext;
-
-const defaultState = {
-    reflection: true,
-    // controlles: 'N/A'
-    menuOrder: ['play', 'setting', 'skin', 'github', 'scores'],
-    selected: null,
-    menuLocked: null,// 3 states null, true, false
-};
-
-const menuReducer = (state, action) => {
-    const { type } = action;
-
-    const { selected } = state;
-
-    if (selected !== null && type !== 'menu_exit') {
-        return {
-            ...state
-        };
-    }
-
-    switch (type) {
-        case 'menu_up': {
-            const { menuOrder } = state;
-            const lastItem = menuOrder.pop();
-            menuOrder.unshift(lastItem);
-            return {
-                ...state,
-                menuOrder
-            }
-        }
-        case 'menu_down': {
-            const { menuOrder } = state;
-            const lastItem = menuOrder.shift();
-            menuOrder.push(lastItem);
-            return {
-                ...state,
-                menuOrder
-            }
-        }
-        case 'selected': {
-            const { menuOrder } = state;
-            return {
-                ...state,
-                selected: menuOrder[0],
-                menuLocked: true
-            }
-        }
-        case 'menu_exit': {
-            return {
-                ...state,
-                selected: null,
-                menuLocked: false
-            }
-        }
-        default: {
-            return { ...defaultState };
-        }
-
-    }
-
-}
 
 const MENU_TIMEOUT = 600000;
 
@@ -127,7 +67,6 @@ const Menu = props => {
             }
             case KEYS.ESCAPE: {
                 dispatch({ type: 'menu_exit' });
-                routerDispatch({ type: 'menu_exit' });
                 break;
             }
             default:

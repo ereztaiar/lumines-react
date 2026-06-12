@@ -1,14 +1,38 @@
 .options {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.5rem 0;
+
   .button {
-    // color: #E1E66E;
-    // border: 5px solid #E6736E;
     color: #ff6b9d;
     background-color: #7B5EA7;
-    border: 5px solid #a78bfa;
-    padding: 5rem;
-    display: inline-block;
+    border: 3px solid #a78bfa;
+    padding: 2rem 1rem;
+    flex: 1 1 0;
+    max-width: 12rem;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
     border-radius: 1.5rem;
-    margin: 2rem;
-    font-size: 5rem;
+    font-size: 3rem;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: opacity 150ms ease, border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+  }
+
+  .focused {
+    opacity: 1;
+    border-color: #ff6b9d;
+    box-shadow: 0 0 14px rgba(255, 107, 157, 0.45);
+    transform: translateY(-3px);
+  }
+
+  .label {
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    color: #ffffff;
+    white-space: nowrap;
   }
 }
