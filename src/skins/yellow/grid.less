@@ -1,183 +1,79 @@
 @import "Skins/common.less";
 
 .board {
-  grid-column-start: 2;
-  grid-row-start: 2;
-  grid-row-end: 3;
+  grid-column-start: 2; grid-row-start: 2; grid-row-end: 2;
   align-self: start;
   width: @center-width;
   max-width: @grid-item-width-max * @grid-columns;
-  position: relative;
-  margin: 0 auto;
+  position: relative; margin: 0 auto; grid-area: grid;
 }
+
 .grid {
   position: relative;
 
-  .row0,
-  .row1 {
-    .gridItem {
-      border: 0;
-      background: none;
-
-      &:first-child {
-        border-left: 0px;
-      }
-    }
+  .row0, .row1 {
+    .gridItem { border: 0; background: none; &:first-child { border-left: 0; } }
   }
+  .row1 { border-bottom: 1px solid rgba(255, 193, 7, 0.35); }
 
-  .row1 {
-    border-bottom: 1px solid gray;
-  }
-
-  each(range(0, @grid-rows, 1), {
-    .row@{value} {
-      height: @grid-item-height;
-    }
-  });
+  each(range(0, @grid-rows, 1), { .row@{value} { height: @grid-item-height; } });
 
   .gridItem {
+    width: @grid-item-width; height: @grid-item-height;
+    max-width: @grid-item-width-max; max-height: @grid-item-height-max;
+    float: left; line-height: @grid-item-height; text-align: center;
+    border-bottom: 1px solid rgba(255, 193, 7, 0.35); border-right: 1px solid rgba(255, 193, 7, 0.35);
+    position: relative; background: rgba(58, 74, 16, 0.5);
+    &:first-child { border-left: 1px solid rgba(255, 193, 7, 0.35); }
 
-    width: @grid-item-width;
-    height: @grid-item-height;
-    max-width: @grid-item-width-max;
-    max-height: @grid-item-height-max;
-    float: left;
-    line-height: @grid-item-height;
-    text-align: center;
-    border-bottom: 1px solid gray;
-    border-right: 1px solid gray;
-    position: relative;
-    background: #403fab59;
-
-    &:first-child {
-      border-left: 1px solid gray;
-    }
-
-    &:after {
-      width: 75%;
-      height: 75%;
-      display: block;
-
-      position: absolute;
-      top: 8%;
-      left: 8%;
-
-    }
-
-    &:before {
-      width: 90%;
-      height: 90%;
-      display: block;
-      content: ' ';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translateX(-50%) translateY(-50%);
-      border-radius: 3px;
-
-    }
+    &:after  { width: 75%; height: 75%; display: block; position: absolute; top: 8%; left: 8%; }
+    &:before { width: 90%; height: 90%; display: block; content: ' '; position: absolute;
+               top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%); border-radius: 3px; }
 
     &.ready {
-      &:before {
-        border-radius: 0;
-        width: 100%;
-        height: 100%;
-      }
-
-      &.large {
-        position: relative;
-
-        &:after {
-          width: @grid-item-width*2;
-          height: @grid-item-height*2;
-          position: absolute;
-          top: ~"calc(-100% - 2px)";
-          left: -2px;
-          border: 2px solid blue;
-        }
+      &:before { border-radius: 0; width: 100%; height: 100%; }
+      &.large:after {
+        width: @grid-item-width*2; height: @grid-item-height*2;
+        position: absolute; top: ~"calc(-100% - 2px)"; left: -2px;
+        border: 2px solid #ffc107;
       }
     }
 
-    &.orange {
-
-      &:after {
-        content: '';
-        border-top: 1px solid #e58769;
-        border-left: 1px solid #e58769;
-      }
-
-      &:before {
-        background: #fa7f03;
-      }
-    }
-
+    /* colorA blocks — honey */
     &.grey {
-      &:after {
-        content: '';
-        border-top: 1px solid #f9f6f5;
-        border-left: 1px solid #f9f6f5;
-      }
-
-      &:before {
-        background: #e3e3e4;
-      }
+      &:after  { content: ''; border-top: 1px solid #fff3c4; border-left: 1px solid #fff3c4; }
+      &:before { background: #ffc107; }
     }
 
-
-    &.darkOrange {
-      border-bottom: 1px solid #e25d2b;
-      border-right: 1px solid #e25d2b;
-
-      &:after {
-        content: '';
-        border-top: 0;
-        border-left: 0;
-      }
-
-      &:before {
-        background: #e25d2b;
-        border-radius: 0;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        transform: none;
-      }
+    /* colorB blocks — hive */
+    &.orange {
+      &:after  { content: ''; border-top: 1px solid #6d4c1d; border-left: 1px solid #6d4c1d; }
+      &:before { background: #3e2723; }
     }
 
+    /* placed colorA — aged honey */
     &.darkGrey {
-      border-bottom: 1px solid #a09c9c;
-      border-right: 1px solid #A09C9C;
+      border-bottom: 1px solid #8a6508; border-right: 1px solid #8a6508;
+      &:after  { content: ''; border-top: 0; border-left: 0; }
+      &:before { background: #b8860b; border-radius: 0; width: 100%; height: 100%;
+                 left: 0; top: 0; transform: none; }
+    }
 
-      &:after {
-        content: '';
-        border-top: 0;
-        border-left: 0;
-      }
-
-      &:before {
-        background: #A09C9C;
-        border-radius: 0;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        transform: none;
-      }
+    /* placed colorB — aged hive */
+    &.darkOrange {
+      border-bottom: 1px solid #1a120b; border-right: 1px solid #1a120b;
+      &:after  { content: ''; border-top: 0; border-left: 0; }
+      &:before { background: #2a1c12; border-radius: 0; width: 100%; height: 100%;
+                 left: 0; top: 0; transform: none; }
     }
 
     &.ghostBlock {
-      background: rgba(255, 255, 255, 0.1);
-
-      &:before {
-        background: rgba(255, 255, 255, 0.15);
-        border: 2px dashed rgba(255, 255, 255, 0.5);
-        border-radius: 3px;
-      }
+      background: rgba(255,255,255,0.05);
+      &:before { background: rgba(255,255,255,0.08); border: 2px dashed rgba(255,255,255,0.4); border-radius: 3px; }
     }
 
     &.markedForDeletion {
-      box-shadow: 0 0 10px 2px #facc15, inset 0 0 8px #facc15;
+      box-shadow: 0 0 10px 2px #ffd700, inset 0 0 8px #ffd700;
       animation: glowPulse 0.8s ease-in-out infinite;
       z-index: 1;
     }
@@ -192,9 +88,6 @@
       z-index: 1;
     }
 
-    img {
-      width: 100%;
-    }
+    img { width: 100%; }
   }
-
 }

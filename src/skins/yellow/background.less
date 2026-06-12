@@ -1,35 +1,77 @@
 .background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   transform: scale(1.5);
 
-  &:before, &:after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    content: '';
-    display: block;
-  }
-
+  &:before, &:after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; content: ''; display: block; }
 
   &:before {
-    background: yellowgreen;
+    background: linear-gradient(135deg, #243305 0%, #6b4f0a 50%, #243305 100%);
+    background-size: 400% 400%;
+    z-index: -20;
+
+    @keyframes BgMoveYellow {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 51%; }
+      100% { background-position: 0% 50%; }
+    }
+    -webkit-animation: BgMoveYellow 10s ease infinite;
+    animation: BgMoveYellow 10s ease infinite;
   }
 
   &:after {
-  }
-
-  svg {
+    z-index: -10;
+    background: url('../../assets/images/scan-mask.png') repeat;
+    opacity: 0.3;
   }
 }
 
+/* Icon scene layer — holds all background react-icons */
+.scene {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
 
-#outer {
-
+  svg { position: absolute; }
 }
 
+/* Soft golden glow for any icon — uses the icon's own color */
+.glow {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.title {
+  position: absolute; top: 30.5%; left: 50%; transform: translateX(-50%);
+  color: #ffc107; font-size: 3rem; letter-spacing: 0.6rem; text-transform: uppercase;
+  font-weight: bold;
+  text-shadow: 0 0 12px rgba(255, 193, 7, 0.8), 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.floatSlow {
+  @keyframes floatSlowYellow { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  -webkit-animation: floatSlowYellow 6s ease-in-out infinite;
+  animation: floatSlowYellow 6s ease-in-out infinite;
+}
+
+.pulse {
+  @keyframes pulseYellow { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  -webkit-animation: pulseYellow 3.5s ease-in-out infinite;
+  animation: pulseYellow 3.5s ease-in-out infinite;
+}
+
+.blinkSlow {
+  @keyframes blinkSlowYellow { 0%,44%,56%,100%{opacity:1} 50%{opacity:0.08} }
+  -webkit-animation: blinkSlowYellow 4.2s ease-in-out infinite;
+  animation: blinkSlowYellow 4.2s ease-in-out infinite;
+}
+
+.driftSlow {
+  @keyframes driftSlowYellow { 0%,100%{transform:translate(0,0) rotate(0deg)} 50%{transform:translate(18px,-8px) rotate(8deg)} }
+  -webkit-animation: driftSlowYellow 7s ease-in-out infinite;
+  animation: driftSlowYellow 7s ease-in-out infinite;
+}
+
+.buzz {
+  @keyframes buzzYellow { 0%,100%{transform:translate(0,0)} 25%{transform:translate(6px,-4px)} 50%{transform:translate(-4px,3px)} 75%{transform:translate(5px,4px)} }
+  -webkit-animation: buzzYellow 2.4s ease-in-out infinite;
+  animation: buzzYellow 2.4s ease-in-out infinite;
+}

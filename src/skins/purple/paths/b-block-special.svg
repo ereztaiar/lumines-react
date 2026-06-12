@@ -8,12 +8,12 @@
   <rect
           width="100%"
           height="100%"
-          fill="#961EE1"
+          fill="#6366F1"
           rx="3"/>
   <rect
           width="90%"
           height="90%"
-          fill="#1ECBE1"
+          fill="#D946EF"
           rx="15"
           x="5%"
           y="5%"
@@ -23,8 +23,8 @@
           cx="50%"
           cy="50%"
           r="3"
-          stroke="#6AE11E"
+          stroke="#FBBF24"
           stroke-width="1"
-          fill="#6AE11E" />
+          fill="#FBBF24" />
 
 </svg>
