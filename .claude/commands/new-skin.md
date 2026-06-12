@@ -12,7 +12,7 @@ If the skin name and color palette were not supplied in the arguments, ask the u
 1. **Skin name** (slug, e.g. `sunset`, `forest`, `deep-sea`) — this becomes the folder name and import key.
 2. **Color palette** — two main block colors (A and B), background mood, accent/highlight colors.
 
-If a reference image URL was provided, fetch it with WebFetch, read the saved image file with Read, and use the visual as a template for the SVG background.
+If a reference image URL was provided, fetch it with WebFetch, read the saved image file with Read, and use the visual as a template for the background icon composition.
 
 ---
 
@@ -32,7 +32,17 @@ Define these roles before writing any file:
 | `gridCell` | Grid cell background (translucent). |
 | `characterColor` | Character emoji color. |
 | `swiperColor` | Swiper line color (usually matches colorA or colorB). |
-| `accent1..N` | Additional neon/highlight colors for windows, signs, aurora. |
+| `accent1..N` | Additional neon/highlight colors for background icons. |
+
+Then choose the react-icons that drive the visuals (browse https://react-icons.github.io/react-icons — the package is already installed, v4.3.1):
+
+| Role | Description |
+|------|-------------|
+| `iconA` | react-icons component for block A (normal + placed). Bold, filled silhouette that reads clearly at ~30px — `Gi`/`Fa` families work best. |
+| `iconB` | react-icons component for block B. A distinct silhouette from `iconA` (e.g. `GiCrystalShine` vs `GiFlame`). |
+| `iconASpecial` | Icon marking special A blocks — a different icon, or `iconA` in a brighter glow color. |
+| `iconBSpecial` | Icon marking special B blocks. |
+| `sceneIcons` | 3–8 react-icons composing the background scene (moon, trees, stars, waves, …), colored from `accent1..N`. |
 
 ---
 
@@ -51,13 +61,7 @@ src/skins/<name>/
 ├── score.less
 ├── swiper.less
 └── paths/
-    ├── index.js
-    ├── a-block.svg
-    ├── a-special-block.svg
-    ├── b-block.svg
-    ├── b-special-block.svg
-    ├── dark-a.svg
-    └── dark-b.svg
+    └── index.jsx
 ```
 
 ---
@@ -80,30 +84,34 @@ export { background, character, dispenser, grid, score, swiper, paths, reflectio
 
 ---
 
-### `src/skins/<name>/paths/index.js`
+### Block icons — `src/skins/<name>/paths/index.jsx`
 
-```js
-import aBlock        from './a-block.svg';
-import aBlockSpecial from './a-special-block.svg';
-import bBlock        from './b-block.svg';
-import bBlockSpecial from './b-special-block.svg';
-import darkA         from './dark-a.svg';
-import darkB         from './dark-b.svg';
+Blocks are react-icons rendered to SVG data-URI strings. The file must be named `index.jsx` (it contains JSX); webpack resolves `Skins/<name>/paths` to it automatically.
+
+```jsx
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { GiCrystalShine, GiFlame } from 'react-icons/gi';
+
+const toDataUri = (el) =>
+    `data:image/svg+xml,${encodeURIComponent(renderToStaticMarkup(el))}`;
+
+const aBlock        = toDataUri(<GiCrystalShine color="<iconA color>" />);
+const aBlockSpecial = toDataUri(<GiCrystalShine color="<iconASpecial glow color>" />); // or a distinct icon
+const bBlock        = toDataUri(<GiFlame color="<iconB color>" />);
+const bBlockSpecial = toDataUri(<GiFlame color="<iconBSpecial glow color>" />);
+const darkA         = toDataUri(<GiCrystalShine color="<darkA>" />);
+const darkB         = toDataUri(<GiFlame color="<darkB>" />);
 
 export { aBlock, aBlockSpecial, bBlock, bBlockSpecial, darkA, darkB }
 ```
 
----
+**Rules — do not deviate:**
 
-### SVG blocks — `paths/*.svg`
-
-All blocks use a 30×30 viewBox with a 6-path isometric structure (same geometry as `src/skins/default/paths/grey-block.svg`). Adapt fills to the skin palette:
-
-- **a-block.svg** / **b-block.svg** — bright, saturated face colors.
-- **a-special-block.svg** / **b-special-block.svg** — same as normal but add a centered `<rect x="8" y="11" width="14" height="8" rx="2" fill="<glow color>" opacity="0.55"/>` inner marker.
-- **dark-a.svg** / **dark-b.svg** — use `rx="0"` (no rounded corners) and dim, flat face colors. These represent placed/settled blocks.
-
-Copy the path geometry from `src/skins/default/paths/grey-block.svg` and swap fills only.
+- The six export names and the fact that they are **plain strings** are a hard contract: `Grid.jsx` and `Dispenser.jsx` inject them as raw HTML `<img src="${paths.aBlock}"/>`. Never export React components or elements from this file.
+- The grid paints a solid `colorA`/`colorB` face behind the icon (the `:before` background in `grid.less`), so pick icon colors that **contrast with the block face** — near-white or a much darker shade. An icon the same color as the face is invisible.
+- Special blocks must be visually distinct: a different icon, or the same icon in a clearly brighter glow color.
+- `darkA`/`darkB` reuse the normal icons with the dim/desaturated placed-block colors.
 
 ---
 
@@ -327,12 +335,33 @@ Replace `rgba(0, 166, 251, ...)` from the default with `colorA` and `colorB`:
   }
 }
 
-.cityscape {
+/* Icon scene layer — holds all background react-icons */
+.scene {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   pointer-events: none;
+  overflow: hidden;
+
+  svg { position: absolute; }
 }
 
-/* Add per-skin blink variants here, each with @keyframes inside */
+/* Soft neon glow for any icon — uses the icon's own color */
+.glow {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+/* Per-skin animation variants, each with @keyframes inside the class */
+.floatSlow {
+  @keyframes floatSlow<Name> { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  -webkit-animation: floatSlow<Name> 6s ease-in-out infinite;
+  animation: floatSlow<Name> 6s ease-in-out infinite;
+}
+
+.pulse {
+  @keyframes pulse<Name> { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  -webkit-animation: pulse<Name> 3.5s ease-in-out infinite;
+  animation: pulse<Name> 3.5s ease-in-out infinite;
+}
+
 .blinkSlow {
   @keyframes blinkSlow<Name> { 0%,44%,56%,100%{opacity:1} 50%{opacity:0.08} }
   -webkit-animation: blinkSlow<Name> 4.2s ease-in-out infinite;
@@ -344,41 +373,63 @@ Replace `rgba(0, 166, 251, ...)` from the default with `colorA` and `colorB`:
   -webkit-animation: blinkFast<Name> 2.8s ease-in-out infinite;
   animation: blinkFast<Name> 2.8s ease-in-out infinite;
 }
+
+.driftSlow {
+  @keyframes driftSlow<Name> { 0%,100%{transform:translate(0,0)} 50%{transform:translate(14px,10px)} }
+  -webkit-animation: driftSlow<Name> 9s ease-in-out infinite;
+  animation: driftSlow<Name> 9s ease-in-out infinite;
+}
 ```
 
 ---
 
 ### `src/skins/<name>/Background.jsx`
 
-Import the CSS module and render a `<div>` with an inline SVG cityscape. Guidelines:
+The background is a **composition of react-icons components** layered over the CSS gradient — no hand-drawn inline SVG. Import the chosen `sceneIcons` from `react-icons` and position them absolutely inside the `.scene` layer. Guidelines:
 
-- `viewBox="0 0 1200 700"` with `preserveAspectRatio="xMidYMax slice"`.
-- Add SVG `<defs>` with `<filter>` elements for each neon color glow (use `feGaussianBlur` + `feMerge`). Prefix all filter IDs with the skin slug to avoid global collisions (e.g. `id="ss-gc"` for "sunset-cyan").
-- Add `<linearGradient>` and `<radialGradient>` elements for sky, ground, road, reflections, and aurora.
-- Use `className={BackgroundStyle.blinkSlow}` etc. for animated SVG elements. Never use inline `style` for animations — they won't loop.
-- Sky: a dark gradient rect covering y=0–450. Add atmospheric `<ellipse>` aurora bands using `<filter id="…"><feGaussianBlur stdDeviation="20"/></filter>` for large soft glow.
-- Buildings: dark `<rect>` silhouettes on left and right sides, rising above y=450.
-- Windows: `<rect>` groups per color, each `<g>` with `filter="url(#...)"` for glow.
-- Ground: three `<polygon>` shapes for sidewalk-left, road-center, sidewalk-right, converging to a vanishing point at `(600, 450)`.
-- Perspective railway tracks: two converging lines + perspective-spaced horizontal ties via a data array + `.map()`.
-- Wet reflections: `<polygon>` shapes filled with `url(#gradient)` for each color, elongated toward the vanishing point.
-- Tram or light source at the vanishing point.
+- Position, size, color, and opacity go in inline `style` (`left`/`top`/`bottom` in %, `fontSize` in rem, `color` from the palette roles). `.scene svg { position: absolute }` is already set in the CSS, so don't repeat it.
+- **Animations are CSS-module classes only** (`className={BackgroundStyle.floatSlow}` etc.). Never animate via inline `style` — those won't scope or loop.
+- Repeated elements (stars, snow, birds, bubbles) come from data arrays + `.map()`, varying position/size/opacity per item.
+- Create depth with scale and opacity: small + dim = far away, large + saturated = foreground. Paint order = JSX order (later elements render on top).
+- Glow comes from the `.glow` class (`drop-shadow` of the icon's own color) — no SVG filter defs needed.
+- Aim for a composed scene, not confetti: one focal icon (moon, sun, planet), a ground/horizon band of larger icons along the bottom edge, and one or two ambient particle layers.
 
 ```jsx
 import React from 'react';
 import {background as BackgroundStyle} from "Skins/<name>";
+import { WiMoonAltWaningCrescent } from 'react-icons/wi';
+import { GiPineTree } from 'react-icons/gi';
+import { FaRegSnowflake } from 'react-icons/fa';
+
+const snowflakes = [
+    { left: '8%',  top: '12%', size: '1.4rem', opacity: 0.8 },
+    { left: '22%', top: '30%', size: '0.9rem', opacity: 0.5 },
+    /* ... 10–20 entries spread across the viewport */
+];
+
+const trees = [
+    { left: '2%',  size: '9rem', color: '<accent2>' },
+    { left: '12%', size: '6rem', color: '<accent2, dimmer>' },
+    /* ... a horizon band along the bottom edge */
+];
 
 const Background = () => (
     <div className={BackgroundStyle.background}>
-        <svg className={BackgroundStyle.cityscape}
-             xmlns="http://www.w3.org/2000/svg"
-             viewBox="0 0 1200 700"
-             preserveAspectRatio="xMidYMax slice">
-            <defs>
-                {/* filters, gradients */}
-            </defs>
-            {/* sky, aurora, stars, buildings, windows, ground, tracks, reflections, tram, streetlights, rain */}
-        </svg>
+        <div className={BackgroundStyle.scene}>
+            <WiMoonAltWaningCrescent
+                className={`${BackgroundStyle.glow} ${BackgroundStyle.pulse}`}
+                style={{ top: '6%', right: '10%', fontSize: '7rem', color: '<accent1>' }}
+            />
+            {trees.map((t, i) => (
+                <GiPineTree key={`tree-${i}`}
+                            style={{ left: t.left, bottom: 0, fontSize: t.size, color: t.color }} />
+            ))}
+            {snowflakes.map((s, i) => (
+                <FaRegSnowflake key={`snow-${i}`}
+                                className={i % 2 ? BackgroundStyle.driftSlow : BackgroundStyle.floatSlow}
+                                style={{ left: s.left, top: s.top, fontSize: s.size, opacity: s.opacity, color: '<accent3>' }} />
+            ))}
+        </div>
     </div>
 );
 
@@ -405,4 +456,6 @@ After creating all files, tell the user:
 - Run `yarn watch` and open the game.
 - Press **S** until the new skin is active (it will be the last in the cycle).
 - Confirm background renders, block colors match, animations loop, swiper line and score panel use the new colors.
-- Check that **blink animations actually loop** — if they stop, the `@keyframes` placement or CSS Modules scoping is broken (see the `background.less` rule above).
+- Confirm blocks in the **grid and dispenser** show the chosen icons. If a block tile is blank, the data-URI failed — check `renderToStaticMarkup` output, the `encodeURIComponent` wrapping, and that the icon color contrasts with the block face painted by `grid.less`.
+- Confirm background icons are positioned and colored per the palette, and that the scene never intercepts clicks (`pointer-events: none` on `.scene`).
+- Check that **animations actually loop** — if they stop, the `@keyframes` placement or CSS Modules scoping is broken (see the `background.less` rule above), or an animation was set via inline `style` instead of a class.

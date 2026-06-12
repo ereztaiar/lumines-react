@@ -1,0 +1,118 @@
+.background {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  transform: scale(1.5);
+
+  &:before, &:after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; content: ''; display: block; }
+
+  &:before {
+    background: linear-gradient(135deg, #06281a 0%, #14542f 50%, #06281a 100%);
+    background-size: 400% 400%;
+    z-index: -20;
+
+    @keyframes BgMovePoker {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 51%; }
+      100% { background-position: 0% 50%; }
+    }
+    -webkit-animation: BgMovePoker 10s ease infinite;
+    animation: BgMovePoker 10s ease infinite;
+  }
+
+  &:after {
+    z-index: -10;
+    background: url('../../assets/images/scan-mask.png') repeat;
+    opacity: 0.3;
+  }
+}
+
+/* Icon scene layer — holds all background react-icons */
+.scene {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+
+  svg { position: absolute; }
+}
+
+/* Soft neon glow for any icon — uses the icon's own color */
+.glow {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+/* Table title — .background is scaled 1.5x around its center, so the
+   percentages below land higher on screen than they read (y' = 50 + 1.5*(y-50)) */
+.title {
+  position: absolute; top: 30.5%; left: 50%; transform: translateX(-50%);
+  color: #ffd700; font-size: 3rem; letter-spacing: 0.6rem; text-transform: uppercase;
+  font-weight: bold;
+  text-shadow: 0 0 12px rgba(209, 26, 45, 0.8), 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Community-card placeholders under the title */
+.cardSlots {
+  position: absolute; top: 38.5%; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 0.8rem;
+}
+
+.cardSlot {
+  width: 3.4rem; height: 4.8rem;
+  border: 2px dashed rgba(245, 240, 230, 0.55);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.floatSlow {
+  @keyframes floatSlowPoker { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  -webkit-animation: floatSlowPoker 6s ease-in-out infinite;
+  animation: floatSlowPoker 6s ease-in-out infinite;
+}
+
+.pulse {
+  @keyframes pulsePoker { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  -webkit-animation: pulsePoker 3.5s ease-in-out infinite;
+  animation: pulsePoker 3.5s ease-in-out infinite;
+}
+
+.blinkSlow {
+  @keyframes blinkSlowPoker { 0%,44%,56%,100%{opacity:1} 50%{opacity:0.08} }
+  -webkit-animation: blinkSlowPoker 4.2s ease-in-out infinite;
+  animation: blinkSlowPoker 4.2s ease-in-out infinite;
+}
+
+.blinkFast {
+  @keyframes blinkFastPoker { 0%,82%,96%,100%{opacity:1} 89%{opacity:0.05} }
+  -webkit-animation: blinkFastPoker 2.8s ease-in-out infinite;
+  animation: blinkFastPoker 2.8s ease-in-out infinite;
+}
+
+.driftSlow {
+  @keyframes driftSlowPoker { 0%,100%{transform:translate(0,0)} 50%{transform:translate(14px,10px)} }
+  -webkit-animation: driftSlowPoker 9s ease-in-out infinite;
+  animation: driftSlowPoker 9s ease-in-out infinite;
+}
+
+/* Falling suit variants — items start above the viewport and rain down;
+   negative delays spread them mid-fall on load */
+.fall1 {
+  @keyframes fall1Poker { from { transform: translateY(0); } to { transform: translateY(130vh); } }
+  -webkit-animation: fall1Poker 5s linear -1s infinite;
+  animation: fall1Poker 5s linear -1s infinite;
+}
+
+.fall2 {
+  @keyframes fall2Poker { from { transform: translateY(0); } to { transform: translateY(130vh); } }
+  -webkit-animation: fall2Poker 7.5s linear -4s infinite;
+  animation: fall2Poker 7.5s linear -4s infinite;
+}
+
+.fall3 {
+  @keyframes fall3Poker { from { transform: translateY(0); } to { transform: translateY(130vh); } }
+  -webkit-animation: fall3Poker 6s linear -2.5s infinite;
+  animation: fall3Poker 6s linear -2.5s infinite;
+}
+
+.fall4 {
+  @keyframes fall4Poker { from { transform: translateY(0); } to { transform: translateY(130vh); } }
+  -webkit-animation: fall4Poker 8.5s linear -6s infinite;
+  animation: fall4Poker 8.5s linear -6s infinite;
+}
