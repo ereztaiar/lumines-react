@@ -1,0 +1,94 @@
+@import "Skins/common.less";
+
+.board {
+  grid-column-start: 2; grid-row-start: 2; grid-row-end: 2;
+  align-self: start;
+  width: @center-width;
+  max-width: @grid-item-width-max * @grid-columns;
+  position: relative; margin: 0 auto; grid-area: grid;
+}
+
+.grid {
+  position: relative;
+
+  .row0, .row1 {
+    .gridItem { border: 0; background: none; &:first-child { border-left: 0; } }
+  }
+  .row1 { border-bottom: 1px solid rgba(255, 220, 180, 0.3); }
+
+  each(range(0, @grid-rows, 1), { .row@{value} { height: @grid-item-height; } });
+
+  .gridItem {
+    width: @grid-item-width; height: @grid-item-height;
+    max-width: @grid-item-width-max; max-height: @grid-item-height-max;
+    float: left; line-height: @grid-item-height; text-align: center;
+    border-bottom: 1px solid rgba(255, 220, 180, 0.3); border-right: 1px solid rgba(255, 220, 180, 0.3);
+    position: relative; background: rgba(60, 20, 60, 0.35);
+    &:first-child { border-left: 1px solid rgba(255, 220, 180, 0.3); }
+
+    &:after  { width: 75%; height: 75%; display: block; position: absolute; top: 8%; left: 8%; }
+    &:before { width: 90%; height: 90%; display: block; content: ' '; position: absolute;
+               top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%); border-radius: 3px; }
+
+    &.ready {
+      &:before { border-radius: 0; width: 100%; height: 100%; }
+      &.large:after {
+        width: @grid-item-width*2; height: @grid-item-height*2;
+        position: absolute; top: ~"calc(-100% - 2px)"; left: -2px;
+        border: 2px solid #ff6b5e;
+      }
+    }
+
+    /* colorA blocks (class name "grey" in game logic) — hot coral */
+    &.grey {
+      &:after  { content: ''; border-top: 1px solid #ffc9b8; border-left: 1px solid #ffc9b8; }
+      &:before { background: #ff6b5e; }
+    }
+
+    /* colorB blocks (class name "orange" in game logic) — turquoise */
+    &.orange {
+      &:after  { content: ''; border-top: 1px solid #9defe8; border-left: 1px solid #9defe8; }
+      &:before { background: #00c2d1; }
+    }
+
+    /* placed colorA — burnt terracotta */
+    &.darkGrey {
+      border-bottom: 1px solid #b14a44; border-right: 1px solid #b14a44;
+      &:after  { content: ''; border-top: 0; border-left: 0; }
+      &:before { background: #b14a44; border-radius: 0; width: 100%; height: 100%;
+                 left: 0; top: 0; transform: none; }
+    }
+
+    /* placed colorB — deep lagoon */
+    &.darkOrange {
+      border-bottom: 1px solid #00747e; border-right: 1px solid #00747e;
+      &:after  { content: ''; border-top: 0; border-left: 0; }
+      &:before { background: #00747e; border-radius: 0; width: 100%; height: 100%;
+                 left: 0; top: 0; transform: none; }
+    }
+
+    &.ghostBlock {
+      background: rgba(255,255,255,0.05);
+      &:before { background: rgba(255,255,255,0.08); border: 2px dashed rgba(255,255,255,0.4); border-radius: 3px; }
+    }
+
+    /* matched 2×2 — golden mango glow */
+    &.markedForDeletion {
+      box-shadow: 0 0 10px 2px #ffe066, inset 0 0 8px #ffe066;
+      animation: glowPulse 0.8s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    &.beingRecursive {
+      opacity: 0.5;
+      z-index: 1;
+    }
+
+    &.beingSwept {
+      opacity: 0.45;
+      z-index: 1;
+    }
+
+    img { width: 100%; }
+  }
+}
