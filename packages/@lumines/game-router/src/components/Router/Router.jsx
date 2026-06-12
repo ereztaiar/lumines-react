@@ -23,7 +23,7 @@ const Router = props => {
     }
 
     if (state.isGame) {
-        screen = <Game />
+        screen = <Game mode={state.mode} />
     }
 
 

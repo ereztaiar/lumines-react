@@ -3,13 +3,14 @@ import {useEffect, useState} from 'react';
 
 const MULTIPLIER = 4;
 const BLOCKS_PER_LEVEL = 10;
-const getHighScore = () => window.localStorage.getItem('highScore') | 0;
-const storeHighScore = (highScore) => window.localStorage.setItem('highScore', `${highScore}`);
+const highScoreKey = (mode) => mode === 'time-attack' ? 'highScore-time-attack' : 'highScore';
+const getHighScore = (mode) => window.localStorage.getItem(highScoreKey(mode)) | 0;
+const storeHighScore = (highScore, mode) => window.localStorage.setItem(highScoreKey(mode), `${highScore}`);
 
-const useScore = () => {
+const useScore = (mode) => {
 
     const [score, setScore] = useState(0);
-    const [highScore, setHighScore] = useState(Number(getHighScore()));
+    const [highScore, setHighScore] = useState(Number(getHighScore(mode)));
     const [deleted, setDeleted] = useState(0);
 
     const addOne = () => {
@@ -35,7 +36,7 @@ const useScore = () => {
         () => {
             if (score > highScore) {
                 setHighScore(score);
-                storeHighScore(score);
+                storeHighScore(score, mode);
             }
             return () => {
 

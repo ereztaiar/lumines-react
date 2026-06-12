@@ -5,19 +5,22 @@ import useScore from "@lumines/game-components/src/hooks/useScore";
 
 const Score = props => {
     const {
+        mode,
         score,
         highScore,
         deleted,
         level,
         pause,
+        timeRemaining,
         styles:{
             scoreStyle
         }
     } = props;
+    const isTimeAttack = mode === 'time-attack';
     const [time, setTime] = useState(0);
 
     useTimer(() => {
-        if (pause) {
+        if (pause || isTimeAttack) {
             return;
         }
 
@@ -28,18 +31,18 @@ const Score = props => {
         }
     }, 10);
 
-    const displayClock = (time) => {
-        const date = new Date(time * 10);
+    const displayClock = (seconds) => {
+        const date = new Date(seconds * 1000);
         let minutes = new Intl.DateTimeFormat('en', {minute: '2-digit'}).format(date);
-        let seconds = new Intl.DateTimeFormat('en', {second: '2-digit'}).format(date);
+        let secs = new Intl.DateTimeFormat('en', {second: '2-digit'}).format(date);
         if (minutes < 10) {
             minutes = `0${minutes}`;
         }
-        if (seconds < 10) {
-            seconds = `0${seconds}`;
+        if (secs < 10) {
+            secs = `0${secs}`;
         }
 
-        return `${minutes}:${seconds}`;
+        return `${minutes}:${secs}`;
     }
 
     return (
@@ -50,7 +53,7 @@ const Score = props => {
             </div>
             <div className={scoreStyle.data}>
                 <div className={scoreStyle.title}>TIME</div>
-                <div className={scoreStyle.info}>{displayClock(time)}</div>
+                <div className={scoreStyle.info}>{displayClock(isTimeAttack ? timeRemaining : time / 100)}</div>
             </div>
             <div className={scoreStyle.data}>
                 <div className={scoreStyle.title}>SCORE</div>

@@ -6,7 +6,7 @@ import { useKeys, KEYS } from "@lumines/core";
 import { isEligible, addEntry } from "Util/leaderboard";
 
 const GameOver = (props) => {
-    const { isGameOver, score } = props;
+    const { isGameOver, score, mode } = props;
     const { resetScore } = useGame();
     const { dispatch } = useRouter();
     const { state: { key } } = useKeys();
@@ -22,13 +22,13 @@ const GameOver = (props) => {
     const submitName = () => {
         const trimmed = name.trim();
         if (trimmed.length === 0) return;
-        addEntry(trimmed, score);
+        addEntry(trimmed, score, mode);
         confirm();
     };
 
     useEffect(() => {
         if (isGameOver) {
-            setShowNameEntry(isEligible(score));
+            setShowNameEntry(isEligible(score, mode));
         }
     }, [isGameOver]);
 
@@ -52,7 +52,7 @@ const GameOver = (props) => {
         <>
             <div className={GameClasses.pauseOverlay} />
             <div className={GameClasses.gameOverText}>
-                GAME OVER
+                {mode === 'time-attack' ? "TIME'S UP!" : 'GAME OVER'}
             </div>
             {showNameEntry ? (
                 <div className={GameClasses.nameEntryForm}>

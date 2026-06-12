@@ -10,6 +10,7 @@ import GameOver from "@lumines/game-components/src/components/Game/GameOver";
 
 const GameContent = (props) => {
   const {
+    mode,
     reflection,
     scoreStyle,
     gridStyle,
@@ -33,16 +34,19 @@ const GameContent = (props) => {
     currentDeleted,
     pause,
     isGameOver,
+    timeRemaining,
   } = useGame();
 
   return (
     <>
       <Score
+        mode={mode}
         score={score}
         highScore={highScore}
         deleted={deleted}
         level={level}
         pause={pause}
+        timeRemaining={timeRemaining}
         styles={{ scoreStyle }}
       />
       <Grid
@@ -75,7 +79,7 @@ const GameContent = (props) => {
       />
       <Character styles={{ characterStyle }} />
       <Pause pause={pause} />
-      <GameOver isGameOver={isGameOver} score={score} />
+      <GameOver isGameOver={isGameOver} score={score} mode={mode} />
     </>
   );
 };

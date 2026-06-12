@@ -35,7 +35,7 @@ const PlayContent = (props) => {
                 break;
             case KEYS.ENTER:
             case KEYS.SPACE:
-                routerDispatch({ type: 'start_game' });
+                routerDispatch({ type: 'start_game', mode: modes[focusedIndex].id });
                 break;
             default:
                 break;
@@ -49,7 +49,7 @@ const PlayContent = (props) => {
                     key={mode.id}
                     className={`${playStyle.button} ${i === focusedIndex ? playStyle.focused : ''}`}
                     onMouseEnter={() => setFocusedIndex(i)}
-                    onClick={() => { routerDispatch({ type: 'start_game' }) }}
+                    onClick={() => { routerDispatch({ type: 'start_game', mode: mode.id }) }}
                 >
                     <mode.Icon />
                     <span className={playStyle.label}>{mode.label}</span>

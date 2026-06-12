@@ -6,11 +6,12 @@ import useSkin from "@lumines/core/src/hooks/useSkin";
 import GameProvider from "@lumines/game-components/src/contexts/GameProvider";
 import GameContent from "@lumines/game-components/src/components/Game/GameContent";
 
-const Game = () => {
+const Game = (props) => {
+  const { mode = 'arcade' } = props;
   const reflection = true;
 
   const [score, addOne, multiplier, highScore, deletedBlocks, deleted, resetScore, level] =
-    useScore();
+    useScore(mode);
 
   const {
     skin: {
@@ -37,8 +38,9 @@ const Game = () => {
           GameClasses.pauseContainer
         }
       >
-        <GameProvider scoring={{ addOne, multiplier, deletedBlocks, resetScore }}>
+        <GameProvider mode={mode} scoring={{ addOne, multiplier, deletedBlocks, resetScore }}>
           <GameContent
+            mode={mode}
             reflection={reflection}
             scoreStyle={scoreStyle}
             gridStyle={gridStyle}

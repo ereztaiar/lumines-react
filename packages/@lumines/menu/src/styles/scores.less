@@ -1,3 +1,24 @@
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.tab {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.activeTab {
+  color: #ffd700;
+  border-color: #ffd700;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
