@@ -1,0 +1,114 @@
+.background {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  transform: scale(1.5);
+
+  &:before, &:after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; content: ''; display: block; }
+
+  &:before {
+    /* hard-rock stage — black bleeding into deep crimson */
+    background: linear-gradient(135deg, #3a121c 0%, #5e1c2e 45%, #8a2440 100%);
+    background-size: 400% 400%;
+    z-index: -20;
+
+    @keyframes BgMoveGuitar {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 51%; }
+      100% { background-position: 0% 50%; }
+    }
+    -webkit-animation: BgMoveGuitar 12s ease infinite;
+    animation: BgMoveGuitar 12s ease infinite;
+  }
+
+  &:after {
+    z-index: -10;
+    background: url('../../assets/images/scan-mask.png') repeat;
+    opacity: 0.3;
+  }
+}
+
+/* Icon scene layer — holds all background react-icons */
+.scene {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+
+  svg { position: absolute; }
+}
+
+/* Soft neon glow for any icon — uses the icon's own color */
+.glow {
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+.floatSlow {
+  @keyframes floatSlowGuitar { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  -webkit-animation: floatSlowGuitar 6s ease-in-out infinite;
+  animation: floatSlowGuitar 6s ease-in-out infinite;
+}
+
+.pulse {
+  @keyframes pulseGuitar { 0%,100%{opacity:1} 50%{opacity:0.45} }
+  -webkit-animation: pulseGuitar 3.5s ease-in-out infinite;
+  animation: pulseGuitar 3.5s ease-in-out infinite;
+}
+
+.driftSlow {
+  @keyframes driftSlowGuitar { 0%,100%{transform:translate(0,0)} 50%{transform:translate(14px,8px)} }
+  -webkit-animation: driftSlowGuitar 9s ease-in-out infinite;
+  animation: driftSlowGuitar 9s ease-in-out infinite;
+}
+
+/* Stage spotlights flicker at different tempos */
+.blinkSlow {
+  @keyframes blinkSlowGuitar { 0%,44%,56%,100%{opacity:0.95} 50%{opacity:0.18} }
+  -webkit-animation: blinkSlowGuitar 4.2s ease-in-out infinite;
+  animation: blinkSlowGuitar 4.2s ease-in-out infinite;
+}
+
+.blinkFast {
+  @keyframes blinkFastGuitar { 0%,82%,96%,100%{opacity:0.95} 89%{opacity:0.12} }
+  -webkit-animation: blinkFastGuitar 2.4s ease-in-out infinite;
+  animation: blinkFastGuitar 2.4s ease-in-out infinite;
+}
+
+/* Sound waves swell out of the amps */
+.swell {
+  @keyframes swellGuitar { 0%,100%{transform:scale(0.9);opacity:0.4} 50%{transform:scale(1.1);opacity:0.85} }
+  -webkit-animation: swellGuitar 2.8s ease-in-out infinite;
+  animation: swellGuitar 2.8s ease-in-out infinite;
+}
+
+/* Musical notes drift up and off the top of the stage;
+   negative delays spread them mid-rise on load */
+.rise1 {
+  @keyframes rise1Guitar {
+    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    15%  { opacity: 0.8; }
+    85%  { opacity: 0.8; }
+    100% { transform: translate(3vw, -120vh) rotate(25deg); opacity: 0; }
+  }
+  -webkit-animation: rise1Guitar 11s linear -2s infinite;
+  animation: rise1Guitar 11s linear -2s infinite;
+}
+
+.rise2 {
+  @keyframes rise2Guitar {
+    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    15%  { opacity: 0.7; }
+    85%  { opacity: 0.7; }
+    100% { transform: translate(-2.5vw, -120vh) rotate(-30deg); opacity: 0; }
+  }
+  -webkit-animation: rise2Guitar 14s linear -6s infinite;
+  animation: rise2Guitar 14s linear -6s infinite;
+}
+
+.rise3 {
+  @keyframes rise3Guitar {
+    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    15%  { opacity: 0.75; }
+    85%  { opacity: 0.75; }
+    100% { transform: translate(2vw, -120vh) rotate(18deg); opacity: 0; }
+  }
+  -webkit-animation: rise3Guitar 12.5s linear -9s infinite;
+  animation: rise3Guitar 12.5s linear -9s infinite;
+}

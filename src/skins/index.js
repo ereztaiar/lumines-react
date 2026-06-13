@@ -6,6 +6,7 @@ import * as cherryBlossom from 'Skins/cherry-blossom';
 import * as poker from 'Skins/poker';
 import * as sakura from 'Skins/sakura';
 import * as tropical from 'Skins/tropical';
+import * as guitar from 'Skins/guitar';
 
 const SKINS = [
     { id: 'default', label: 'DEFAULT', module: defaultSkin },
@@ -16,6 +17,7 @@ const SKINS = [
     { id: 'poker', label: 'POKER', module: poker },
     { id: 'sakura', label: 'SAKURA', module: sakura },
     { id: 'tropical', label: 'TROPICAL', module: tropical },
+    { id: 'guitar', label: 'GUITAR', module: guitar },
 ];
 
 const SKIN_IDS = SKINS.map((skin) => skin.id);
