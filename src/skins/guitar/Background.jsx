@@ -42,7 +42,7 @@ const Background = () => (
             {spotlights.map((s, i) => (
                 <FaCircle key={`light-${i}`}
                           className={`${BackgroundStyle.glow} ${s.fast ? BackgroundStyle.blinkFast : BackgroundStyle.blinkSlow}`}
-                          style={{ left: s.left, top: '19%', fontSize: '1.4rem', color: s.color }} />
+                          style={{ left: s.left, top: '19%', fontSize: '2.4rem', color: s.color }} />
             ))}
 
             {/* focal hero guitar glowing centre-stage */}
@@ -80,7 +80,7 @@ const Background = () => (
             {/* drum kit centre-back on the riser */}
             <GiDrumKit
                 style={{ left: '50%', bottom: '18%', transform: 'translateX(-50%)',
-                         fontSize: '8rem', color: '#ff2e4d', opacity: 0.9 }}
+                         fontSize: '12rem', color: '#ff2e4d', opacity: 0.9 }}
             />
 
             {/* mic stands up front */}
