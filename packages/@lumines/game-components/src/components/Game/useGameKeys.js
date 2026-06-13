@@ -1,4 +1,5 @@
 import useKey from "@lumines/core/src/hooks/useKey";
+import { KEYS } from "@lumines/core";
 import { CUBE_STATES } from "@lumines/game-components/src/components/Dispenser";
 import * as swap from "Util/swap";
 import { nop } from "./nop";
@@ -8,8 +9,9 @@ const useGameKeys = (props) => {
   const { playRotate, playDrop, playMove } = sounds;
 
   useKey(
-    async (key, repeat) => {
-      if (key === "p") {
+    async (key, repeat, code) => {
+      // !repeat: a held Escape must toggle pause once, not every auto-repeat tick
+      if (code === "KeyP" || (key === KEYS.ESCAPE && !repeat)) {
         togglePause(!pause);
       }
       if (pause) {

@@ -40,8 +40,8 @@ const Splash = (props) => {
 
   const [blocks, setBlocks] = useState(getBlocks);
 
-  useKey((key) => {
-    if (key === "s" || key === "S") {
+  useKey((key, repeat, code) => {
+    if (code === "KeyS") {
       setStyleIndex((prev) => (prev + 1) % SPLASH_STYLES.length);
     }
   });

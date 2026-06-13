@@ -23,8 +23,8 @@ const useSkin = props => {
     const currentSkinId = playlist[playlistIndex % playlist.length];
     const skin = SKINS_BY_ID[currentSkinId].module;
 
-    useKey((key) => {
-        if (key === 's') {
+    useKey((key, repeat, code) => {
+        if (code === 'KeyS') {
             setPlaylistIndex((i) => advanceIndex(mode, i, playlist.length));
         }
     });

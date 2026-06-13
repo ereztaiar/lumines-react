@@ -34,9 +34,6 @@ const Pause = ({ pause }) => {
             case KEYS.SPACE:
                 menuItems[selectedIndex].action();
                 break;
-            case KEYS.ESCAPE:
-                togglePause(false);
-                break;
             default:
                 break;
         }

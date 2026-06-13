@@ -2,11 +2,11 @@ import {useEffect} from 'react';
 
 const useKey = (callbackDown = () => { }, callbackUp = () =>{}) =>{
 
-    const keyDownHandler = ({ key, repeat }) => {
-        callbackDown(key, repeat);
+    const keyDownHandler = ({ key, repeat, code }) => {
+        callbackDown(key, repeat, code);
     };
-    const keyUpHandler = ({ key }) => {
-        callbackUp(key);
+    const keyUpHandler = ({ key, code }) => {
+        callbackUp(key, code);
     };
 
 
