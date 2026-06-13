@@ -4,6 +4,7 @@ const MENU_ITEMS = [
     { name: 'skin', label: 'SKIN', color: '#8ce173', description: 'Change the board skin.' },
     { name: 'github', label: 'GITHUB', color: '#a974e0', description: 'View the source code.' },
     { name: 'scores', label: 'SCORES', color: '#b8860b', description: 'High-score leaderboard.' },
+    { name: 'quit', label: 'QUIT', color: '#e06c75', description: 'Exit to the title screen.' },
 ];
 
 const MENU_LENGTH = MENU_ITEMS.length;
