@@ -1,14 +1,17 @@
 import React from "react";
-import { FaReact } from "react-icons/fa";
+import { AVATARS_BY_ID } from "./avatars";
 
 const Character = (props) => {
   const {
     styles: { characterStyle },
+    avatarId,
   } = props;
+
+  const { Icon } = AVATARS_BY_ID[avatarId] || AVATARS_BY_ID.react;
 
   return (
     <div className={characterStyle.character}>
-      <FaReact />
+      <Icon />
     </div>
   );
 };

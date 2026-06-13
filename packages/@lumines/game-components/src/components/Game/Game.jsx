@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { default as Classes } from "Skins/common.less";
 import { default as GameClasses } from "./Game.less";
 import useScore from "@lumines/game-components/src/hooks/useScore";
 import useSkin from "@lumines/core/src/hooks/useSkin";
 import GameProvider from "@lumines/game-components/src/contexts/GameProvider";
 import GameContent from "@lumines/game-components/src/components/Game/GameContent";
+import { AVATAR_IDS } from "@lumines/game-components/src/components/Character/avatars";
+import { getGameSettings, normalizeSettings } from "Util/gameSettings";
 
 const Game = (props) => {
   const { mode = 'arcade' } = props;
-  const reflection = true;
+  // settings are read once per game mount — menu and game never coexist
+  const [{ reflection, avatarId, muted }] = useState(() => normalizeSettings(getGameSettings(), AVATAR_IDS));
 
   const [score, addOne, multiplier, highScore, deletedBlocks, deleted, resetScore, level] =
     useScore(mode);
@@ -38,10 +41,11 @@ const Game = (props) => {
           GameClasses.pauseContainer
         }
       >
-        <GameProvider mode={mode} scoring={{ addOne, multiplier, deletedBlocks, resetScore }}>
+        <GameProvider mode={mode} muted={muted} scoring={{ addOne, multiplier, deletedBlocks, resetScore }}>
           <GameContent
             mode={mode}
             reflection={reflection}
+            avatarId={avatarId}
             scoreStyle={scoreStyle}
             gridStyle={gridStyle}
             swiperStyle={swiperStyle}

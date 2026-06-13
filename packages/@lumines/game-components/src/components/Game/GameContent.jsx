@@ -12,6 +12,7 @@ const GameContent = (props) => {
   const {
     mode,
     reflection,
+    avatarId,
     scoreStyle,
     gridStyle,
     swiperStyle,
@@ -77,7 +78,7 @@ const GameContent = (props) => {
         styles={{ dispenserStyle, gridStyle }}
         paths={paths}
       />
-      <Character styles={{ characterStyle }} />
+      <Character styles={{ characterStyle }} avatarId={avatarId} />
       <Pause pause={pause} />
       <GameOver isGameOver={isGameOver} score={score} mode={mode} />
     </>

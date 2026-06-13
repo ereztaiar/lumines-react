@@ -1,7 +1,6 @@
 import { MENU_ITEMS, MENU_LENGTH } from '../config/menuConfig';
 
 const defaultState = {
-    reflection: true,
     highlightIndex: 0,
     selected: null,
     menuLocked: null, // 3 states: null (pristine), true (expanded), false (collapsing)
