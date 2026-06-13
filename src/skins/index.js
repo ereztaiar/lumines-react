@@ -7,6 +7,11 @@ import * as poker from 'Skins/poker';
 import * as sakura from 'Skins/sakura';
 import * as tropical from 'Skins/tropical';
 import * as guitar from 'Skins/guitar';
+import * as synthwave from 'Skins/synthwave';
+import * as deepSea from 'Skins/deep-sea';
+import * as forestZen from 'Skins/forest-zen';
+import * as halloween from 'Skins/halloween';
+import * as galaxy from 'Skins/galaxy';
 
 const SKINS = [
     { id: 'default', label: 'DEFAULT', module: defaultSkin },
@@ -18,6 +23,11 @@ const SKINS = [
     { id: 'sakura', label: 'SAKURA', module: sakura },
     { id: 'tropical', label: 'TROPICAL', module: tropical },
     { id: 'guitar', label: 'GUITAR', module: guitar },
+    { id: 'synthwave', label: 'SYNTHWAVE', module: synthwave },
+    { id: 'deep-sea', label: 'DEEP SEA', module: deepSea },
+    { id: 'forest-zen', label: 'FOREST ZEN', module: forestZen },
+    { id: 'halloween', label: 'HALLOWEEN', module: halloween },
+    { id: 'galaxy', label: 'GALAXY', module: galaxy },
 ];
 
 const SKIN_IDS = SKINS.map((skin) => skin.id);

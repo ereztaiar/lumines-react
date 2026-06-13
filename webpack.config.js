@@ -40,7 +40,7 @@ module.exports = {
                 },
             },
             {
-                test: /\.png|jpg|wav|svg$/,
+                test: /\.(png|jpg|wav|svg)$/,
                 type: 'asset/resource'
                 //loader: 'url-loader',
                // options: {

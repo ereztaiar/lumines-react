@@ -34,6 +34,13 @@ Define these roles before writing any file:
 | `swiperColor` | Swiper line color (usually matches colorA or colorB). |
 | `accent1..N` | Additional neon/highlight colors for background icons. |
 
+**Brightness floor**: `bgBase` and `bgGradient` must NOT be near-black (avoid hex
+lightness below ~20%, e.g. `#0d0517`, `#021024`, `#04001a`). Even for "dark mood"
+themes (horror, space, night), use deep *saturated* mid-tones — see `tropical`'s
+gradient (`#ff8c42`, `#ff4f7b`, `#00a6a6`) as the brightness bar. A near-black
+gradient combined with a translucent dark `gridCell` makes the whole board murky
+and hard to watch. Same floor applies to `gridCell`'s rgba base color.
+
 Then choose the react-icons that drive the visuals (browse https://react-icons.github.io/react-icons — the package is already installed, v4.3.1):
 
 | Role | Description |
@@ -315,6 +322,7 @@ Replace `rgba(0, 166, 251, ...)` from the default with `colorA` and `colorB`:
   &:before, &:after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; content: ''; display: block; }
 
   &:before {
+    // both stops mid-tone/saturated, not near-black — see brightness floor above
     background: linear-gradient(135deg, <bgBase> 0%, <bgGradient> 50%, <bgBase> 100%);
     background-size: 400% 400%;
     z-index: -20;

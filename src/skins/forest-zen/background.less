@@ -1,0 +1,56 @@
+.background {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  transform: scale(1.5);
+
+  &:before, &:after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; content: ''; display: block; }
+
+  &:before {
+    background: linear-gradient(135deg, #3a4a35 0%, #5d7a4e 50%, #3a4a35 100%);
+    background-size: 400% 400%;
+    z-index: -20;
+
+    @keyframes BgMoveForestZen {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 51%; }
+      100% { background-position: 0% 50%; }
+    }
+    -webkit-animation: BgMoveForestZen 16s ease infinite;
+    animation: BgMoveForestZen 16s ease infinite;
+  }
+
+  &:after {
+    z-index: -10;
+    background: url('../../assets/images/scan-mask.png') repeat;
+    opacity: 0.2;
+  }
+}
+
+.scene {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+
+  svg { position: absolute; }
+}
+
+.glow {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.floatSlow {
+  @keyframes floatSlowForestZen { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  -webkit-animation: floatSlowForestZen 7s ease-in-out infinite;
+  animation: floatSlowForestZen 7s ease-in-out infinite;
+}
+
+.pulse {
+  @keyframes pulseForestZen { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  -webkit-animation: pulseForestZen 4s ease-in-out infinite;
+  animation: pulseForestZen 4s ease-in-out infinite;
+}
+
+.driftSlow {
+  @keyframes driftSlowForestZen { 0%,100%{transform:translate(0,0)} 50%{transform:translate(18px,6px)} }
+  -webkit-animation: driftSlowForestZen 11s ease-in-out infinite;
+  animation: driftSlowForestZen 11s ease-in-out infinite;
+}
