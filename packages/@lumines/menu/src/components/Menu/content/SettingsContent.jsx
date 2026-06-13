@@ -72,7 +72,7 @@ const SettingsContent = (props) => {
                     <span className={settingsStyle.label}>REFLECTION</span>
                 </span>
             </div>
-            <div className={settingsStyle.row}>
+            <div className={settingsStyle.avatarRow}>
                 <span className={settingsStyle.label}>AVATAR</span>
                 <div className={settingsStyle.avatars}>
                     {AVATARS.map((avatar, i) => {

@@ -1,5 +1,7 @@
 import React from "react";
 import { AVATARS_BY_ID } from "./avatars";
+import effectsStyle from "./avatarEffects.less";
+import getAvatarEffectClass from "./avatarEffects";
 
 const Character = (props) => {
   const {
@@ -11,7 +13,9 @@ const Character = (props) => {
 
   return (
     <div className={characterStyle.character}>
-      <Icon />
+      <span className={getAvatarEffectClass(effectsStyle, avatarId)}>
+        <Icon />
+      </span>
     </div>
   );
 };
