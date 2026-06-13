@@ -1,11 +1,68 @@
+@keyframes sakura-fold-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-2deg); }
+}
+
 #score {
-  grid-column-start: 3; grid-row-start: 2; grid-row-end: 4;
-  align-self: stretch; border-left: 1px solid rgba(255, 214, 231, 0.28);
-  width: 50%; margin: 0 auto; display: flex; flex-direction: column;
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 75%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 
   .data {
-    height: 20%;
-    .title { background: rgba(244, 143, 177, 0.2); padding: 8px; font-size: 1.15rem; opacity: 80%; color: #ffc2d6; }
-    .info  { text-align: right; color: #9cc4e4; font-size: 2.4rem; padding: 6px 8px; }
+    position: relative;
+    height: 17%;
+    background: linear-gradient(135deg, #2a4a73 0%, #8a5577 100%);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+    box-shadow: 0 3px 8px rgba(27, 53, 86, 0.5);
+    animation: sakura-fold-sway 6s ease-in-out infinite;
+    transform-origin: bottom left;
+
+    &:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 18px;
+      height: 18px;
+      background: linear-gradient(135deg, transparent 50%, #ffc2d6 50%);
+      opacity: 0.85;
+    }
+
+    .title {
+      background: none;
+      padding: 6px 16px 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      opacity: 80%;
+      color: #ffc2d6;
+    }
+
+    .info {
+      text-align: right;
+      color: #9cc4e4;
+      font-size: 2rem;
+      padding: 0 26px 6px;
+      text-shadow: 0 1px 4px rgba(27, 53, 86, 0.6);
+    }
+
+    &:nth-child(odd) { animation-delay: 0s; }
+    &:nth-child(even) { animation-delay: 1.5s; transform-origin: bottom right;
+      @keyframes sakura-fold-sway-r {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(2deg); }
+      }
+      animation-name: sakura-fold-sway-r;
+    }
+    &:nth-child(3) {
+      height: 22%;
+      .info { font-size: 2.3rem; }
+    }
   }
 }

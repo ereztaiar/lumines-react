@@ -1,11 +1,75 @@
+@keyframes guitar-string-shimmer {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.9; }
+}
+
 #score {
-  grid-column-start: 3; grid-row-start: 2; grid-row-end: 4;
-  align-self: stretch; border-left: 1px solid rgba(255, 46, 77, 0.22);
-  width: 50%; margin: 0 auto; display: flex; flex-direction: column;
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 75%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 
   .data {
-    height: 20%;
-    .title { background: rgba(255, 46, 77, 0.2); padding: 8px; font-size: 1.15rem; opacity: 80%; color: #ff8a9a; }
-    .info  { text-align: right; color: #c8cbd3; font-size: 2.4rem; padding: 6px 8px; }
+    position: relative;
+    height: 18%;
+    background: linear-gradient(135deg, #3a121c 0%, #5e1c2e 60%, #8a2440 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 92% 100%, 0 100%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(200, 203, 211, 0.5) 0px,
+          rgba(200, 203, 211, 0.5) 1px,
+          transparent 1px,
+          transparent 9px
+        );
+      animation: guitar-string-shimmer 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .title {
+      background: none;
+      padding: 6px 16px 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.12em;
+      opacity: 85%;
+      color: #ff8a9a;
+      position: relative;
+    }
+
+    .info {
+      text-align: right;
+      color: #ffffff;
+      font-size: 2rem;
+      padding: 0 28px 8px;
+      text-shadow: 0 0 10px rgba(255, 46, 77, 0.6);
+      position: relative;
+    }
+
+    &:nth-child(odd) {
+      animation-delay: 0s;
+    }
+    &:nth-child(even) {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 8% 100%, 0 70%);
+    }
+    &:nth-child(3) {
+      height: 22%;
+      .info { font-size: 2.3rem; }
+    }
   }
 }

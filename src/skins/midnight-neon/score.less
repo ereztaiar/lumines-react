@@ -1,29 +1,75 @@
+@keyframes neon-flicker {
+  0%, 88%, 100% { opacity: 1; }
+  90% { opacity: 0.4; }
+  92% { opacity: 1; }
+  94% { opacity: 0.5; }
+}
+
 #score {
   grid-column-start: 3;
   grid-row-start: 2;
   grid-row-end: 4;
   align-self: stretch;
-  border-left: 1px solid #1a1040;
-  width: 50%;
+  border-left: none;
+  width: 75%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
 
   .data {
-    height: 20%;
+    position: relative;
+    height: 17%;
+    background: rgba(6, 0, 26, 0.6);
+    border: 1px solid rgba(0, 229, 255, 0.5);
+    clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.25), inset 0 0 12px rgba(0, 229, 255, 0.08);
+
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      pointer-events: none;
+    }
+
+    &:before {
+      top: -1px;
+      left: -1px;
+      border-top: 2px solid #ff00e5;
+      border-left: 2px solid #ff00e5;
+    }
+
+    &:after {
+      bottom: -1px;
+      right: -1px;
+      border-bottom: 2px solid #ff00e5;
+      border-right: 2px solid #ff00e5;
+    }
 
     .title {
-      background: rgba(0, 229, 255, 0.2);
-      padding: 8px; font-size: 1.15rem;
-      opacity: 80%;
+      background: none;
+      padding: 6px 16px 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.25em;
+      opacity: 75%;
       color: #00e5ff;
+      text-shadow: 0 0 6px rgba(0, 229, 255, 0.8);
+
+      &:before {
+        content: '// ';
+        opacity: 0.6;
+      }
     }
 
     .info {
       text-align: right;
       color: #ff00e5;
-      font-size: 2.4rem;
-      padding: 6px 8px;
+      font-size: 2rem;
+      padding: 0 16px 4px;
+      font-family: monospace;
+      text-shadow: 0 0 10px rgba(255, 0, 229, 0.8);
+      animation: neon-flicker 5s linear infinite;
     }
   }
 }

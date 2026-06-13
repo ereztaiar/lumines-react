@@ -1,11 +1,71 @@
+@keyframes synthwave-scan {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 16px; }
+}
+
 #score {
-  grid-column-start: 3; grid-row-start: 2; grid-row-end: 4;
-  align-self: stretch; border-left: 1px solid rgba(255, 255, 255, 0.12);
-  width: 50%; margin: 0 auto; display: flex; flex-direction: column;
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 75%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 
   .data {
-    height: 20%;
-    .title { background: rgba(0, 240, 255, 0.2); padding: 8px; font-size: 1.15rem; opacity: 80%; color: #00f0ff; }
-    .info  { text-align: right; color: #ff2bd6; font-size: 2.4rem; padding: 6px 8px; }
+    position: relative;
+    height: 18%;
+    background: linear-gradient(180deg, rgba(61, 26, 94, 0.9) 0%, rgba(139, 47, 201, 0.7) 100%);
+    clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+    border-top: 2px solid #00f0ff;
+    border-bottom: 2px solid #ff2bd6;
+    box-shadow: 0 0 14px rgba(0, 240, 255, 0.35), 0 0 14px rgba(255, 43, 214, 0.25);
+    overflow: hidden;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.08) 0px,
+        rgba(255, 255, 255, 0.08) 2px,
+        transparent 2px,
+        transparent 16px
+      );
+      animation: synthwave-scan 1.2s linear infinite;
+      pointer-events: none;
+    }
+
+    .title {
+      background: none;
+      padding: 6px 22px 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.2em;
+      opacity: 90%;
+      color: #00f0ff;
+      text-shadow: 0 0 6px rgba(0, 240, 255, 0.8);
+      position: relative;
+    }
+
+    .info {
+      text-align: right;
+      color: #ff2bd6;
+      font-size: 2rem;
+      padding: 0 22px 6px;
+      text-shadow: 0 0 10px rgba(255, 43, 214, 0.8);
+      position: relative;
+    }
+
+    &:nth-child(3) {
+      height: 22%;
+      .info { font-size: 2.3rem; }
+    }
   }
 }

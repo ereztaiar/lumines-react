@@ -1,13 +1,87 @@
+@keyframes poker-card-deal {
+  0% { transform: translateY(-4px) rotate(var(--card-tilt)); }
+  50% { transform: translateY(2px) rotate(var(--card-tilt)); }
+  100% { transform: translateY(-4px) rotate(var(--card-tilt)); }
+}
+
 #score {
-  grid-column-start: 3; grid-row-start: 2; grid-row-end: 4;
-  align-self: stretch; border-left: 1px solid rgba(212, 175, 55, 0.35);
-  width: 50%; margin: 0 auto; display: flex; flex-direction: column;
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 78%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 
   .data {
-    height: 20%;
-    .title { background: rgba(140, 21, 37, 0.9); padding: 8px; font-size: 1.15rem; color: #f5f0e6;
-             letter-spacing: 0.08em; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
-    .info  { text-align: right; color: #ffd700; font-size: 2.4rem; padding: 6px 8px;
-             font-weight: bold; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); }
+    position: relative;
+    height: 18%;
+    background: linear-gradient(160deg, #f5f0e6 0%, #e8e0d0 100%);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    --card-tilt: -3deg;
+    animation: poker-card-deal 4s ease-in-out infinite;
+
+    &:before {
+      content: '♠';
+      position: absolute;
+      top: 4px;
+      left: 8px;
+      font-size: 1.1rem;
+      color: #1a1a1a;
+      line-height: 1;
+    }
+
+    &:after {
+      content: '♠';
+      position: absolute;
+      bottom: 4px;
+      right: 8px;
+      font-size: 1.1rem;
+      color: #1a1a1a;
+      line-height: 1;
+      transform: rotate(180deg);
+    }
+
+    .title {
+      background: none;
+      padding: 8px 0 0;
+      margin: 0 26px;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      color: #8c1525;
+      text-align: center;
+      border-bottom: 1px solid rgba(140, 21, 37, 0.25);
+    }
+
+    .info {
+      text-align: center;
+      color: #1a1a1a;
+      font-size: 1.9rem;
+      font-weight: bold;
+      padding: 2px 26px 4px;
+    }
+
+    &:nth-child(1) { --card-tilt: -4deg; animation-delay: 0s; }
+    &:nth-child(2) { --card-tilt: 2deg; animation-delay: 0.6s;
+      &:before, &:after { content: '♥'; color: #c0152e; }
+    }
+    &:nth-child(3) {
+      --card-tilt: -2deg;
+      animation-delay: 1.2s;
+      height: 22%;
+
+      .info { font-size: 2.3rem; }
+
+      &:before, &:after { content: '♦'; color: #c0152e; }
+    }
+    &:nth-child(4) { --card-tilt: 3deg; animation-delay: 1.8s;
+      &:before, &:after { content: '♣'; color: #1a1a1a; }
+    }
+    &:nth-child(5) { --card-tilt: -3deg; animation-delay: 2.4s; }
   }
 }

@@ -1,11 +1,53 @@
+@keyframes halloween-flicker-glow {
+  0%, 88%, 100% { box-shadow: 0 0 10px rgba(255, 117, 24, 0.4); }
+  90% { box-shadow: 0 0 4px rgba(255, 117, 24, 0.15); }
+  94% { box-shadow: 0 0 16px rgba(255, 117, 24, 0.6); }
+}
+
 #score {
-  grid-column-start: 3; grid-row-start: 2; grid-row-end: 4;
-  align-self: stretch; border-left: 1px solid rgba(255, 140, 0, 0.15);
-  width: 50%; margin: 0 auto; display: flex; flex-direction: column;
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 78%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 
   .data {
-    height: 20%;
-    .title { background: rgba(255, 117, 24, 0.2); padding: 8px; font-size: 1.15rem; opacity: 80%; color: #ff7518; }
-    .info  { text-align: right; color: #9b59b6; font-size: 2.4rem; padding: 6px 8px; }
+    position: relative;
+    height: 18%;
+    background: linear-gradient(135deg, #2a1245 0%, #5c2a7a 100%);
+    clip-path: polygon(
+      0% 15%, 8% 0%, 16% 15%, 24% 0%, 32% 15%, 40% 0%, 48% 15%, 56% 0%, 64% 15%, 72% 0%, 80% 15%, 88% 0%, 96% 15%, 100% 0%,
+      100% 100%, 0% 100%
+    );
+    border-bottom: 2px solid rgba(255, 117, 24, 0.6);
+    animation: halloween-flicker-glow 4.5s ease-in-out infinite;
+
+    .title {
+      background: none;
+      padding: 14px 16px 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      opacity: 85%;
+      color: #ff7518;
+      text-shadow: 0 0 6px rgba(255, 117, 24, 0.6);
+    }
+
+    .info {
+      text-align: right;
+      color: #9b59b6;
+      font-size: 2rem;
+      padding: 0 18px 6px;
+      text-shadow: 0 0 8px rgba(155, 89, 182, 0.7);
+    }
+
+    &:nth-child(3) {
+      height: 22%;
+      .info { font-size: 2.3rem; }
+    }
   }
 }

@@ -271,19 +271,87 @@ Replace `rgba(0, 166, 251, ...)` from the default with `colorA` and `colorB`:
 
 ### `src/skins/<name>/score.less`
 
+The `default` skin keeps the plain boxy score panel (`src/skins/default/score.less`) —
+do not change it. Every other skin gets a **bold, distinctive shape/gimmick** for its
+score panel (the 5 LEVEL/TIME/SCORE/HI-SCORE/DELETED boxes), themed to that skin's
+palette. `Score.jsx` markup is identical for all skins — `#score > .data > .title/.info`
+is all you can style; everything else is CSS (clip-path, border-radius, pseudo-elements,
+gradients, keyframe animations).
+
+**Pick a gimmick not already used by another skin.** Gimmicks used so far:
+
+| Skin | Gimmick |
+|------|---------|
+| purple | scattered floating circular "bubbles" |
+| yellow | honeycomb hexagons (clip-path) |
+| midnight-neon | angular sci-fi HUD panels, corner brackets, flicker |
+| cherry-blossom | petal-shaped panels (asymmetric border-radius) + falling petal accent |
+| poker | playing-card panels, tilted, with suit pips in corners |
+| sakura | folded-paper/origami dog-ear corner (clip-path notch) |
+| tropical | scalloped ocean-wave bottom edge (animated clip-path) |
+| guitar | guitar-pick shape (angled clip-path) + shimmering string lines |
+| synthwave | chevron panels, neon edge glow, scrolling scanlines |
+| deep-sea | circular portholes with rivet dots, pulsing glow |
+| forest-zen | organic pebble/river-stone shapes (asymmetric border-radius), gentle settle |
+| halloween | jagged torn/zigzag top edge, flickering glow |
+| galaxy | planet spheres with orbital ring + orbiting moon |
+
+Choose a NEW gimmick for the new skin — a different shape/structural concept, not just
+a recolor of one above. Derive colors from the skin's `background.less`/`grid.less`
+accents. Use `clip-path`, `border-radius`, `::before`/`::after`, gradients, and
+`@keyframes` (animation defined inside the rule, both `animation:` and
+`-webkit-animation:` if matching the background convention) to build it. Vary
+`:nth-child(n)` sizes/offsets/delays so the five panels don't look identical.
+
+Baseline structure to adapt (positioning/layout — swap in the chosen gimmick's shape,
+background, and accents):
+
 ```less
 #score {
-  grid-column-start: 3; grid-row-start: 2; grid-row-end: 3;
-  align-self: start; border-left: 1px solid <gridLine>;
-  width: 50%; margin: 0 auto; display: flex; flex-direction: column;
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 75%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 
   .data {
-    height: 20%;
-    .title { background: <colorA at ~20% opacity>; padding: 5px; opacity: 80%; color: <colorA>; }
-    .info  { text-align: right; color: <colorB>; font-size: 1.5rem; padding: 0 5px; }
+    position: relative;
+    height: 18%;
+    background: linear-gradient(135deg, <bgBase> 0%, <bgGradient> 100%);
+    /* shape gimmick goes here: clip-path / border-radius / pseudo-elements */
+
+    .title {
+      background: none;
+      padding: 6px 16px 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      opacity: 85%;
+      color: <colorA>;
+    }
+
+    .info {
+      text-align: right;
+      color: <colorB>;
+      font-size: 2rem;
+      padding: 0 16px 6px;
+    }
+
+    &:nth-child(3) {
+      height: 22%;
+      .info { font-size: 2.3rem; }
+    }
   }
 }
 ```
+
+After writing the file, verify with a quick puppeteer screenshot (force the skin via
+`localStorage` `skinUnlocks`/`skinSettings`, navigate splash → menu → play → game) and
+confirm the panels are readable and the gimmick renders as intended.
 
 ---
 
