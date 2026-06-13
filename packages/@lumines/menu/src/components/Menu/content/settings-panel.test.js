@@ -1,4 +1,4 @@
-const { ROW_REFLECTION, ROW_AVATAR, ROW_SOUND, initPanelState, settingsPanelReducer } = require('./settingsPanel');
+const { ROW_REFLECTION, ROW_AVATAR, ROW_SOUND, ROW_SKIN_NAME, initPanelState, settingsPanelReducer } = require('./settingsPanel');
 const { AVATAR_IDS } = require('@lumines/game-components/src/components/Character/avatars');
 
 const makeState = (settings = {}, overrides = {}) =>
@@ -8,6 +8,7 @@ const makeState = (settings = {}, overrides = {}) =>
                 reflection: true,
                 avatarId: 'react',
                 muted: false,
+                showSkinName: false,
                 ...settings,
             },
         }),
@@ -24,18 +25,22 @@ describe('settingsPanel', () => {
     });
 
     describe('row switching', () => {
-        it('down cycles reflection -> avatar -> sound -> reflection', () => {
+        it('down cycles reflection -> avatar -> sound -> skinName -> reflection', () => {
             let state = makeState();
             state = settingsPanelReducer(state, { type: 'down' });
             expect(state.row).toBe(ROW_AVATAR);
             state = settingsPanelReducer(state, { type: 'down' });
             expect(state.row).toBe(ROW_SOUND);
             state = settingsPanelReducer(state, { type: 'down' });
+            expect(state.row).toBe(ROW_SKIN_NAME);
+            state = settingsPanelReducer(state, { type: 'down' });
             expect(state.row).toBe(ROW_REFLECTION);
         });
 
-        it('up cycles reflection -> sound -> avatar -> reflection', () => {
+        it('up cycles reflection -> skinName -> sound -> avatar -> reflection', () => {
             let state = makeState();
+            state = settingsPanelReducer(state, { type: 'up' });
+            expect(state.row).toBe(ROW_SKIN_NAME);
             state = settingsPanelReducer(state, { type: 'up' });
             expect(state.row).toBe(ROW_SOUND);
             state = settingsPanelReducer(state, { type: 'up' });
@@ -72,6 +77,11 @@ describe('settingsPanel', () => {
         it('toggles muted on the sound row', () => {
             const state = makeState({ muted: false }, { row: ROW_SOUND });
             expect(settingsPanelReducer(state, { type: 'activate' }).settings.muted).toBe(true);
+        });
+
+        it('toggles showSkinName on the skinName row', () => {
+            const state = makeState({ showSkinName: false }, { row: ROW_SKIN_NAME });
+            expect(settingsPanelReducer(state, { type: 'activate' }).settings.showSkinName).toBe(true);
         });
 
         it('is a no-op on the avatar row', () => {

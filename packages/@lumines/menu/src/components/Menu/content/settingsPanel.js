@@ -4,8 +4,9 @@ import { AVATAR_IDS } from '@lumines/game-components/src/components/Character/av
 const ROW_REFLECTION = 'reflection';
 const ROW_AVATAR = 'avatar';
 const ROW_SOUND = 'sound';
+const ROW_SKIN_NAME = 'skinName';
 
-const ROWS = [ROW_REFLECTION, ROW_AVATAR, ROW_SOUND];
+const ROWS = [ROW_REFLECTION, ROW_AVATAR, ROW_SOUND, ROW_SKIN_NAME];
 
 // settings must already be normalized
 const initPanelState = ({ settings }) => ({
@@ -22,6 +23,8 @@ const activate = (state) => {
             return { ...state, settings: { ...settings, reflection: !settings.reflection } };
         case ROW_SOUND:
             return { ...state, settings: { ...settings, muted: !settings.muted } };
+        case ROW_SKIN_NAME:
+            return { ...state, settings: { ...settings, showSkinName: !settings.showSkinName } };
         default:
             return state;
     }
@@ -63,4 +66,4 @@ const settingsPanelReducer = (state, action) => {
     }
 };
 
-export { ROW_REFLECTION, ROW_AVATAR, ROW_SOUND, initPanelState, settingsPanelReducer };
+export { ROW_REFLECTION, ROW_AVATAR, ROW_SOUND, ROW_SKIN_NAME, initPanelState, settingsPanelReducer };

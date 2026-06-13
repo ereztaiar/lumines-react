@@ -48,7 +48,8 @@ const useSkin = props => {
         [stage])
 
     return {
-        skin
+        skin,
+        currentSkinId
     }
 };
 

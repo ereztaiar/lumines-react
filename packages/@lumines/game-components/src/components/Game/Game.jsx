@@ -7,11 +7,12 @@ import GameProvider from "@lumines/game-components/src/contexts/GameProvider";
 import GameContent from "@lumines/game-components/src/components/Game/GameContent";
 import { AVATAR_IDS } from "@lumines/game-components/src/components/Character/avatars";
 import { getGameSettings, normalizeSettings } from "Util/gameSettings";
+import { SKINS_BY_ID } from "Skins/index";
 
 const Game = (props) => {
   const { mode = 'arcade' } = props;
   // settings are read once per game mount — menu and game never coexist
-  const [{ reflection, avatarId, muted }] = useState(() => normalizeSettings(getGameSettings(), AVATAR_IDS));
+  const [{ reflection, avatarId, muted, showSkinName }] = useState(() => normalizeSettings(getGameSettings(), AVATAR_IDS));
 
   const [score, addOne, multiplier, highScore, deletedBlocks, deleted, resetScore, level] =
     useScore(mode);
@@ -27,11 +28,15 @@ const Game = (props) => {
       reflection: reflectionStyle,
       paths,
     },
+    currentSkinId,
   } = useSkin({ score });
 
   return (
     <div className={Classes.root}>
       <BackgroundComponent />
+      {showSkinName && (
+        <span className={GameClasses.skinNameTag}>{SKINS_BY_ID[currentSkinId].label}</span>
+      )}
       <div
         className={
           Classes.app +

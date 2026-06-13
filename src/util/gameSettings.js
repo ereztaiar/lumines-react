@@ -4,6 +4,7 @@ const DEFAULT_SETTINGS = {
     reflection: true,
     avatarId: 'react',
     muted: false,
+    showSkinName: false,
 };
 
 const defaultStorage = () => (typeof localStorage !== 'undefined' ? localStorage : null);
@@ -19,8 +20,9 @@ const normalizeSettings = (raw, avatarIds) => {
 
     const reflection = typeof settings.reflection === 'boolean' ? settings.reflection : DEFAULT_SETTINGS.reflection;
     const muted = typeof settings.muted === 'boolean' ? settings.muted : DEFAULT_SETTINGS.muted;
+    const showSkinName = typeof settings.showSkinName === 'boolean' ? settings.showSkinName : DEFAULT_SETTINGS.showSkinName;
 
-    return { reflection, avatarId, muted };
+    return { reflection, avatarId, muted, showSkinName };
 };
 
 const getGameSettings = (storage = defaultStorage()) => {

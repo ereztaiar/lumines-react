@@ -19,7 +19,7 @@ const fakeStorage = (initial = {}) => {
 describe('gameSettings', () => {
     describe('normalizeSettings', () => {
         it('keeps valid settings untouched', () => {
-            const raw = { reflection: false, avatarId: 'robot', muted: true };
+            const raw = { reflection: false, avatarId: 'robot', muted: true, showSkinName: true };
             expect(normalizeSettings(raw, AVATAR_IDS)).toEqual(raw);
         });
 
@@ -37,6 +37,11 @@ describe('gameSettings', () => {
             expect(result.reflection).toBe(DEFAULT_SETTINGS.reflection);
             expect(result.muted).toBe(DEFAULT_SETTINGS.muted);
         });
+
+        it('falls back to default for non-boolean showSkinName', () => {
+            const result = normalizeSettings({ showSkinName: 'nope' }, AVATAR_IDS);
+            expect(result.showSkinName).toBe(DEFAULT_SETTINGS.showSkinName);
+        });
     });
 
     describe('getGameSettings / saveGameSettings', () => {
@@ -51,7 +56,7 @@ describe('gameSettings', () => {
 
         it('round-trips saved settings', () => {
             const storage = fakeStorage();
-            const settings = { reflection: false, avatarId: 'ghost', muted: true };
+            const settings = { reflection: false, avatarId: 'ghost', muted: true, showSkinName: true };
             saveGameSettings(settings, storage);
             expect(getGameSettings(storage)).toEqual(settings);
         });

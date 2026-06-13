@@ -1,9 +1,9 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-import { FaCheck, FaTimes, FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
+import { FaCheck, FaTimes, FaVolumeUp, FaVolumeMute, FaTag } from 'react-icons/fa';
 import { useKeys, KEYS } from '@lumines/core';
 import { AVATARS, AVATAR_IDS } from '@lumines/game-components/src/components/Character/avatars';
 import { getGameSettings, normalizeSettings, saveGameSettings } from 'Util/gameSettings';
-import { ROW_REFLECTION, ROW_AVATAR, ROW_SOUND, initPanelState, settingsPanelReducer } from '@lumines/menu/src/components/Menu/content/settingsPanel';
+import { ROW_REFLECTION, ROW_AVATAR, ROW_SOUND, ROW_SKIN_NAME, initPanelState, settingsPanelReducer } from '@lumines/menu/src/components/Menu/content/settingsPanel';
 import settingsStyle from '@lumines/menu/src/styles/settings.less';
 
 const initState = () => initPanelState({ settings: normalizeSettings(getGameSettings(), AVATAR_IDS) });
@@ -104,6 +104,20 @@ const SettingsContent = (props) => {
                 >
                     {settings.muted ? <FaVolumeMute /> : <FaVolumeUp />}
                     <span className={settingsStyle.label}>SOUND</span>
+                </span>
+            </div>
+            <div className={settingsStyle.row}>
+                <span
+                    className={`${settingsStyle.toggleButton} ${row === ROW_SKIN_NAME ? settingsStyle.focused : ''} ${settings.showSkinName ? settingsStyle.active : ''}`}
+                    onMouseEnter={() => dispatch({ type: 'focus_row', row: ROW_SKIN_NAME })}
+                    onClick={() => {
+                        dispatch({ type: 'focus_row', row: ROW_SKIN_NAME });
+                        dispatch({ type: 'activate' });
+                    }}
+                >
+                    {settings.showSkinName ? <FaCheck /> : <FaTimes />}
+                    <FaTag />
+                    <span className={settingsStyle.label}>SHOW SKIN NAME</span>
                 </span>
             </div>
         </section>
