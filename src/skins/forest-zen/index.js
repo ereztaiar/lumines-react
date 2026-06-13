@@ -8,4 +8,6 @@ import {default as BackgroundComponent} from 'Skins/forest-zen/Background.jsx';
 import * as paths                      from 'Skins/forest-zen/paths';
 import {default as reflection}         from 'Skins/reflection.less';
 
-export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent }
+const gameplay = { speedMultiplier: 1.6 };
+
+export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent, gameplay }

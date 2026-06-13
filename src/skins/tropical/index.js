@@ -8,4 +8,6 @@ import {default as BackgroundComponent} from 'Skins/tropical/Background.jsx';
 import * as paths                      from 'Skins/tropical/paths';
 import {default as reflection}         from 'Skins/reflection.less';
 
-export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent }
+const gameplay = { speedMultiplier: 0.85 };
+
+export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent, gameplay }

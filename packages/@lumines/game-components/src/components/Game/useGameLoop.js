@@ -12,13 +12,12 @@ const MAX_TICK = 160;
 const INITIAL_TICK = 0;
 
 const useGameLoop = (props) => {
-  const { gridRef, setGrid, pause, isGameOver, cube, scoring } = props;
+  const { gridRef, setGrid, pause, isGameOver, cube, speed = 35, scoring } = props;
   const { deletedBlocks, multiplier } = scoring;
 
   const [tick, setTick] = useState(INITIAL_TICK);
   const [currentDeleted, setCurrentDeleted] = useState(0);
   const prevSwiperColRef = useRef(-1);
-  const speed = 35;
 
   useTimer(async () => {
     if (pause || isGameOver) {

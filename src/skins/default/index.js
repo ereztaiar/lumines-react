@@ -7,6 +7,9 @@ import {default as swiper} from 'Skins/default/swiper.less';
 import {default as BackgroundComponent} from 'Skins/default/Background.jsx';
 import * as paths from 'Skins/default/paths';
 import {default as reflection} from 'Skins/reflection.less';
+
+const gameplay = { speedMultiplier: 1 };
+
 export {
     background,
     character,
@@ -16,5 +19,6 @@ export {
     swiper,
     paths,
     reflection,
-    BackgroundComponent
+    BackgroundComponent,
+    gameplay
 }

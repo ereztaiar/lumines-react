@@ -8,4 +8,6 @@ import {default as BackgroundComponent} from 'Skins/guitar/Background.jsx';
 import * as paths                      from 'Skins/guitar/paths';
 import {default as reflection}         from 'Skins/reflection.less';
 
-export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent }
+const gameplay = { speedMultiplier: 0.65 };
+
+export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent, gameplay }

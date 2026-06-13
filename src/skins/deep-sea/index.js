@@ -8,4 +8,6 @@ import {default as BackgroundComponent} from 'Skins/deep-sea/Background.jsx';
 import * as paths                      from 'Skins/deep-sea/paths';
 import {default as reflection}         from 'Skins/reflection.less';
 
-export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent }
+const gameplay = { speedMultiplier: 1.5 };
+
+export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent, gameplay }

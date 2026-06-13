@@ -8,4 +8,6 @@ import {default as BackgroundComponent} from 'Skins/cherry-blossom/Background.js
 import * as paths                       from 'Skins/cherry-blossom/paths';
 import {default as reflection}          from 'Skins/reflection.less';
 
-export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent }
+const gameplay = { speedMultiplier: 1.3 };
+
+export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent, gameplay }

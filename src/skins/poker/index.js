@@ -8,4 +8,6 @@ import {default as BackgroundComponent} from 'Skins/poker/Background.jsx';
 import * as paths                      from 'Skins/poker/paths';
 import {default as reflection}         from 'Skins/reflection.less';
 
-export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent }
+const gameplay = { speedMultiplier: 1 };
+
+export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent, gameplay }

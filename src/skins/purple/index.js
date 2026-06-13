@@ -8,6 +8,8 @@ import {default as BackgroundComponent} from 'Skins/purple/Background.jsx';
 import * as paths from 'Skins/purple/paths';
 import {default as reflection} from 'Skins/reflection.less';
 
+const gameplay = { speedMultiplier: 1 };
+
 export {
     background,
     character,
@@ -17,5 +19,6 @@ export {
     swiper,
     paths,
     reflection,
-    BackgroundComponent
+    BackgroundComponent,
+    gameplay
 }

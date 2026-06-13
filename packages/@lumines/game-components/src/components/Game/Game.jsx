@@ -7,6 +7,7 @@ import GameProvider from "@lumines/game-components/src/contexts/GameProvider";
 import GameContent from "@lumines/game-components/src/components/Game/GameContent";
 import { AVATAR_IDS } from "@lumines/game-components/src/components/Character/avatars";
 import { getGameSettings, normalizeSettings } from "Util/gameSettings";
+import { getTickSpeed } from "Util/gameplaySpeed";
 import { SKINS_BY_ID } from "Skins/index";
 
 const Game = (props) => {
@@ -18,6 +19,7 @@ const Game = (props) => {
     useScore(mode);
 
   const {
+    skin,
     skin: {
       BackgroundComponent,
       dispenser: dispenserStyle,
@@ -30,6 +32,8 @@ const Game = (props) => {
     },
     currentSkinId,
   } = useSkin({ score });
+
+  const speed = getTickSpeed(skin);
 
   return (
     <div className={Classes.root}>
@@ -46,7 +50,7 @@ const Game = (props) => {
           GameClasses.pauseContainer
         }
       >
-        <GameProvider mode={mode} muted={muted} scoring={{ addOne, multiplier, deletedBlocks, resetScore }}>
+        <GameProvider mode={mode} muted={muted} speed={speed} scoring={{ addOne, multiplier, deletedBlocks, resetScore }}>
           <GameContent
             mode={mode}
             reflection={reflection}
