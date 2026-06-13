@@ -1,0 +1,13 @@
+node_modules
+**/node_modules
+dist
+.git
+.idea
+.vs
+.vscode
+.DS_STORE
+.storybook
+*.log
+npm-debug.log*
+yarn-error.log
+.claude
