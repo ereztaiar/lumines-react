@@ -1,6 +1,6 @@
 import React from 'react';
 import {background as BackgroundStyle} from "Skins/forest-zen";
-import { GiPineTree, GiMountains, GiSunCloud } from 'react-icons/gi';
+import { GiPineTree, GiMountains, GiSunCloud, GiMapleLeaf } from 'react-icons/gi';
 import { FaCircle } from 'react-icons/fa';
 
 const trees = [
@@ -19,6 +19,15 @@ const mist = [
     { left: '85%', top: '64%', size: '5rem', opacity: 0.1 },
 ];
 
+const leaves = [
+    { left: '5%',  size: '1rem',  color: '#a8e838', delay: 0,  opacity: 0.8 },
+    { left: '20%', size: '0.8rem', color: '#e89050', delay: 2,  opacity: 0.7 },
+    { left: '38%', size: '1.1rem', color: '#a8e838', delay: 5,  opacity: 0.75 },
+    { left: '55%', size: '0.9rem', color: '#e89050', delay: 1,  opacity: 0.65 },
+    { left: '72%', size: '1rem',  color: '#c8f040', delay: 7,  opacity: 0.7 },
+    { left: '88%', size: '0.8rem', color: '#a8e838', delay: 3.5, opacity: 0.8 },
+];
+
 const Background = () => (
     <div className={BackgroundStyle.background}>
         <div className={BackgroundStyle.scene}>
@@ -30,12 +39,20 @@ const Background = () => (
             {mist.map((m, i) => (
                 <FaCircle key={`mist-${i}`}
                           className={BackgroundStyle.driftSlow}
-                          style={{ left: m.left, top: m.top, fontSize: m.size, opacity: m.opacity, color: '#e8e4d8' }} />
+                          style={{ left: m.left, top: m.top, fontSize: m.size, opacity: m.opacity, color: '#e8e4d8',
+                                   animationDelay: `${i * 2}s` }} />
             ))}
             {trees.map((t, i) => (
                 <GiPineTree key={`tree-${i}`}
-                            className={i % 2 ? BackgroundStyle.floatSlow : undefined}
-                            style={{ left: t.left, bottom: 0, fontSize: t.size, color: t.color, opacity: t.opacity }} />
+                            className={i % 2 ? BackgroundStyle.sway : BackgroundStyle.floatSlow}
+                            style={{ left: t.left, bottom: 0, fontSize: t.size, color: t.color, opacity: t.opacity,
+                                     animationDelay: `${i * 0.8}s` }} />
+            ))}
+            {leaves.map((l, i) => (
+                <GiMapleLeaf key={`leaf-${i}`}
+                             className={BackgroundStyle.fallLeaf}
+                             style={{ left: l.left, top: '-5%', fontSize: l.size, color: l.color, opacity: l.opacity,
+                                      animationDelay: `${l.delay}s` }} />
             ))}
         </div>
     </div>

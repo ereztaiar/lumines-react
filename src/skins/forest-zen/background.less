@@ -54,3 +54,23 @@
   -webkit-animation: driftSlowForestZen 11s ease-in-out infinite;
   animation: driftSlowForestZen 11s ease-in-out infinite;
 }
+
+.sway {
+  transform-origin: bottom center;
+  @keyframes swayForestZen {
+    0%,100% { transform: rotate(0deg); }
+    25%      { transform: rotate(2.5deg) translateY(-6px); }
+    75%      { transform: rotate(-2deg) translateY(-3px); }
+  }
+  -webkit-animation: swayForestZen 5s ease-in-out infinite;
+  animation: swayForestZen 5s ease-in-out infinite;
+}
+
+.fallLeaf {
+  @keyframes fallLeafForestZen {
+    0%   { transform: translateY(-8vh) rotate(0deg);   opacity: 0.85; }
+    100% { transform: translateY(112vh) rotate(800deg); opacity: 0; }
+  }
+  -webkit-animation: fallLeafForestZen 10s linear infinite;
+  animation: fallLeafForestZen 10s linear infinite;
+}

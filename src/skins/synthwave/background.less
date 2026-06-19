@@ -67,7 +67,15 @@
   background:
     repeating-linear-gradient(90deg, rgba(255,43,214,0.35) 0, rgba(255,43,214,0.35) 1px, transparent 1px, transparent 8%),
     repeating-linear-gradient(0deg, rgba(255,43,214,0.25) 0, rgba(255,43,214,0.25) 1px, transparent 1px, transparent 10%);
+  background-size: 100% 100%, 100% 10%;
   transform: perspective(200px) rotateX(60deg);
   transform-origin: bottom;
   opacity: 0.6;
+
+  @keyframes gridFloorScrollSynthwave {
+    0%   { background-position: 0% 0%,   0% 0%; }
+    100% { background-position: 0% 0%,   0% 100%; }
+  }
+  -webkit-animation: gridFloorScrollSynthwave 2s linear infinite;
+  animation: gridFloorScrollSynthwave 2s linear infinite;
 }

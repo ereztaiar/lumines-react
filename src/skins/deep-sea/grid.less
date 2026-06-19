@@ -1,5 +1,7 @@
 @import "Skins/common.less";
 
+/* Palette: #ffb627 (amber crystal) + #fe6ae4 (coral pink fish) on teal bg */
+
 .board {
   grid-column-start: 2; grid-row-start: 2; grid-row-end: 2;
   align-self: start;
@@ -14,7 +16,7 @@
   .row0, .row1 {
     .gridItem { border: 0; background: none; &:first-child { border-left: 0; } }
   }
-  .row1 { border-bottom: 1px solid rgba(150, 230, 255, 0.15); }
+  .row1 { border-bottom: 1px solid rgba(255, 182, 39, 0.22); }
 
   each(range(0, @grid-rows, 1), { .row@{value} { height: @grid-item-height; } });
 
@@ -22,9 +24,9 @@
     width: @grid-item-width; height: @grid-item-height;
     max-width: @grid-item-width-max; max-height: @grid-item-height-max;
     float: left; line-height: @grid-item-height; text-align: center;
-    border-bottom: 1px solid rgba(150, 230, 255, 0.15); border-right: 1px solid rgba(150, 230, 255, 0.15);
-    position: relative; background: rgba(20, 80, 100, 0.4);
-    &:first-child { border-left: 1px solid rgba(150, 230, 255, 0.15); }
+    border-bottom: 1px solid rgba(255, 182, 39, 0.22); border-right: 1px solid rgba(255, 182, 39, 0.22);
+    position: relative; background: rgba(4, 4, 8, 0.48);
+    &:first-child { border-left: 1px solid rgba(255, 182, 39, 0.22); }
 
     &:after  { width: 75%; height: 75%; display: block; position: absolute; top: 8%; left: 8%; }
     &:before { width: 90%; height: 90%; display: block; content: ' '; position: absolute;
@@ -35,59 +37,90 @@
       &.large:after {
         width: @grid-item-width*2; height: @grid-item-height*2;
         position: absolute; top: ~"calc(-100% - 2px)"; left: -2px;
-        border: 2px solid #2dd4bf;
+        border: 2px solid #ffb627;
       }
     }
 
-    /* colorA blocks (class name "grey" in game logic) — bioluminescent teal */
+    /* colorA — bioluminescent teal (#2ed498 from palette 2) */
     &.grey {
-      &:after  { content: ''; border-top: 1px solid #9be8e0; border-left: 1px solid #9be8e0; }
-      &:before { background: #2dd4bf; box-shadow: 0 0 8px #2dd4bf; }
+      &:after  { content: ''; border-top: 1px solid #a0ffe0; border-left: 1px solid #a0ffe0; }
+      &:before { background: #2ed498; box-shadow: 0 0 16px 4px #2ed498, inset 0 0 10px rgba(46, 212, 152, 0.45);
+                 animation: dsBlockPulse 3s ease-in-out infinite; }
     }
 
-    /* colorB blocks (class name "orange" in game logic) — coral pink */
+    /* colorB — coral magenta (#fe6ae4 from palette 2) */
     &.orange {
-      &:after  { content: ''; border-top: 1px solid #ffc4d6; border-left: 1px solid #ffc4d6; }
-      &:before { background: #ff6b9d; box-shadow: 0 0 8px #ff6b9d; }
+      &:after  { content: ''; border-top: 1px solid #ffc0f8; border-left: 1px solid #ffc0f8; }
+      &:before { background: #fe6ae4; box-shadow: 0 0 16px 4px #fe6ae4, inset 0 0 10px rgba(254, 106, 228, 0.45);
+                 animation: dsBlockPulse 3s ease-in-out infinite; }
     }
 
-    /* placed colorA */
+    /* placed colorA — bright teal */
     &.darkGrey {
-      border-bottom: 1px solid #155e56; border-right: 1px solid #155e56;
+      border-bottom: 1px solid #20cc78; border-right: 1px solid #20cc78;
+      box-shadow: 0 0 8px 2px #20cc78;
       &:after  { content: ''; border-top: 0; border-left: 0; }
-      &:before { background: #155e56; border-radius: 0; width: 100%; height: 100%;
+      &:before { background: #20cc78; border-radius: 0; width: 100%; height: 100%;
                  left: 0; top: 0; transform: none; }
     }
 
-    /* placed colorB */
+    /* placed colorB — bright coral/magenta */
     &.darkOrange {
-      border-bottom: 1px solid #803049; border-right: 1px solid #803049;
+      border-bottom: 1px solid #e038b8; border-right: 1px solid #e038b8;
+      box-shadow: 0 0 8px 2px #e038b8;
       &:after  { content: ''; border-top: 0; border-left: 0; }
-      &:before { background: #803049; border-radius: 0; width: 100%; height: 100%;
+      &:before { background: #e038b8; border-radius: 0; width: 100%; height: 100%;
                  left: 0; top: 0; transform: none; }
     }
 
     &.ghostBlock {
-      background: rgba(255,255,255,0.05);
-      &:before { background: rgba(255,255,255,0.08); border: 2px dashed rgba(255,255,255,0.4); border-radius: 3px; }
+      background: rgba(255, 182, 39, 0.05);
+      &:before { background: rgba(255, 182, 39, 0.08); border: 2px dashed rgba(254, 106, 228, 0.5); border-radius: 3px; }
     }
 
     &.markedForDeletion {
-      box-shadow: 0 0 12px 3px #5eead4, inset 0 0 8px #5eead4;
-      animation: glowPulse 0.8s ease-in-out infinite;
+      animation: dsDeletionPulse 0.65s ease-in-out infinite;
       z-index: 1;
     }
 
     &.beingRecursive {
-      opacity: 0.5;
+      animation: dsRecursivePulse 1.4s ease-in-out infinite;
       z-index: 1;
     }
 
     &.beingSwept {
-      opacity: 0.45;
+      animation: dsSweptFade 2s ease-in-out infinite;
       z-index: 1;
     }
 
     img { width: 100%; }
   }
+}
+
+@keyframes dsBlockPulse {
+  0%, 100% { filter: brightness(1); }
+  50%       { filter: brightness(1.45); }
+}
+
+@keyframes dsDeletionPulse {
+  0%, 100% {
+    box-shadow: 0 0 14px 4px #ffb627, inset 0 0 10px #ffb627;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 0 32px 14px #ffb627, inset 0 0 22px #ffb627;
+    transform: scale(1.06);
+    filter: brightness(1.8);
+  }
+}
+
+@keyframes dsRecursivePulse {
+  0%, 100% { opacity: 0.5; filter: brightness(1); }
+  50%       { opacity: 0.78; filter: brightness(1.35); }
+}
+
+@keyframes dsSweptFade {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 0.15; }
 }

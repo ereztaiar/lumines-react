@@ -405,7 +405,7 @@ const Background = () => {
                 <polygon points="792,332 824,332 875,600 745,600" fill="#00e5ff" opacity="0.022"/>
 
                 {/* === RAIN STREAKS === */}
-                <g stroke="#00e5ff" strokeWidth="0.7" opacity="0.09" filter="url(#mn-rain)">
+                <g className={BackgroundStyle.rainAnim} stroke="#00e5ff" strokeWidth="0.7" filter="url(#mn-rain)">
                     {rainXCoords.map((x, i) => (
                         <line key={i} x1={x} y1={0} x2={x - 18} y2={210 + (i % 3) * 30}/>
                     ))}

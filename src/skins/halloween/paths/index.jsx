@@ -5,11 +5,11 @@ import { GiPumpkin, GiGhost } from 'react-icons/gi';
 const toDataUri = (el) =>
     `data:image/svg+xml,${encodeURIComponent(renderToStaticMarkup(el))}`;
 
-const aBlock        = toDataUri(<GiPumpkin color="#2a0a00" />);
+const aBlock        = toDataUri(<GiPumpkin color="#f9553c" />);
 const aBlockSpecial = toDataUri(<GiPumpkin color="#ffffff" />);
-const bBlock        = toDataUri(<GiGhost color="#2e0a3d" />);
+const bBlock        = toDataUri(<GiGhost color="#c79be3" />);
 const bBlockSpecial = toDataUri(<GiGhost color="#ffffff" />);
-const darkA         = toDataUri(<GiPumpkin color="#ffd8a8" />);
-const darkB         = toDataUri(<GiGhost color="#e0c4f5" />);
+const darkA         = toDataUri(<GiPumpkin color="#e84020" />);
+const darkB         = toDataUri(<GiGhost color="#a060e0" />);
 
 export { aBlock, aBlockSpecial, bBlock, bBlockSpecial, darkA, darkB }

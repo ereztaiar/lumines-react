@@ -24,12 +24,12 @@ Define these roles before writing any file:
 |------|-------------|
 | `colorA` | Block type A (normal + special). Bright, saturated. |
 | `colorB` | Block type B (normal + special). Contrasting hue. |
-| `darkA` | Placed block A. Darker/desaturated version of A. |
-| `darkB` | Placed block B. Darker/desaturated version of B. |
+| `darkA` | Placed block A. Slightly darker/dimmer version of A. |
+| `darkB` | Placed block B. Slightly darker/dimmer version of B. |
 | `bgBase` | Background base color (dark). |
 | `bgGradient` | Secondary gradient stop. |
-| `gridLine` | Grid cell border color. |
-| `gridCell` | Grid cell background (translucent). |
+| `gridLine` | Grid cell border color (subtle, low-opacity rgba). |
+| `gridCell` | Grid cell background (translucent dark, e.g. `rgba(4,4,8,0.50)`). |
 | `characterColor` | Character emoji color. |
 | `swiperColor` | Swiper line color (usually matches colorA or colorB). |
 | `accent1..N` | Additional neon/highlight colors for background icons. |
@@ -103,10 +103,10 @@ import { GiCrystalShine, GiFlame } from 'react-icons/gi';
 const toDataUri = (el) =>
     `data:image/svg+xml,${encodeURIComponent(renderToStaticMarkup(el))}`;
 
-const aBlock        = toDataUri(<GiCrystalShine color="<iconA color>" />);
-const aBlockSpecial = toDataUri(<GiCrystalShine color="<iconASpecial glow color>" />); // or a distinct icon
-const bBlock        = toDataUri(<GiFlame color="<iconB color>" />);
-const bBlockSpecial = toDataUri(<GiFlame color="<iconBSpecial glow color>" />);
+const aBlock        = toDataUri(<GiCrystalShine color="<colorA>" />);
+const aBlockSpecial = toDataUri(<GiCrystalShine color="#ffffff" />); // or a distinct icon
+const bBlock        = toDataUri(<GiFlame color="<colorB>" />);
+const bBlockSpecial = toDataUri(<GiFlame color="#ffffff" />);
 const darkA         = toDataUri(<GiCrystalShine color="<darkA>" />);
 const darkB         = toDataUri(<GiFlame color="<darkB>" />);
 
@@ -115,10 +115,12 @@ export { aBlock, aBlockSpecial, bBlock, bBlockSpecial, darkA, darkB }
 
 **Rules — do not deviate:**
 
-- The six export names and the fact that they are **plain strings** are a hard contract: `Grid.jsx` and `Dispenser.jsx` inject them as raw HTML `<img src="${paths.aBlock}"/>`. Never export React components or elements from this file.
-- The grid paints a solid `colorA`/`colorB` face behind the icon (the `:before` background in `grid.less`), so pick icon colors that **contrast with the block face** — near-white or a much darker shade. An icon the same color as the face is invisible.
-- Special blocks must be visually distinct: a different icon, or the same icon in a clearly brighter glow color.
-- `darkA`/`darkB` reuse the normal icons with the dim/desaturated placed-block colors.
+- The six export names and the fact that they are **plain strings** are a hard contract: `Grid.jsx` and `Dispenser.jsx` inject them as `<img src="...">`. Never export React components or elements from this file.
+- **Icon colors must contrast with `gridCell`** (the dark translucent cell background). Use bright, vivid hues — not dark, desaturated ones. An icon the same shade as the dark cell background is invisible. Avoid colors close to the skin's own background color.
+- `colorA` and `colorB` must be clearly different hues so players can distinguish block types at a glance.
+- `darkA`/`darkB` are the same icons in a slightly dimmer shade of A/B (used for DELETION and SWEEPING states).
+- Special blocks: use `"#ffffff"` or a brighter/different color/icon so they stand out from the normal block.
+- **The `.grey`/`.orange`/`.darkGrey`/`.darkOrange` CSS sections in `grid.less` are dead code — `Grid.jsx` never applies those class names.** All visible block color comes from these icon data-URIs only.
 
 ---
 
@@ -126,6 +128,8 @@ export { aBlock, aBlockSpecial, bBlock, bBlockSpecial, darkA, darkB }
 
 ```less
 @import "Skins/common.less";
+
+/* Palette: <colorA> (<iconA name>) + <colorB> (<iconB name>) on <bgBase> bg */
 
 .board {
   grid-column-start: 2; grid-row-start: 2; grid-row-end: 2;
@@ -166,43 +170,58 @@ export { aBlock, aBlockSpecial, bBlock, bBlockSpecial, darkA, darkB }
       }
     }
 
-    /* colorA blocks (class name "grey" in game logic) */
-    &.grey {
-      &:after  { content: ''; border-top: 1px solid <colorA-light>; border-left: 1px solid <colorA-light>; }
-      &:before { background: <colorA>; }
-    }
-
-    /* colorB blocks (class name "orange" in game logic) */
-    &.orange {
-      &:after  { content: ''; border-top: 1px solid <colorB-light>; border-left: 1px solid <colorB-light>; }
-      &:before { background: <colorB>; }
-    }
-
-    /* placed colorA */
-    &.darkGrey {
-      border-bottom: 1px solid <darkA>; border-right: 1px solid <darkA>;
-      &:after  { content: ''; border-top: 0; border-left: 0; }
-      &:before { background: <darkA>; border-radius: 0; width: 100%; height: 100%;
-                 left: 0; top: 0; transform: none; }
-    }
-
-    /* placed colorB */
-    &.darkOrange {
-      border-bottom: 1px solid <darkB>; border-right: 1px solid <darkB>;
-      &:after  { content: ''; border-top: 0; border-left: 0; }
-      &:before { background: <darkB>; border-radius: 0; width: 100%; height: 100%;
-                 left: 0; top: 0; transform: none; }
-    }
-
     &.ghostBlock {
-      background: rgba(255,255,255,0.05);
-      &:before { background: rgba(255,255,255,0.08); border: 2px dashed rgba(255,255,255,0.4); border-radius: 3px; }
+      background: rgba(<colorA-rgb>, 0.05);
+      &:before { background: rgba(<colorA-rgb>, 0.08); border: 2px dashed rgba(<colorB-rgb>, 0.5); border-radius: 3px; }
+    }
+
+    /* Matched 2×2 — pulsing colored glow + scale. Use colorA as glow color. */
+    &.markedForDeletion {
+      animation: <prefix>DeletionPulse 0.6s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    /* Flood-fill connected blocks — subtler opacity pulse. */
+    &.beingRecursive {
+      animation: <prefix>RecursivePulse 1.2s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    /* Committed to swiper — slow fade. */
+    &.beingSwept {
+      animation: <prefix>SweptFade 1.8s ease-in-out infinite;
+      z-index: 1;
     }
 
     img { width: 100%; }
   }
 }
+
+@keyframes <prefix>DeletionPulse {
+  0%, 100% {
+    box-shadow: 0 0 14px 4px <colorA>, inset 0 0 10px <colorA>;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 0 32px 14px <colorA>, inset 0 0 22px <colorA>;
+    transform: scale(1.06);
+    filter: brightness(1.8);
+  }
+}
+
+@keyframes <prefix>RecursivePulse {
+  0%, 100% { opacity: 0.5; filter: brightness(1); }
+  50%       { opacity: 0.78; filter: brightness(1.4); }
+}
+
+@keyframes <prefix>SweptFade {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 0.15; }
+}
 ```
+
+**Notes on `<prefix>`**: use a short 2–3 char skin-specific prefix (e.g. `mn` for midnight-neon, `sw` for synthwave, `ds` for deep-sea) so `@keyframes` names don't collide across skins. The `markedForDeletion` glow color should match `colorA` or whichever block color best conveys "about to be cleared."
 
 ---
 
@@ -516,22 +535,42 @@ export default Background;
 
 ## Step 4 — Register the skin
 
-Edit `packages/@lumines/core/src/hooks/useSkin.js`:
+Edit **`src/skins/index.js`** (the single source of truth for all skins):
 
 ```js
+// 1. Add import at top:
 import * as <camelName> from 'Skins/<name>';
-// add to skins array:
-const skins = [ defaultSkin, purple, yellow, /* existing */, <camelName> ];
+
+// 2. Add entry to SKINS array:
+const SKINS = [
+    /* existing entries... */
+    { id: '<name>', label: '<DISPLAY LABEL>', module: <camelName> },
+];
 ```
+
+Do **not** edit `packages/@lumines/core/src/hooks/useSkin.js` — it reads from the registry at `src/skins/index.js` and does not maintain its own list.
 
 ---
 
 ## Step 5 — Verify
 
-After creating all files, tell the user:
-- Run `yarn watch` and open the game.
-- Press **S** until the new skin is active (it will be the last in the cycle).
-- Confirm background renders, block colors match, animations loop, swiper line and score panel use the new colors.
-- Confirm blocks in the **grid and dispenser** show the chosen icons. If a block tile is blank, the data-URI failed — check `renderToStaticMarkup` output, the `encodeURIComponent` wrapping, and that the icon color contrasts with the block face painted by `grid.less`.
-- Confirm background icons are positioned and colored per the palette, and that the scene never intercepts clicks (`pointer-events: none` on `.scene`).
-- Check that **animations actually loop** — if they stop, the `@keyframes` placement or CSS Modules scoping is broken (see the `background.less` rule above), or an animation was set via inline `style` instead of a class.
+After creating all files, verify visually with a puppeteer screenshot:
+
+```js
+// Force the skin via localStorage:
+localStorage.setItem('skinSettings', JSON.stringify({ mode: 'single', selectedSkinId: '<name>' }));
+localStorage.setItem('skinUnlocks', JSON.stringify(['default','purple',/* ... all skin ids */,'<name>']));
+// Navigate: splash (Space) → menu (Enter for PLAY) → game (Enter for ARCADE) → wait 10–15s
+```
+
+Check:
+- Background renders with the gradient + scene icons.
+- Block icons in the **grid and dispenser** show the chosen icons in the right colors. If a tile is blank, the data-URI failed — check `renderToStaticMarkup` output and `encodeURIComponent` wrapping.
+- Block type A and B are **clearly distinguishable** — different hues, not similar-looking on the dark cell background.
+- **Ghost block** (dashed outline where cube will land) is visible.
+- **markedForDeletion** — matched 2×2 cells show a pulsing colored glow.
+- **beingRecursive** — flood-fill cells show a subtler opacity pulse.
+- **beingSwept** — swept cells fade in/out as the swiper passes.
+- Score panel gimmick renders and is readable.
+- Background icons have `pointer-events: none` (clicks pass through).
+- Animations loop — if they stop, `@keyframes` placement or CSS Modules scoping is broken.

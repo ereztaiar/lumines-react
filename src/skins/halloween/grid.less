@@ -1,5 +1,7 @@
 @import "Skins/common.less";
 
+/* Palette: coolors trending mix — #f9553c (palette 5) + #c79be3 (palette 6) */
+
 .board {
   grid-column-start: 2; grid-row-start: 2; grid-row-end: 2;
   align-self: start;
@@ -14,7 +16,7 @@
   .row0, .row1 {
     .gridItem { border: 0; background: none; &:first-child { border-left: 0; } }
   }
-  .row1 { border-bottom: 1px solid rgba(255, 140, 0, 0.15); }
+  .row1 { border-bottom: 1px solid rgba(249, 85, 60, 0.25); }
 
   each(range(0, @grid-rows, 1), { .row@{value} { height: @grid-item-height; } });
 
@@ -22,9 +24,9 @@
     width: @grid-item-width; height: @grid-item-height;
     max-width: @grid-item-width-max; max-height: @grid-item-height-max;
     float: left; line-height: @grid-item-height; text-align: center;
-    border-bottom: 1px solid rgba(255, 140, 0, 0.15); border-right: 1px solid rgba(255, 140, 0, 0.15);
-    position: relative; background: rgba(60, 25, 80, 0.4);
-    &:first-child { border-left: 1px solid rgba(255, 140, 0, 0.15); }
+    border-bottom: 1px solid rgba(249, 85, 60, 0.25); border-right: 1px solid rgba(249, 85, 60, 0.25);
+    position: relative; background: rgba(6, 4, 8, 0.52);
+    &:first-child { border-left: 1px solid rgba(249, 85, 60, 0.25); }
 
     &:after  { width: 75%; height: 75%; display: block; position: absolute; top: 8%; left: 8%; }
     &:before { width: 90%; height: 90%; display: block; content: ' '; position: absolute;
@@ -35,59 +37,98 @@
       &.large:after {
         width: @grid-item-width*2; height: @grid-item-height*2;
         position: absolute; top: ~"calc(-100% - 2px)"; left: -2px;
-        border: 2px solid #ff7518;
+        border: 2px solid #f9553c;
       }
     }
 
-    /* colorA blocks (class name "grey" in game logic) — pumpkin orange */
+    /* colorA — hot pumpkin orange (#f9553c from palette 5) with candle flicker */
     &.grey {
-      &:after  { content: ''; border-top: 1px solid #ffd8a8; border-left: 1px solid #ffd8a8; }
-      &:before { background: #ff7518; box-shadow: 0 0 8px #ff7518; }
+      &:after  { content: ''; border-top: 1px solid #ffc0a8; border-left: 1px solid #ffc0a8; }
+      &:before { background: #f9553c; box-shadow: 0 0 16px 4px #f9553c, inset 0 0 10px rgba(249, 85, 60, 0.5);
+                 animation: hwFlicker 2s ease-in-out infinite; }
     }
 
-    /* colorB blocks (class name "orange" in game logic) — ghost purple */
+    /* colorB — ghost lavender (#c79be3 from palette 6) */
     &.orange {
-      &:after  { content: ''; border-top: 1px solid #e0c4f5; border-left: 1px solid #e0c4f5; }
-      &:before { background: #9b59b6; box-shadow: 0 0 8px #9b59b6; }
+      &:after  { content: ''; border-top: 1px solid #e8c8ff; border-left: 1px solid #e8c8ff; }
+      &:before { background: #c79be3; box-shadow: 0 0 16px 4px #c79be3, inset 0 0 10px rgba(199, 155, 227, 0.45);
+                 animation: hwBlockPulse 2.8s ease-in-out infinite; }
     }
 
-    /* placed colorA */
+    /* placed colorA — bright burnt orange */
     &.darkGrey {
-      border-bottom: 1px solid #803c0c; border-right: 1px solid #803c0c;
+      border-bottom: 1px solid #e84020; border-right: 1px solid #e84020;
+      box-shadow: 0 0 8px 2px #e84020;
       &:after  { content: ''; border-top: 0; border-left: 0; }
-      &:before { background: #803c0c; border-radius: 0; width: 100%; height: 100%;
+      &:before { background: #e84020; border-radius: 0; width: 100%; height: 100%;
                  left: 0; top: 0; transform: none; }
     }
 
-    /* placed colorB */
+    /* placed colorB — bright violet */
     &.darkOrange {
-      border-bottom: 1px solid #5b2e6e; border-right: 1px solid #5b2e6e;
+      border-bottom: 1px solid #a060e0; border-right: 1px solid #a060e0;
+      box-shadow: 0 0 8px 2px #a060e0;
       &:after  { content: ''; border-top: 0; border-left: 0; }
-      &:before { background: #5b2e6e; border-radius: 0; width: 100%; height: 100%;
+      &:before { background: #a060e0; border-radius: 0; width: 100%; height: 100%;
                  left: 0; top: 0; transform: none; }
     }
 
     &.ghostBlock {
-      background: rgba(255,255,255,0.05);
-      &:before { background: rgba(255,255,255,0.08); border: 2px dashed rgba(255,255,255,0.4); border-radius: 3px; }
+      background: rgba(199, 155, 227, 0.05);
+      &:before { background: rgba(199, 155, 227, 0.08); border: 2px dashed rgba(249, 85, 60, 0.55); border-radius: 3px; }
     }
 
     &.markedForDeletion {
-      box-shadow: 0 0 12px 3px #6ee7b7, inset 0 0 8px #6ee7b7;
-      animation: glowPulse 0.8s ease-in-out infinite;
+      animation: hwDeletionPulse 0.6s ease-in-out infinite;
       z-index: 1;
     }
 
     &.beingRecursive {
-      opacity: 0.5;
+      animation: hwRecursivePulse 1.2s ease-in-out infinite;
       z-index: 1;
     }
 
     &.beingSwept {
-      opacity: 0.45;
+      animation: hwSweptFade 1.8s ease-in-out infinite;
       z-index: 1;
     }
 
     img { width: 100%; }
   }
+}
+
+@keyframes hwFlicker {
+  0%, 100% { filter: brightness(1); }
+  20%       { filter: brightness(1.6); }
+  40%       { filter: brightness(0.85); }
+  60%       { filter: brightness(1.5); }
+  80%       { filter: brightness(1.1); }
+}
+
+@keyframes hwBlockPulse {
+  0%, 100% { filter: brightness(1); }
+  50%       { filter: brightness(1.4); }
+}
+
+@keyframes hwDeletionPulse {
+  0%, 100% {
+    box-shadow: 0 0 14px 4px #e5413b, inset 0 0 10px #e5413b;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 0 32px 14px #e5413b, inset 0 0 22px #e5413b;
+    transform: scale(1.06);
+    filter: brightness(1.8);
+  }
+}
+
+@keyframes hwRecursivePulse {
+  0%, 100% { opacity: 0.5; filter: brightness(1); }
+  50%       { opacity: 0.78; filter: brightness(1.4); }
+}
+
+@keyframes hwSweptFade {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 0.15; }
 }

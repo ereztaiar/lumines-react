@@ -1,5 +1,7 @@
 @import "Skins/common.less";
 
+/* Palette: coolors trending #9 — #56eece #4add6f #e32fa9 #e6b9d6 #19b2ee */
+
 .board {
   grid-column-start: 2; grid-row-start: 2; grid-row-end: 2;
   align-self: start;
@@ -14,7 +16,7 @@
   .row0, .row1 {
     .gridItem { border: 0; background: none; &:first-child { border-left: 0; } }
   }
-  .row1 { border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+  .row1 { border-bottom: 1px solid rgba(86, 238, 206, 0.22); }
 
   each(range(0, @grid-rows, 1), { .row@{value} { height: @grid-item-height; } });
 
@@ -22,9 +24,9 @@
     width: @grid-item-width; height: @grid-item-height;
     max-width: @grid-item-width-max; max-height: @grid-item-height-max;
     float: left; line-height: @grid-item-height; text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-right: 1px solid rgba(255, 255, 255, 0.12);
-    position: relative; background: rgba(60, 30, 90, 0.45);
-    &:first-child { border-left: 1px solid rgba(255, 255, 255, 0.12); }
+    border-bottom: 1px solid rgba(86, 238, 206, 0.22); border-right: 1px solid rgba(86, 238, 206, 0.22);
+    position: relative; background: rgba(10, 4, 40, 0.50);
+    &:first-child { border-left: 1px solid rgba(86, 238, 206, 0.22); }
 
     &:after  { width: 75%; height: 75%; display: block; position: absolute; top: 8%; left: 8%; }
     &:before { width: 90%; height: 90%; display: block; content: ' '; position: absolute;
@@ -35,59 +37,90 @@
       &.large:after {
         width: @grid-item-width*2; height: @grid-item-height*2;
         position: absolute; top: ~"calc(-100% - 2px)"; left: -2px;
-        border: 2px solid #00f0ff;
+        border: 2px solid #56eece;
       }
     }
 
-    /* colorA blocks (class name "grey" in game logic) — electric cyan */
+    /* colorA — aqua turquoise (#56eece from palette 9) */
     &.grey {
-      &:after  { content: ''; border-top: 1px solid #b3faff; border-left: 1px solid #b3faff; }
-      &:before { background: #00f0ff; box-shadow: 0 0 8px #00f0ff; }
+      &:after  { content: ''; border-top: 1px solid #b8fff0; border-left: 1px solid #b8fff0; }
+      &:before { background: #56eece; box-shadow: 0 0 16px 4px #56eece, inset 0 0 10px rgba(86, 238, 206, 0.45);
+                 animation: swBlockPulse 2.5s ease-in-out infinite; }
     }
 
-    /* colorB blocks (class name "orange" in game logic) — neon magenta */
+    /* colorB — neon hot pink (#e32fa9 from palette 9) */
     &.orange {
-      &:after  { content: ''; border-top: 1px solid #ffb3ec; border-left: 1px solid #ffb3ec; }
-      &:before { background: #ff2bd6; box-shadow: 0 0 8px #ff2bd6; }
+      &:after  { content: ''; border-top: 1px solid #f898d8; border-left: 1px solid #f898d8; }
+      &:before { background: #e32fa9; box-shadow: 0 0 16px 4px #e32fa9, inset 0 0 10px rgba(227, 47, 169, 0.45);
+                 animation: swBlockPulse 2.5s ease-in-out infinite; }
     }
 
-    /* placed colorA */
+    /* placed colorA — bright teal */
     &.darkGrey {
-      border-bottom: 1px solid #0d6b75; border-right: 1px solid #0d6b75;
+      border-bottom: 1px solid #3ad4b0; border-right: 1px solid #3ad4b0;
+      box-shadow: 0 0 8px 2px #3ad4b0;
       &:after  { content: ''; border-top: 0; border-left: 0; }
-      &:before { background: #0d6b75; border-radius: 0; width: 100%; height: 100%;
+      &:before { background: #3ad4b0; border-radius: 0; width: 100%; height: 100%;
                  left: 0; top: 0; transform: none; }
     }
 
-    /* placed colorB */
+    /* placed colorB — bright hot pink */
     &.darkOrange {
-      border-bottom: 1px solid #80205f; border-right: 1px solid #80205f;
+      border-bottom: 1px solid #d840a8; border-right: 1px solid #d840a8;
+      box-shadow: 0 0 8px 2px #d840a8;
       &:after  { content: ''; border-top: 0; border-left: 0; }
-      &:before { background: #80205f; border-radius: 0; width: 100%; height: 100%;
+      &:before { background: #d840a8; border-radius: 0; width: 100%; height: 100%;
                  left: 0; top: 0; transform: none; }
     }
 
     &.ghostBlock {
-      background: rgba(255,255,255,0.05);
-      &:before { background: rgba(255,255,255,0.08); border: 2px dashed rgba(255,255,255,0.4); border-radius: 3px; }
+      background: rgba(86, 238, 206, 0.05);
+      &:before { background: rgba(86, 238, 206, 0.08); border: 2px dashed rgba(227, 47, 169, 0.55); border-radius: 3px; }
     }
 
     &.markedForDeletion {
-      box-shadow: 0 0 12px 3px #ffe066, inset 0 0 8px #ffe066;
-      animation: glowPulse 0.8s ease-in-out infinite;
+      animation: swDeletionPulse 0.6s ease-in-out infinite;
       z-index: 1;
     }
 
     &.beingRecursive {
-      opacity: 0.5;
+      animation: swRecursivePulse 1.2s ease-in-out infinite;
       z-index: 1;
     }
 
     &.beingSwept {
-      opacity: 0.45;
+      animation: swSweptFade 1.8s ease-in-out infinite;
       z-index: 1;
     }
 
     img { width: 100%; }
   }
+}
+
+@keyframes swBlockPulse {
+  0%, 100% { filter: brightness(1); }
+  50%       { filter: brightness(1.45); }
+}
+
+@keyframes swDeletionPulse {
+  0%, 100% {
+    box-shadow: 0 0 14px 4px #19b2ee, inset 0 0 10px #19b2ee;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 0 32px 14px #19b2ee, inset 0 0 22px #19b2ee;
+    transform: scale(1.06);
+    filter: brightness(1.8);
+  }
+}
+
+@keyframes swRecursivePulse {
+  0%, 100% { opacity: 0.5; filter: brightness(1); }
+  50%       { opacity: 0.78; filter: brightness(1.35); }
+}
+
+@keyframes swSweptFade {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 0.15; }
 }
