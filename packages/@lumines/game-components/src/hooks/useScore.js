@@ -14,15 +14,15 @@ const useScore = (mode) => {
     const [deleted, setDeleted] = useState(0);
 
     const addOne = () => {
-        setScore(score + 1);
+        setScore(prev => prev + 1);
     }
 
     const multiplier = (items) => {
-        setScore(score + items * MULTIPLIER);
+        setScore(prev => prev + items * MULTIPLIER);
     }
 
     const deletedBlocks = (items) => {
-        setDeleted(deleted + items);
+        setDeleted(prev => prev + items);
     }
 
     const resetScore = () => {
