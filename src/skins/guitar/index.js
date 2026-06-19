@@ -10,4 +10,23 @@ import {default as reflection}         from 'Skins/reflection.less';
 
 const gameplay = { speedMultiplier: 0.65 };
 
-export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent, gameplay }
+// E minor — sawtooth oscillator (gritty, electric). Power chords and a driving riff.
+const sounds = {
+  synth: { type: 'sawtooth', volume: 0.11 },
+  moveLeft:  { notes: [164.81, 246.94, 329.63],         duration: 0.22 }, // E minor (i) — punchy
+  moveRight: { notes: [220.00, 329.63, 440.00],         duration: 0.22 }, // A minor (iv)
+  rotate:    { notes: [246.94, 311.13, 369.99],         duration: 0.32 }, // B major (V) — rock tension
+  drop:      { notes: [164.81, 329.63],                 duration: 0.14 }, // E3 + E4 octave — heavy thud
+  deletion:  { notes: [164.81, 246.94, 329.63, 493.88], duration: 0.70 }, // Em7 — power chord bloom
+  theme: {
+    tempo: 130, type: 'sawtooth', volume: 0.048, noteDuration: 0.18,
+    sequence: [
+      [329.63],[329.63], null,   [392.00],[440.00], null,   [493.88], null,
+      [493.88],[493.88],[440.00], null,  [392.00],[440.00],[329.63],  null,
+      [440.00], null,  [440.00],[493.88],[587.33], null,   [493.88],  null,
+      [440.00],[392.00],[329.63], null,  [246.94], null,   [329.63],  null,
+    ],
+  },
+};
+
+export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent, gameplay, sounds }
