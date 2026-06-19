@@ -62,7 +62,7 @@
   },
   "scripts": {
     "watch": "webpack serve --config webpack.config.js --mode development  --hot --history-api-fallback --progress",
-    "build": "webpack build",
+    "build": "webpack build --mode production",
     "test": "jest",
     "lint": "eslint src packages",
     "format": "prettier --write src packages",

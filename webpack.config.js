@@ -8,7 +8,7 @@ module.exports = {
         main: './src/index.js',
     },
     output: {
-        publicPath: '/',
+        publicPath: process.env.PUBLIC_PATH || '/',
         globalObject: 'this',
     },
     module: {
