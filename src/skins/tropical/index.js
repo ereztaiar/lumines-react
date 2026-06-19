@@ -20,10 +20,10 @@ const sounds = {
   drop:      { notes: [196.00, 293.66],                 duration: 0.18 }, // G power chord (low thud)
   deletion:  { notes: [392.00, 493.88, 587.33, 739.99], duration: 0.85 }, // G major 7th (shimmering resolution)
   theme: {
-    tempo: 110,
+    tempo: 130,
     type: 'sine',
     volume: 0.055,
-    noteDuration: 0.22,
+    noteDuration: 0.19,
     sequence: [
       // bar 1 — tonic G, opening phrase
       [392.00], null, [493.88], [587.33], [493.88], null, [440.00], null,

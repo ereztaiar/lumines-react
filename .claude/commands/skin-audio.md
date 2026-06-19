@@ -73,7 +73,7 @@ The theme is a looping sequence of single notes (or small chords). It plays via 
 ### Keep it quiet and unobtrusive
 
 - `theme.volume` — 0.04–0.07. Theme must sit under SFX, not compete with them.
-- `theme.noteDuration` — 0.15–0.25 s. Shorter = more staccato; longer = legato.
+- `theme.noteDuration` — 0.14–0.22 s. Scale inversely with tempo: faster BPM → shorter duration to avoid note bleed. At 92 BPM use ~0.27 s; at 160 BPM use ~0.14 s.
 
 ### Sequence design
 
@@ -88,13 +88,15 @@ Repeat/vary bars 1–4 to create an 8-bar loop if you have space. Keep it simple
 
 ### Tempo guide
 
+Existing skins run 92–160 BPM. New skins should stay in this range.
+
 | BPM | Feel | Interval (ms) |
 |-----|------|---------------|
-| 80 | Slow, brooding | 375 ms |
-| 100 | Medium, thoughtful | 300 ms |
-| 120 | Upbeat, lively | 250 ms |
-| 140 | Fast, energetic | 214 ms |
-| 160 | Frenetic, chiptune | 188 ms |
+| 92  | Slow, ethereal (galaxy) | 326 ms |
+| 108 | Gentle, pastoral (forest-zen, purple) | 278 ms |
+| 120 | Upbeat, balanced (default, notes) | 250 ms |
+| 140 | Energetic (notes, midnight-neon-adjacent) | 214 ms |
+| 160 | Frenetic, chiptune (midnight-neon) | 188 ms |
 
 ---
 

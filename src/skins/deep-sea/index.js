@@ -19,7 +19,7 @@ const sounds = {
   drop:      { notes: [130.81, 196.00],                 duration: 0.25 }, // C3 + G3 — deep bubble
   deletion:  { notes: [261.63, 329.63, 392.00, 493.88], duration: 1.00 }, // C maj7 — slow bloom
   theme: {
-    tempo: 78, type: 'sine', volume: 0.048, noteDuration: 0.30,
+    tempo: 98, type: 'sine', volume: 0.048, noteDuration: 0.24,
     sequence: [
       [261.63], null,    null,    [329.63], null,    null,    [392.00], null,
       [440.00], null,    null,    [392.00], null,    null,    [329.63], null,

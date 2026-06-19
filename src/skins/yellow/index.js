@@ -19,7 +19,7 @@ const sounds = {
   drop:      { notes: [261.63, 392.00],                 duration: 0.15 }, // C4 + G4 — bright thud
   deletion:  { notes: [261.63, 329.63, 392.00, 493.88], duration: 0.82 }, // C maj7 — sunny resolution
   theme: {
-    tempo: 112, type: 'triangle', volume: 0.055, noteDuration: 0.20,
+    tempo: 132, type: 'triangle', volume: 0.055, noteDuration: 0.17,
     sequence: [
       [261.63],[329.63],[392.00], null,   [440.00],[392.00],[329.63], null,
       [349.23],[440.00],[523.25], null,   [440.00],[349.23],[440.00], null,

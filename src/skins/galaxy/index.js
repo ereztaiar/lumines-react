@@ -19,7 +19,7 @@ const sounds = {
   drop:      { notes: [164.81, 246.94],                 duration: 0.25 }, // E3 + B3 — gravity
   deletion:  { notes: [164.81, 246.94, 329.63, 493.88], duration: 1.00 }, // Em7 — supernova
   theme: {
-    tempo: 72, type: 'sine', volume: 0.045, noteDuration: 0.35,
+    tempo: 92, type: 'sine', volume: 0.045, noteDuration: 0.27,
     sequence: [
       [329.63], null,    null,    [392.00], null,    null,    [493.88], null,
       [587.33], null,    null,    [493.88], null,    [440.00], null,   null,

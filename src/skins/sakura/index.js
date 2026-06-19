@@ -19,7 +19,7 @@ const sounds = {
   drop:      { notes: [220.00, 329.63],                 duration: 0.17 }, // A3 + E4 — pluck
   deletion:  { notes: [220.00, 277.18, 329.63, 415.30], duration: 0.85 }, // A maj7 — resonant sustain
   theme: {
-    tempo: 96, type: 'sine', volume: 0.050, noteDuration: 0.20,
+    tempo: 116, type: 'sine', volume: 0.050, noteDuration: 0.17,
     sequence: [
       [440.00], null,    [493.88],[554.37],[493.88], null,    [440.00], null,
       [369.99], null,    [440.00], null,   [493.88], null,    [440.00], null,

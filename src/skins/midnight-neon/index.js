@@ -19,7 +19,7 @@ const sounds = {
   drop:      { notes: [440.00, 659.25],                 duration: 0.12 }, // A4 + E5 — zap
   deletion:  { notes: [220.00, 261.63, 329.63, 392.00], duration: 0.55 }, // Am7 — neon flash
   theme: {
-    tempo: 140, type: 'square', volume: 0.048, noteDuration: 0.16,
+    tempo: 160, type: 'square', volume: 0.048, noteDuration: 0.14,
     sequence: [
       [440.00],[523.25],[659.25],[523.25],[440.00],[523.25],[659.25], null,
       [587.33],[659.25],[783.99],[659.25],[587.33],[523.25],[440.00], null,

@@ -19,7 +19,7 @@ const sounds = {
   drop:      { notes: [146.83, 220.00],                 duration: 0.20 }, // D3 + A3 — low thud
   deletion:  { notes: [293.66, 349.23, 440.00, 523.25], duration: 0.92 }, // Dm7 — ominous bloom
   theme: {
-    tempo: 82, type: 'triangle', volume: 0.050, noteDuration: 0.23,
+    tempo: 102, type: 'triangle', volume: 0.050, noteDuration: 0.18,
     sequence: [
       [293.66], null,    [349.23], null,    [440.00], null,    [349.23],[293.66],
       [440.00], null,    [392.00], null,    [349.23], null,    [293.66], null,

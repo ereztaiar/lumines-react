@@ -19,7 +19,7 @@ const sounds = {
   drop:      { notes: [146.83, 220.00],                 duration: 0.18 }, // D3 + A3 — roots
   deletion:  { notes: [293.66, 369.99, 440.00, 554.37], duration: 0.88 }, // D maj7 — bloom
   theme: {
-    tempo: 88, type: 'sine', volume: 0.050, noteDuration: 0.24,
+    tempo: 108, type: 'sine', volume: 0.050, noteDuration: 0.20,
     sequence: [
       [293.66], null,    [369.99], null,    [440.00], null,    [369.99], null,
       [493.88], null,    [440.00], [369.99],[440.00], null,    [493.88], null,

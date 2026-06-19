@@ -19,7 +19,7 @@ const sounds = {
   drop:      { notes: [220.00, 329.63],                 duration: 0.18 }, // A3 + E4
   deletion:  { notes: [220.00, 261.63, 329.63, 415.30], duration: 0.90 }, // Am maj7 — bittersweet
   theme: {
-    tempo: 88, type: 'sine', volume: 0.050, noteDuration: 0.22,
+    tempo: 108, type: 'sine', volume: 0.050, noteDuration: 0.18,
     sequence: [
       [329.63], null,    [261.63], [293.66], [329.63], null,    [220.00], null,
       [349.23], null,    [440.00], [392.00], [349.23], null,    [329.63], null,

@@ -17,7 +17,7 @@ const sounds = {
   drop:      { notes: [220.00, 329.63],                 duration: 0.16 }, // A3 + E4 — tick
   deletion:  { notes: [220.00, 261.63, 329.63, 392.00], duration: 0.80 }, // Am7 — chime resolve
   theme: {
-    tempo: 100, type: 'triangle', volume: 0.050, noteDuration: 0.22,
+    tempo: 120, type: 'triangle', volume: 0.050, noteDuration: 0.18,
     sequence: [
       [220.00], null,   [329.63], null,   [440.00], null,   [329.63], null,
       [293.66], null,   [349.23], null,   [440.00], null,   [349.23], null,

@@ -19,7 +19,7 @@ const sounds = {
   drop:      { notes: [164.81, 329.63],                 duration: 0.14 }, // E3 + E4 octave — heavy thud
   deletion:  { notes: [164.81, 246.94, 329.63, 493.88], duration: 0.70 }, // Em7 — power chord bloom
   theme: {
-    tempo: 130, type: 'sawtooth', volume: 0.048, noteDuration: 0.18,
+    tempo: 150, type: 'sawtooth', volume: 0.048, noteDuration: 0.16,
     sequence: [
       [329.63],[329.63], null,   [392.00],[440.00], null,   [493.88], null,
       [493.88],[493.88],[440.00], null,  [392.00],[440.00],[329.63],  null,

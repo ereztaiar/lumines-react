@@ -19,7 +19,7 @@ const sounds = {
   drop:      { notes: [174.61, 261.63],                 duration: 0.18 }, // F3 + C4
   deletion:  { notes: [349.23, 440.00, 523.25, 659.25], duration: 0.90 }, // F maj7 — dreamy shimmer
   theme: {
-    tempo: 88, type: 'triangle', volume: 0.050, noteDuration: 0.24,
+    tempo: 108, type: 'triangle', volume: 0.050, noteDuration: 0.20,
     sequence: [
       [349.23], null,    [440.00], null,    [523.25], null,    [440.00], null,
       [587.33], null,    [523.25], null,    [440.00], null,    [523.25], null,

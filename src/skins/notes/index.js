@@ -23,10 +23,10 @@ const sounds = {
   // C major 7th — tonic with colour, satisfying resolution
   deletion:  { notes: [261.63, 329.63, 392.00, 493.88], duration: 0.90 },
   theme: {
-    tempo: 120,
+    tempo: 140,
     type: 'triangle',
     volume: 0.05,
-    noteDuration: 0.22,
+    noteDuration: 0.19,
     // I (Cmaj7) arpeggio up/down → vi (Am) arpeggio → IV (F) arpeggio → V (G) arpeggio
     sequence: [
       // Cmaj7 up

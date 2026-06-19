@@ -19,7 +19,7 @@ const sounds = {
   drop:      { notes: [130.81, 196.00],                 duration: 0.20 }, // C3 + G3 — low casino bass
   deletion:  { notes: [261.63, 311.13, 392.00, 466.16], duration: 0.88 }, // Cm7 — jazz resolve
   theme: {
-    tempo: 96, type: 'triangle', volume: 0.050, noteDuration: 0.22,
+    tempo: 116, type: 'triangle', volume: 0.050, noteDuration: 0.18,
     sequence: [
       [261.63], null,    [311.13], null,    [392.00], null,    [311.13], null,
       [349.23], null,    [415.30], null,    [523.25], null,    [415.30], null,

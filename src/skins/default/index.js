@@ -19,7 +19,7 @@ const sounds = {
   drop:      { notes: [261.63, 392.00],                 duration: 0.16 }, // C4 + G4 power
   deletion:  { notes: [261.63, 329.63, 392.00, 493.88], duration: 0.80 }, // C maj7 resolution
   theme: {
-    tempo: 100, type: 'triangle', volume: 0.050, noteDuration: 0.20,
+    tempo: 120, type: 'triangle', volume: 0.050, noteDuration: 0.17,
     sequence: [
       [261.63],[329.63],[392.00], null,   [329.63],[261.63], null,   null,
       [392.00],[440.00],[392.00], null,   [329.63], null,   [261.63], null,
