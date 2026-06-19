@@ -39,7 +39,9 @@ const getLeaderboard = (mode) => {
     try {
         const stored = localStorage.getItem(storageKey(mode));
         if (stored) return JSON.parse(stored);
-    } catch {}
+    } catch (e) {
+        if (process.env.NODE_ENV !== 'production') console.warn('leaderboard: failed to parse localStorage', e);
+    }
     return [...dummyEntries(mode)];
 };
 

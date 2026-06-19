@@ -33,7 +33,9 @@ const getSkinSettings = (storage = defaultStorage()) => {
     try {
         const raw = storage && storage.getItem(STORAGE_KEY);
         if (raw) return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
-    } catch {}
+    } catch (e) {
+        if (process.env.NODE_ENV !== 'production') console.warn('skinSettings: failed to parse localStorage', e);
+    }
     return { ...DEFAULT_SETTINGS };
 };
 
