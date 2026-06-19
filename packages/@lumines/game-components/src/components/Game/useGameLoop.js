@@ -85,7 +85,7 @@ const useGameLoop = (props) => {
     if (tick % 10) {
       cube.setDropCount((prev) => prev + 1);
     }
-    return () => {};
+    return () => { /* placeholder for future cleanup */ };
   }, [tick]);
 
   return { tick, currentDeleted };

@@ -38,9 +38,7 @@ const useScore = (mode) => {
                 setHighScore(score);
                 storeHighScore(score, mode);
             }
-            return () => {
-
-            }
+            return () => { /* placeholder for future cleanup */ }
         }, [score]);
 
     return [

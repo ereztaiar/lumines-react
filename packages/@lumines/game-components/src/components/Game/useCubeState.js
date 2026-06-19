@@ -106,12 +106,12 @@ const useCubeState = (props) => {
       setSplit(false);
       setNewCube(CUBE_STATES.WAITING);
     }
-    return () => {};
+    return () => { /* placeholder for future cleanup */ };
   }, [newCube]);
 
   useEffect(() => {
     setNewCube(CUBE_STATES.NEW);
-    return () => {};
+    return () => { /* placeholder for future cleanup */ };
   }, []);
 
   return {
