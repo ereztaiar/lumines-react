@@ -13,6 +13,7 @@ import * as forestZen from 'Skins/forest-zen';
 import * as halloween from 'Skins/halloween';
 import * as galaxy from 'Skins/galaxy';
 import * as time from 'Skins/time';
+import * as notes from 'Skins/notes';
 
 const SKINS = [
     { id: 'default', label: 'DEFAULT', module: defaultSkin },
@@ -30,6 +31,7 @@ const SKINS = [
     { id: 'halloween', label: 'HALLOWEEN', module: halloween },
     { id: 'galaxy', label: 'GALAXY', module: galaxy },
     { id: 'time', label: 'TIME', module: time },
+    { id: 'notes', label: 'NOTES', module: notes },
 ];
 
 const SKIN_IDS = SKINS.map((skin) => skin.id);

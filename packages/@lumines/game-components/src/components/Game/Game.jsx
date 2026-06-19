@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import * as audioEngine from 'Util/audioEngine';
 import { default as Classes } from "Skins/common.less";
 import { default as GameClasses } from "./Game.less";
 import useScore from "@lumines/game-components/src/hooks/useScore";
@@ -35,6 +36,15 @@ const Game = (props) => {
 
   const speed = getTickSpeed(skin);
 
+  useEffect(() => {
+    if (!muted && skin.sounds && skin.sounds.theme) {
+      audioEngine.startTheme(skin.sounds.theme);
+    } else {
+      audioEngine.stopTheme();
+    }
+    return () => audioEngine.stopTheme();
+  }, [currentSkinId, muted, skin.sounds]);
+
   return (
     <div className={Classes.root}>
       <BackgroundComponent />
@@ -50,7 +60,7 @@ const Game = (props) => {
           GameClasses.pauseContainer
         }
       >
-        <GameProvider mode={mode} muted={muted} speed={speed} scoring={{ addOne, multiplier, deletedBlocks, resetScore }}>
+        <GameProvider mode={mode} muted={muted} skinSounds={skin.sounds} speed={speed} scoring={{ addOne, multiplier, deletedBlocks, resetScore }}>
           <GameContent
             mode={mode}
             reflection={reflection}

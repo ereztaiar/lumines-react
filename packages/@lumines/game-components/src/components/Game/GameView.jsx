@@ -7,7 +7,7 @@ import { useGameKeys } from "./useGameKeys";
 import useCountdown from "./useCountdown";
 
 const GameView = (props) => {
-  const { mode, muted, speed, scoring: { deletedBlocks, multiplier, resetScore }, children } = props;
+  const { mode, muted, skinSounds, speed, scoring: { deletedBlocks, multiplier, resetScore }, children } = props;
   const [pause, togglePause] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [grid, setGridState] = useState(() => createEmptyGrid().next().value);
@@ -20,9 +20,9 @@ const GameView = (props) => {
     setGridState(next);
   };
 
-  const sounds = useGameSounds(muted);
+  const sounds = useGameSounds(skinSounds, muted);
   const cube = useCubeState({ gridRef, setGrid, setIsGameOver });
-  const { tick, currentDeleted } = useGameLoop({ gridRef, setGrid, pause, isGameOver, cube, speed, scoring: { deletedBlocks, multiplier } });
+  const { tick, currentDeleted } = useGameLoop({ gridRef, setGrid, pause, isGameOver, cube, speed, scoring: { deletedBlocks, multiplier }, sounds });
   useGameKeys({ gridRef, setGrid, cube, pause, togglePause, sounds });
   const timeRemaining = useCountdown({ mode, pause, isGameOver, tick, onTimeUp: () => setIsGameOver(true) });
 

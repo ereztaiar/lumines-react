@@ -533,7 +533,56 @@ export default Background;
 
 ---
 
-## Step 4 — Register the skin
+## Step 4 — Add skin sounds (optional but recommended)
+
+Each skin can export a `sounds` object so the audio engine plays chords that match the theme. Skins without `sounds` fall back to the built-in default (subtle C major chords).
+
+Add a `sounds` export to `src/skins/<name>/index.js` and include it in the named exports:
+
+```js
+// Design as a I–IV–V–I (or similar) harmonic progression so the four actions
+// create a miniature musical phrase together during play.
+const sounds = {
+  synth: { type: 'triangle', volume: 0.14 }, // oscillatorType: 'triangle'|'sine'|'square'; volume 0–1
+  moveLeft:  { notes: [Hz, Hz, Hz],    duration: 0.35 }, // root chord (tonic)
+  moveRight: { notes: [Hz, Hz, Hz],    duration: 0.35 }, // subdominant
+  rotate:    { notes: [Hz, Hz, Hz],    duration: 0.45 }, // dominant
+  drop:      { notes: [Hz, Hz],        duration: 0.18 }, // quick drop accent
+  deletion:  { notes: [Hz, Hz, Hz, Hz], duration: 0.90 }, // tonic + 7th (resolution)
+  theme: {
+    tempo: 120,         // BPM (sets 8th-note interval = 60/tempo/2 seconds)
+    type: 'triangle',   // oscillator type for the melody
+    volume: 0.05,       // keep the theme quiet so it doesn't drown SFX
+    noteDuration: 0.22, // seconds each note sustains
+    sequence: [         // array of [Hz, ...] for chords, or null for a rest
+      [261.63], [329.63], [392.00], null,   // example C–E–G–rest
+      // ... repeat/vary to form a looping melody phrase
+    ],
+  },
+};
+
+export { background, character, dispenser, grid, score, swiper, paths, reflection, BackgroundComponent, sounds };
+```
+
+**Useful note frequencies (Hz):**
+```
+C3=130.81  D3=146.83  E3=164.81  F3=174.61  G3=196.00  A3=220.00  B3=246.94
+C4=261.63  D4=293.66  E4=329.63  F4=349.23  G4=392.00  A4=440.00  B4=493.88
+C5=523.25  D5=587.33  E5=659.25  F5=698.46  G5=783.99  A5=880.00
+```
+
+**Harmonic combinations that always work:**
+- C major: 261.63, 329.63, 392.00
+- F major: 349.23, 440.00, 523.25
+- G major: 392.00, 493.88, 587.33
+- C major 7th (resolution): 261.63, 329.63, 392.00, 493.88
+- A minor: 220.00, 261.63, 329.63
+
+The `audioEngine` (`src/util/audioEngine.js`) handles all synthesis — no audio files needed.
+
+---
+
+## Step 5 — Register the skin
 
 Edit **`src/skins/index.js`** (the single source of truth for all skins):
 
@@ -552,7 +601,7 @@ Do **not** edit `packages/@lumines/core/src/hooks/useSkin.js` — it reads from 
 
 ---
 
-## Step 5 — Verify
+## Step 6 — Verify
 
 After creating all files, verify visually with a puppeteer screenshot:
 
@@ -574,3 +623,4 @@ Check:
 - Score panel gimmick renders and is readable.
 - Background icons have `pointer-events: none` (clicks pass through).
 - Animations loop — if they stop, `@keyframes` placement or CSS Modules scoping is broken.
+- **Sounds** (if exported) — left/right/rotate/deletion trigger distinct chords; theme music loops quietly. If muted, all audio is silent.

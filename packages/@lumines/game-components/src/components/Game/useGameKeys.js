@@ -6,7 +6,7 @@ import { nop } from "./nop";
 
 const useGameKeys = (props) => {
   const { gridRef, setGrid, cube, pause, togglePause, sounds } = props;
-  const { playRotate, playDrop, playMove } = sounds;
+  const { playRotate, playDrop, playMoveLeft, playMoveRight } = sounds;
 
   useKey(
     async (key, repeat, code) => {
@@ -24,7 +24,7 @@ const useGameKeys = (props) => {
         let updatedGrid, dest;
         switch (key) {
           case "ArrowLeft":
-            playMove();
+            playMoveLeft();
             // Refs, not closure state: a handler can fire inside a tick's
             // nop() yield, after the cube has already moved — swapping cells
             // at the closure's stale position orphans half the cube.
@@ -35,7 +35,7 @@ const useGameKeys = (props) => {
             await nop();
             break;
           case "ArrowRight":
-            playMove();
+            playMoveRight();
             [updatedGrid, dest] = await swap.moveRight(
               gridRef.current,
               cube.currentCubeRef.current,

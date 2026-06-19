@@ -12,8 +12,9 @@ const MAX_TICK = 160;
 const INITIAL_TICK = 0;
 
 const useGameLoop = (props) => {
-  const { gridRef, setGrid, pause, isGameOver, cube, speed = 35, scoring } = props;
+  const { gridRef, setGrid, pause, isGameOver, cube, speed = 35, scoring, sounds } = props;
   const { deletedBlocks, multiplier } = scoring;
+  const playDeletion = sounds && sounds.playDeletion ? sounds.playDeletion : () => {};
 
   const [tick, setTick] = useState(INITIAL_TICK);
   const [currentDeleted, setCurrentDeleted] = useState(0);
@@ -51,7 +52,9 @@ const useGameLoop = (props) => {
       // Wrap (last col → 0): flush any group left at the right edge of the board
       // before this pass commits new marks that would blend into it.
       if (swiperAdvanced && swiperCol < prevSwiperCol) {
-        score += await clearAllSweptCells(grid, anchorCube());
+        const cleared = await clearAllSweptCells(grid, anchorCube());
+        if (cleared > 0) playDeletion();
+        score += cleared;
       }
 
       const committed = await commitColumnAsSweeping(grid, swiperCol);
@@ -61,7 +64,9 @@ const useGameLoop = (props) => {
       // Sweeping is deferred this way so a marked group only vanishes (and
       // gravity only runs) once the swiper has crossed all of it.
       if (swiperAdvanced && committed === 0) {
-        score += await clearAllSweptCells(grid, anchorCube());
+        const cleared = await clearAllSweptCells(grid, anchorCube());
+        if (cleared > 0) playDeletion();
+        score += cleared;
       }
       prevSwiperColRef.current = swiperCol;
 

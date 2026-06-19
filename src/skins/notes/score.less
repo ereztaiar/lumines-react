@@ -1,0 +1,109 @@
+/* Notes skin — sheet music paper panels
+   Each panel looks like a torn page of music manuscript paper:
+   cream/ivory background, 5 faint staff lines, a left bar-line, gold numbers. */
+
+#score {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 82%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  .data {
+    position: relative;
+    height: 17%;
+    background: linear-gradient(160deg, rgba(255, 250, 230, 0.88) 0%, rgba(240, 234, 208, 0.92) 100%);
+    border-radius: 2px;
+    /* Left bar-line — like the start of a measure */
+    border-left: 3px solid rgba(180, 140, 40, 0.80);
+    /* Subtle drop shadow so panels lift off the background */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.45);
+
+    /* 5 staff lines running horizontally across the panel */
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0; right: 0;
+      top: 20%;
+      height: 0;
+      border-top: 1px solid rgba(80, 60, 20, 0.18);
+      box-shadow:
+        0 5px 0 rgba(80, 60, 20, 0.18),
+        0 10px 0 rgba(80, 60, 20, 0.18),
+        0 15px 0 rgba(80, 60, 20, 0.18),
+        0 20px 0 rgba(80, 60, 20, 0.18);
+      pointer-events: none;
+    }
+
+    .title {
+      background: none;
+      padding: 4px 12px 0;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      color: rgba(60, 40, 10, 0.70);
+      position: relative;
+      z-index: 1;
+    }
+
+    .info {
+      text-align: right;
+      color: #b07d08;
+      font-size: 2.0rem;
+      padding: 0 14px 4px;
+      font-weight: 600;
+      text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.60);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Alternate panels: slightly cooler tint, blue bar-line */
+    &:nth-child(2) {
+      background: linear-gradient(160deg, rgba(230, 242, 255, 0.88) 0%, rgba(210, 228, 248, 0.92) 100%);
+      border-left-color: rgba(30, 100, 200, 0.60);
+      .title { color: rgba(20, 50, 100, 0.65); }
+      .info  { color: #1a6ab5; text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.60); }
+    }
+
+    /* Main score panel — slightly taller, gold accent bar */
+    &:nth-child(3) {
+      height: 22%;
+      border-left-width: 4px;
+      border-left-color: rgba(200, 150, 0, 0.90);
+
+      @keyframes ntScoreGlow {
+        0%, 100% { box-shadow: 2px 2px 8px rgba(0,0,0,0.45), -2px 0 10px rgba(200,150,0,0.15); }
+        50%       { box-shadow: 2px 2px 8px rgba(0,0,0,0.45), -2px 0 20px rgba(200,150,0,0.35); }
+      }
+      animation: ntScoreGlow 2.8s ease-in-out infinite;
+      -webkit-animation: ntScoreGlow 2.8s ease-in-out infinite;
+
+      .info { font-size: 2.4rem; color: #8a5c00; }
+    }
+
+    &:nth-child(4) {
+      background: linear-gradient(160deg, rgba(230, 242, 255, 0.88) 0%, rgba(210, 228, 248, 0.92) 100%);
+      border-left-color: rgba(30, 100, 200, 0.60);
+      .title { color: rgba(20, 50, 100, 0.65); }
+      .info  { color: #1a6ab5; text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.60); }
+    }
+
+    /* Last panel: back to warm, with a small right-side double bar */
+    &:nth-child(5) {
+      &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 4px; top: 15%; bottom: 15%;
+        width: 1px;
+        background: rgba(80, 60, 20, 0.25);
+        box-shadow: 3px 0 0 rgba(80, 60, 20, 0.40);
+      }
+    }
+  }
+}
