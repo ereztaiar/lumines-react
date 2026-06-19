@@ -7,6 +7,7 @@ import Score from "@lumines/game-components/src/components/Score/Score";
 import Character from "@lumines/game-components/src/components/Character/Character";
 import Pause from "@lumines/game-components/src/components/Game/Pause";
 import GameOver from "@lumines/game-components/src/components/Game/GameOver";
+import { default as GameClasses } from "./Game.less";
 
 const GameContent = (props) => {
   const {
@@ -33,6 +34,7 @@ const GameContent = (props) => {
     setNewCube,
     tick,
     currentDeleted,
+    chainCount,
     pause,
     isGameOver,
     timeRemaining,
@@ -40,6 +42,11 @@ const GameContent = (props) => {
 
   return (
     <>
+      {chainCount > 1 && (
+        <div key={chainCount} className={GameClasses.chainCounter}>
+          CHAIN x{chainCount}
+        </div>
+      )}
       <Score
         mode={mode}
         score={score}

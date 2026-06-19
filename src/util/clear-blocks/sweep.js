@@ -102,4 +102,19 @@ function clearAllSweptCells(array, cube = null) {
   });
 }
 
-export { commitColumnAsSweeping, clearAllSweptCells };
+// Whether the board holds any blocks at all, ignoring cells the live falling
+// cube currently occupies (it's written into the grid while mid-air, but isn't
+// part of the settled stack an all-clear bonus is meant to reward).
+function isGridEmpty(array, cube = null) {
+  for (let col = 0; col < array.length; col++) {
+    const column = array[col];
+    const cubeRows = collectCubeRowsInCol(cube, col);
+    for (let y = 0; y < column.length; y++) {
+      if (cubeRows.has(y)) continue;
+      if (column[y] !== EMPTY) return false;
+    }
+  }
+  return true;
+}
+
+export { commitColumnAsSweeping, clearAllSweptCells, isGridEmpty };

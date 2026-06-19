@@ -6,6 +6,9 @@ import {
   commitColumnAsSweeping,
   clearAllSweptCells,
   resolveAnchorCube,
+  isGridEmpty,
+  advanceChain,
+  resetChainIfNoClear,
 } from "Util/clear-blocks";
 
 const MAX_TICK = 160;
@@ -13,12 +16,15 @@ const INITIAL_TICK = 0;
 
 const useGameLoop = (props) => {
   const { gridRef, setGrid, pause, isGameOver, cube, speed = 35, scoring, sounds } = props;
-  const { deletedBlocks, multiplier } = scoring;
+  const { deletedBlocks, multiplier, allClearBonus } = scoring;
   const playDeletion = sounds && sounds.playDeletion ? sounds.playDeletion : () => {};
 
   const [tick, setTick] = useState(INITIAL_TICK);
   const [currentDeleted, setCurrentDeleted] = useState(0);
+  const [chainCount, setChainCount] = useState(0);
   const prevSwiperColRef = useRef(-1);
+  const chainCountRef = useRef(0);
+  const lapHadClearRef = useRef(false);
 
   useTimer(async () => {
     if (pause || isGameOver) {
@@ -45,6 +51,20 @@ const useGameLoop = (props) => {
       const prevSwiperCol = prevSwiperColRef.current;
       let score = 0;
 
+      // A clear event is one square (or chained group) the swiper actually
+      // erased. Each one bumps the chain counter and scores at that chain's
+      // multiplier — consecutive clears across a full sweep revolution build
+      // toward a bigger payoff, mirroring the original game's chain bonus.
+      const registerClear = (cleared) => {
+        if (cleared <= 0) return;
+        playDeletion();
+        lapHadClearRef.current = true;
+        chainCountRef.current = advanceChain(chainCountRef.current);
+        setChainCount(chainCountRef.current);
+        multiplier(cleared, chainCountRef.current);
+        if (isGridEmpty(grid, anchorCube())) allClearBonus();
+      };
+
       await revertUncommittedMarks(grid);
       await prepareForDeletion(grid);
 
@@ -52,8 +72,16 @@ const useGameLoop = (props) => {
       // Wrap (last col → 0): flush any group left at the right edge of the board
       // before this pass commits new marks that would blend into it.
       if (swiperAdvanced && swiperCol < prevSwiperCol) {
+        // A full revolution just completed with nothing cleared breaks the
+        // chain. This check runs before this tick's own wrap-clear is
+        // registered, so a clear straddling the wrap boundary still extends
+        // the chain instead of resetting it.
+        chainCountRef.current = resetChainIfNoClear(chainCountRef.current, lapHadClearRef.current);
+        setChainCount(chainCountRef.current);
+        lapHadClearRef.current = false;
+
         const cleared = await clearAllSweptCells(grid, anchorCube());
-        if (cleared > 0) playDeletion();
+        registerClear(cleared);
         score += cleared;
       }
 
@@ -65,14 +93,13 @@ const useGameLoop = (props) => {
       // gravity only runs) once the swiper has crossed all of it.
       if (swiperAdvanced && committed === 0) {
         const cleared = await clearAllSweptCells(grid, anchorCube());
-        if (cleared > 0) playDeletion();
+        registerClear(cleared);
         score += cleared;
       }
       prevSwiperColRef.current = swiperCol;
 
       deletedBlocks(score);
       setCurrentDeleted(currentDeleted + score);
-      multiplier(score);
     }
 
     if (tick === MAX_TICK - 1) {
@@ -93,7 +120,7 @@ const useGameLoop = (props) => {
     return () => { /* placeholder for future cleanup */ };
   }, [tick]);
 
-  return { tick, currentDeleted };
+  return { tick, currentDeleted, chainCount };
 };
 
 export { useGameLoop, MAX_TICK, INITIAL_TICK };

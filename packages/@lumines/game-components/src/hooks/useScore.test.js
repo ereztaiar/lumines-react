@@ -43,6 +43,14 @@ describe('useScore functional updaters accumulate across batched calls', () => {
         delete global.window;
     });
 
+    it('ALL_CLEAR_BONUS exports correctly', () => {
+        global.window = { localStorage: fakeStorage() };
+        jest.resetModules();
+        const { ALL_CLEAR_BONUS } = require('./useScore');
+        expect(ALL_CLEAR_BONUS).toBe(1000);
+        delete global.window;
+    });
+
     it('two score updaters built from the same stale value both apply when using functional form', () => {
         // Simulate what React does when two setState calls are batched:
         // each receives the latest queued state, not the render-time snapshot.
@@ -55,6 +63,32 @@ describe('useScore functional updaters accumulate across batched calls', () => {
         setScore(prev => prev + 1);               // +1  → 23
 
         expect(state).toBe(23); // both increments applied; stale-closure would give 11 or 14
+    });
+
+    it('multiplier scales by chainCount, defaulting to 1 when omitted', () => {
+        const MULTIPLIER = 4;
+
+        let soloState = 0;
+        const setSoloScore = (updater) => { soloState = updater(soloState); };
+        setSoloScore(prev => prev + 3 * MULTIPLIER * 1); // chainCount defaults to 1
+
+        let chainedState = 0;
+        const setChainedScore = (updater) => { chainedState = updater(chainedState); };
+        setChainedScore(prev => prev + 3 * MULTIPLIER * 2); // chainCount = 2
+
+        expect(soloState).toBe(12);
+        expect(chainedState).toBe(24);
+        expect(chainedState).toBe(soloState * 2);
+    });
+
+    it('allClearBonus adds a flat ALL_CLEAR_BONUS to the score', () => {
+        const ALL_CLEAR_BONUS = 1000;
+        let state = 50;
+        const setScore = (updater) => { state = updater(state); };
+
+        setScore(prev => prev + ALL_CLEAR_BONUS);
+
+        expect(state).toBe(1050);
     });
 
     it('two deleted updaters built from the same stale value both apply when using functional form', () => {

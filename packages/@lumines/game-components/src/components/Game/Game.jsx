@@ -25,7 +25,7 @@ const Game = (props) => {
     return next;
   });
 
-  const [score, addOne, multiplier, highScore, deletedBlocks, deleted, resetScore, level] =
+  const [score, addOne, multiplier, highScore, deletedBlocks, deleted, resetScore, level, allClearBonus] =
     useScore(mode);
 
   const {
@@ -69,7 +69,7 @@ const Game = (props) => {
           GameClasses.pauseContainer
         }
       >
-        <GameProvider mode={mode} muted={muted} toggleMuted={toggleMuted} skinSounds={skin.sounds} speed={speed} scoring={{ addOne, multiplier, deletedBlocks, resetScore }}>
+        <GameProvider mode={mode} muted={muted} toggleMuted={toggleMuted} skinSounds={skin.sounds} speed={speed} scoring={{ addOne, multiplier, deletedBlocks, resetScore, allClearBonus }}>
           <GameContent
             mode={mode}
             reflection={reflection}
