@@ -12,6 +12,7 @@ import * as deepSea from 'Skins/deep-sea';
 import * as forestZen from 'Skins/forest-zen';
 import * as halloween from 'Skins/halloween';
 import * as galaxy from 'Skins/galaxy';
+import * as time from 'Skins/time';
 
 const SKINS = [
     { id: 'default', label: 'DEFAULT', module: defaultSkin },
@@ -28,6 +29,7 @@ const SKINS = [
     { id: 'forest-zen', label: 'FOREST ZEN', module: forestZen },
     { id: 'halloween', label: 'HALLOWEEN', module: halloween },
     { id: 'galaxy', label: 'GALAXY', module: galaxy },
+    { id: 'time', label: 'TIME', module: time },
 ];
 
 const SKIN_IDS = SKINS.map((skin) => skin.id);

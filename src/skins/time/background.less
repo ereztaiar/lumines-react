@@ -1,0 +1,74 @@
+.background {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  transform: scale(1.5);
+
+  &:before, &:after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; content: ''; display: block; }
+
+  &:before {
+    background: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 50%, #1e3a8a 100%);
+    background-size: 400% 400%;
+    z-index: -20;
+
+    @keyframes BgMoveTime {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 51%; }
+      100% { background-position: 0% 50%; }
+    }
+    -webkit-animation: BgMoveTime 12s ease infinite;
+    animation: BgMoveTime 12s ease infinite;
+  }
+
+  &:after {
+    z-index: -10;
+    background: url('../../assets/images/scan-mask.png') repeat;
+    opacity: 0.25;
+  }
+}
+
+.scene {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+
+  svg { position: absolute; }
+}
+
+.glow {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.floatSlow {
+  @keyframes floatSlowTime { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  -webkit-animation: floatSlowTime 7s ease-in-out infinite;
+  animation: floatSlowTime 7s ease-in-out infinite;
+}
+
+.pulse {
+  @keyframes pulseTime { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  -webkit-animation: pulseTime 3.5s ease-in-out infinite;
+  animation: pulseTime 3.5s ease-in-out infinite;
+}
+
+.blinkSlow {
+  @keyframes blinkSlowTime { 0%,44%,56%,100%{opacity:1} 50%{opacity:0.08} }
+  -webkit-animation: blinkSlowTime 4.2s ease-in-out infinite;
+  animation: blinkSlowTime 4.2s ease-in-out infinite;
+}
+
+.blinkFast {
+  @keyframes blinkFastTime { 0%,82%,96%,100%{opacity:1} 89%{opacity:0.05} }
+  -webkit-animation: blinkFastTime 2.8s ease-in-out infinite;
+  animation: blinkFastTime 2.8s ease-in-out infinite;
+}
+
+.driftSlow {
+  @keyframes driftSlowTime { 0%,100%{transform:translate(0,0)} 50%{transform:translate(14px,10px)} }
+  -webkit-animation: driftSlowTime 9s ease-in-out infinite;
+  animation: driftSlowTime 9s ease-in-out infinite;
+}
+
+.spinSlow {
+  @keyframes spinSlowTime { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+  -webkit-animation: spinSlowTime 40s linear infinite;
+  animation: spinSlowTime 40s linear infinite;
+}
