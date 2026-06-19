@@ -3,6 +3,10 @@ import { useKeys, KEYS } from "@lumines/core";
 
 import { useRouter } from "@lumines/game-router/src/context/routerContext";
 import { menuReducer, defaultState } from "@lumines/menu/src/context/menuReducer";
+import * as audioEngine from 'Util/audioEngine';
+import { getGameSettings } from 'Util/gameSettings';
+
+const NAV_SOUND = { notes: [392.00, 493.88], duration: 0.14, volume: 0.07, type: 'triangle' };
 
 const MenuContext = createContext({});
 const { Provider: MenuProvider } = MenuContext;
@@ -54,12 +58,20 @@ const Menu = props => {
             routerDispatch({ type: 'reset' });
         }, 60000);
 
+        const playNav = () => {
+            if (!getGameSettings().muted) {
+                audioEngine.playChord(NAV_SOUND.notes, NAV_SOUND);
+            }
+        };
+
         switch (key) {
             case KEYS.ARROW_UP:
-                dispatch({ type: 'menu_up' })
+                dispatch({ type: 'menu_up' });
+                playNav();
                 break;
             case KEYS.ARROW_DOWN:
-                dispatch({ type: 'menu_down' })
+                dispatch({ type: 'menu_down' });
+                playNav();
                 break;
             case KEYS.ENTER:
             case KEYS.SPACE: {

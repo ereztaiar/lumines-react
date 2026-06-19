@@ -7,14 +7,23 @@ import useSkin from "@lumines/core/src/hooks/useSkin";
 import GameProvider from "@lumines/game-components/src/contexts/GameProvider";
 import GameContent from "@lumines/game-components/src/components/Game/GameContent";
 import { AVATAR_IDS } from "@lumines/game-components/src/components/Character/avatars";
-import { getGameSettings, normalizeSettings } from "Util/gameSettings";
+import { getGameSettings, saveGameSettings, normalizeSettings } from "Util/gameSettings";
 import { getTickSpeed } from "Util/gameplaySpeed";
 import { SKINS_BY_ID } from "Skins/index";
 
 const Game = (props) => {
   const { mode = 'arcade' } = props;
   // settings are read once per game mount — menu and game never coexist
-  const [{ reflection, avatarId, muted, showSkinName }] = useState(() => normalizeSettings(getGameSettings(), AVATAR_IDS));
+  const [{ reflection, avatarId, showSkinName }] = useState(() => {
+    const s = normalizeSettings(getGameSettings(), AVATAR_IDS);
+    return { reflection: s.reflection, avatarId: s.avatarId, showSkinName: s.showSkinName };
+  });
+  const [muted, setMuted] = useState(() => normalizeSettings(getGameSettings(), AVATAR_IDS).muted);
+  const toggleMuted = () => setMuted((prev) => {
+    const next = !prev;
+    saveGameSettings({ ...getGameSettings(), muted: next });
+    return next;
+  });
 
   const [score, addOne, multiplier, highScore, deletedBlocks, deleted, resetScore, level] =
     useScore(mode);
@@ -60,7 +69,7 @@ const Game = (props) => {
           GameClasses.pauseContainer
         }
       >
-        <GameProvider mode={mode} muted={muted} skinSounds={skin.sounds} speed={speed} scoring={{ addOne, multiplier, deletedBlocks, resetScore }}>
+        <GameProvider mode={mode} muted={muted} toggleMuted={toggleMuted} skinSounds={skin.sounds} speed={speed} scoring={{ addOne, multiplier, deletedBlocks, resetScore }}>
           <GameContent
             mode={mode}
             reflection={reflection}

@@ -43,31 +43,36 @@
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  flex-direction: row;
+  gap: 1.5rem;
   z-index: 10;
 }
 
-.pauseMenuItem {
-  padding: 1rem 2rem;
-  min-width: 12rem;
-  box-sizing: border-box;
-  font-size: 1.1rem;
-  font-weight: bold;
-  letter-spacing: 0.15em;
-  color: #ffffff;
-  background-color: #7B5EA7;
-  border: 3px solid #a78bfa;
-  border-radius: 1.5rem;
+.pauseMenuTile {
+  --tile-color: #7B5EA7;
+
+  position: relative;
+  width: ~"min(9rem, 16vw)";
+  height: ~"min(9rem, 16vw)";
+  border-radius: 12px;
+  background-color: var(--tile-color);
+  background-image: linear-gradient(160deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.35));
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  color: white;
+  border: 3px solid transparent;
   cursor: pointer;
-  opacity: 0.75;
-  transition: opacity 150ms ease, border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+  opacity: 0.72;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 150ms ease, box-shadow 150ms ease, transform 150ms ease, border-color 150ms ease;
 
   &:hover {
     opacity: 1;
-    border-color: #ff6b9d;
-    box-shadow: 0 0 14px rgba(255, 107, 157, 0.45);
-    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 22px var(--tile-color);
+    transform: translateY(-4px);
   }
 
   &:active {
@@ -75,11 +80,26 @@
   }
 }
 
-.pauseMenuItemSelected {
+.pauseMenuTileSelected {
   opacity: 1;
-  border-color: #ff6b9d;
-  box-shadow: 0 0 14px rgba(255, 107, 157, 0.45);
-  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 22px var(--tile-color);
+  transform: translateY(-4px);
+}
+
+.pauseMenuTileBanner {
+  position: absolute;
+  bottom: 0.65rem;
+  left: -6%;
+  width: 112%;
+  padding: 0.25rem 0;
+  background: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  transform: skewX(-6deg);
+  white-space: nowrap;
 }
 
 .gameOverText {
