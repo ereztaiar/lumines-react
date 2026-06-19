@@ -1,7 +1,6 @@
 const HtmlPlugin = require('html-webpack-plugin');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-//const boxen = require('boxen');
 
 module.exports = {
     devtool: 'source-map',
@@ -41,12 +40,6 @@ module.exports = {
             {
                 test: /\.(png|jpg|wav|svg)$/,
                 type: 'asset/resource'
-                //loader: 'url-loader',
-               // options: {
-               //     limit:1,
-               //     name: 'images/[contenthash]-[name].[ext]'
-                //}
-               // use: ['file-loader?name=[contenthash]/[name].[ext]'],
             },
             {
                 test: /\.css|\.less$/i,
@@ -92,30 +85,4 @@ module.exports = {
         })
 
     ],
-    /*devServer: {
-        https: true,
-        cert: './webpack/lumines.cert',
-        key: './webpack/lumines.key',
-        hot: true,
-        host: '0.0.0.0',
-        port: 3030,
-        disableHostCheck: true,
-        useLocalIp: true,
-        after: function (app, server, compiler) {
-            server.middleware.waitUntilValid(() => {
-                console.log(
-                    boxen('Lumines is ready!', {
-                        borderColor: 'magenta',
-                        backgroundColor: '#fe6f15',
-                        borderStyle: 'doubleSingle',
-                        float: 'center',
-                        align: 'center',
-                        margin: 1,
-                        padding: 1
-                    })
-                );
-            })
-        },
-
-    },*/
 };

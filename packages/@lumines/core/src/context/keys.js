@@ -48,17 +48,10 @@ const Keys = props => {
         }
     }, []);
 
-    const connectHandler = (gamepadIndex) => {
-        //console.log(`Gamepad ${gamepadIndex} connected !`)
-    }
-
-    const disconnectHandler = (gamepadIndex) => {
-        //console.log(`Gamepad ${gamepadIndex} disconnected !`)
-    }
-
-    const buttonChangeHandler = (buttonName, down) => {
-        //console.log(buttonName, down)
-    }
+    // Gamepad handler placeholders — wired to <Gamepad> props for future controller support
+    const connectHandler = (gamepadIndex) => {}
+    const disconnectHandler = (gamepadIndex) => {}
+    const buttonChangeHandler = (buttonName, down) => {}
 
     const buttonDownHandler = (buttonName) => {
         dispatch({ key: buttonName, which: buttonName })
@@ -68,9 +61,7 @@ const Keys = props => {
         dispatch({ key: null, which: null })
     }
 
-    const axisChangeHandler = (axisName, value, previousValue) => {
-        //console.log(axisName, value)
-    }
+    const axisChangeHandler = (axisName, value, previousValue) => {}
 
     return (
         <Gamepad
