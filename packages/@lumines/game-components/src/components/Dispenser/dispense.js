@@ -1,6 +1,3 @@
-//import React from "react";
-import Block from "@lumines/game-components/src/components/Board/block";
-//import GridItem from "@lumines/game-components/src/components/Board/GridItem";
 import { BLOCKS_TYPES } from "@lumines/game-components/src/components/Board";
 
 const BLOCKS = {
@@ -79,7 +76,6 @@ function* generateCube() {
 export default generateCube;
 
 export {
-  Block,
   dispenseOrder,
   CUBE_WIDTH,
   CUBE_HEIGHT,

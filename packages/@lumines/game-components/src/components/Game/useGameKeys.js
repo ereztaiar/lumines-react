@@ -21,7 +21,7 @@ const useGameKeys = (props) => {
         if (cube.isSplitRef.current) {
           return;
         }
-        let updatedGrid, dest, outOfBounds;
+        let updatedGrid, dest;
         switch (key) {
           case "ArrowLeft":
             playMove();
@@ -56,11 +56,6 @@ const useGameKeys = (props) => {
             break;
         }
         setGrid([...updatedGrid]);
-        if (outOfBounds === swap.errors.OUT_OF_BOUNDS) {
-          cube.setNewCube(CUBE_STATES.NEW);
-          cube.setDropCount(0);
-          return;
-        }
         if (typeof dest !== "undefined") {
           cube.setCurrentCube({ ...dest });
         }
@@ -73,7 +68,7 @@ const useGameKeys = (props) => {
         return;
       }
       try {
-        let updatedGrid, dest, outOfBounds;
+        let updatedGrid, dest;
         switch (key) {
           case "ArrowLeft":
             break;
@@ -92,11 +87,6 @@ const useGameKeys = (props) => {
             break;
         }
         setGrid([...updatedGrid]);
-        if (outOfBounds === swap.errors.OUT_OF_BOUNDS) {
-          cube.setNewCube(CUBE_STATES.NEW);
-          cube.setDropCount(0);
-          return;
-        }
         if (typeof dest !== "undefined") {
           cube.setCurrentCube({ ...dest });
         }

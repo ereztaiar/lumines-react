@@ -5,8 +5,6 @@ import { useRouter } from "@lumines/game-router/src/context/routerContext";
 import { useKeys, KEYS } from "@lumines/core";
 
 const Pause = ({ pause }) => {
-    if (!pause) return null;
-
     const [selectedIndex, setSelectedIndex] = useState(0);
     const { togglePause, resetScore } = useGame();
     const { dispatch } = useRouter();
@@ -44,6 +42,8 @@ const Pause = ({ pause }) => {
             setSelectedIndex(0);
         }
     }, [pause]);
+
+    if (!pause) return null;
 
     return (
         <>

@@ -11,7 +11,9 @@ const getUnlockedSkinIds = (storage = defaultStorage()) => {
             const parsed = JSON.parse(raw);
             if (Array.isArray(parsed)) stored = parsed;
         }
-    } catch {}
+    } catch {
+        // localStorage read/write failure is best-effort — silently ignore
+    }
     return [...new Set([...ALWAYS_UNLOCKED, ...stored])];
 };
 
@@ -21,7 +23,9 @@ const unlockSkin = (id, storage = defaultStorage()) => {
     unlocked.push(id);
     try {
         if (storage) storage.setItem(STORAGE_KEY, JSON.stringify(unlocked));
-    } catch {}
+    } catch {
+        // localStorage read/write failure is best-effort — silently ignore
+    }
     return unlocked;
 };
 

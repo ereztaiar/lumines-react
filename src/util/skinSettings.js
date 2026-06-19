@@ -42,7 +42,9 @@ const getSkinSettings = (storage = defaultStorage()) => {
 const saveSkinSettings = (settings, storage = defaultStorage()) => {
     try {
         if (storage) storage.setItem(STORAGE_KEY, JSON.stringify(settings));
-    } catch {}
+    } catch {
+        // localStorage write failure is best-effort — silently ignore
+    }
 };
 
 export { MODES, DEFAULT_SETTINGS, normalizeSettings, getSkinSettings, saveSkinSettings };

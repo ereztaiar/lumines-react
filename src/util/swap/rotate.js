@@ -1,6 +1,7 @@
 import { isSplit } from './isSplit.js';
 
 function rotate(array, cube) {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
         if (isSplit(cube)) {
             resolve([array]);

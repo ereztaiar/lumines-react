@@ -29,14 +29,18 @@ const getGameSettings = (storage = defaultStorage()) => {
     try {
         const raw = storage && storage.getItem(STORAGE_KEY);
         if (raw) return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
-    } catch {}
+    } catch {
+        // localStorage read/write failure is best-effort — silently ignore
+    }
     return { ...DEFAULT_SETTINGS };
 };
 
 const saveGameSettings = (settings, storage = defaultStorage()) => {
     try {
         if (storage) storage.setItem(STORAGE_KEY, JSON.stringify(settings));
-    } catch {}
+    } catch {
+        // localStorage read/write failure is best-effort — silently ignore
+    }
 };
 
 export { DEFAULT_SETTINGS, normalizeSettings, getGameSettings, saveGameSettings };

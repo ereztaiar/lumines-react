@@ -9,7 +9,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `yarn test` — Jest. Run a single test file: `yarn jest src/util/swap.left.test.js`. Test files live alongside the code they cover (`src/util/*.test.js`).
 - `yarn storybook` — Storybook on port 6006. Stories live in `src/stories/`.
 
-There is no lint or typecheck step configured.
+- `yarn lint` — ESLint (flat config, `eslint.config.js`). Enforces `react-hooks/rules-of-hooks` (error) and `react-hooks/exhaustive-deps` (warning). Run before committing new hooks code.
+- `yarn format` — Prettier, rewrites `src/` and `packages/` in-place.
+
+There is no typecheck step configured.
 
 ## Before you code
 
