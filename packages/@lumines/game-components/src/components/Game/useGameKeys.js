@@ -64,7 +64,9 @@ const useGameKeys = (props) => {
         if (typeof dest !== "undefined") {
           cube.setCurrentCube({ ...dest });
         }
-      } catch (ex) {}
+      } catch (ex) {
+        if (process.env.NODE_ENV !== 'production') console.error(ex);
+      }
     },
     async (key) => {
       if (cube.isSplitRef.current || pause) {
@@ -98,7 +100,9 @@ const useGameKeys = (props) => {
         if (typeof dest !== "undefined") {
           cube.setCurrentCube({ ...dest });
         }
-      } catch (ex) {}
+      } catch (ex) {
+        if (process.env.NODE_ENV !== 'production') console.error(ex);
+      }
     },
   );
 };
