@@ -8,9 +8,6 @@ const keyReducer = (state, action) => {
     const { key, which } = action;
 
     switch (which) {
-        case 65: {
-            return { key, which };
-        }
         case 'Start': {
             return { key: ' ', which: null }
         }
