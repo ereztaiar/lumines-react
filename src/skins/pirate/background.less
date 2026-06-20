@@ -1,0 +1,69 @@
+.background {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  transform: scale(1.5);
+
+  &:before, &:after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; content: ''; display: block; }
+
+  &:before {
+    background: linear-gradient(135deg, #3a2412 0%, #1f7a7a 50%, #3a2412 100%);
+    background-size: 400% 400%;
+    z-index: -20;
+
+    @keyframes BgMovePirate {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 51%; }
+      100% { background-position: 0% 50%; }
+    }
+    -webkit-animation: BgMovePirate 10s ease infinite;
+    animation: BgMovePirate 10s ease infinite;
+  }
+
+  &:after {
+    z-index: -10;
+    background: url('../../assets/images/scan-mask.png') repeat;
+    opacity: 0.3;
+  }
+}
+
+.scene {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+
+  svg { position: absolute; }
+}
+
+.glow {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.floatSlow {
+  @keyframes floatSlowPirate { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  -webkit-animation: floatSlowPirate 6s ease-in-out infinite;
+  animation: floatSlowPirate 6s ease-in-out infinite;
+}
+
+.pulse {
+  @keyframes pulsePirate { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  -webkit-animation: pulsePirate 3.5s ease-in-out infinite;
+  animation: pulsePirate 3.5s ease-in-out infinite;
+}
+
+.sway {
+  @keyframes swayPirate { 0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(4deg)} }
+  -webkit-animation: swayPirate 4s ease-in-out infinite;
+  animation: swayPirate 4s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+.spinSlow {
+  @keyframes spinSlowPirate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  -webkit-animation: spinSlowPirate 12s linear infinite;
+  animation: spinSlowPirate 12s linear infinite;
+}
+
+.bobWaves {
+  @keyframes bobWavesPirate { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+  -webkit-animation: bobWavesPirate 3s ease-in-out infinite;
+  animation: bobWavesPirate 3s ease-in-out infinite;
+}

@@ -1,0 +1,126 @@
+@import "Skins/common.less";
+
+/* Palette: #ffd700 (gold vinyl) + #ff2bd6 (hot magenta crystal) on deep violet bg */
+
+.board {
+  grid-column-start: 2; grid-row-start: 2; grid-row-end: 2;
+  align-self: start;
+  width: @center-width;
+  max-width: @grid-item-width-max * @grid-columns;
+  position: relative; margin: 0 auto; grid-area: grid;
+}
+
+.grid {
+  position: relative;
+
+  .row0, .row1 {
+    .gridItem { border: 0; background: none; &:first-child { border-left: 0; } }
+  }
+  .row1 { border-bottom: 1px solid rgba(255, 215, 0, 0.20); }
+
+  each(range(0, @grid-rows, 1), { .row@{value} { height: @grid-item-height; } });
+
+  .gridItem {
+    width: @grid-item-width; height: @grid-item-height;
+    max-width: @grid-item-width-max; max-height: @grid-item-height-max;
+    float: left; line-height: @grid-item-height; text-align: center;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.20); border-right: 1px solid rgba(255, 215, 0, 0.20);
+    position: relative; background: rgba(35, 12, 45, 0.50);
+    &:first-child { border-left: 1px solid rgba(255, 215, 0, 0.20); }
+
+    &:after  { width: 75%; height: 75%; display: block; position: absolute; top: 8%; left: 8%; }
+    &:before { width: 90%; height: 90%; display: block; content: ' '; position: absolute;
+               top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%); border-radius: 3px; }
+
+    &.ready {
+      &:before { border-radius: 0; width: 100%; height: 100%; }
+      &.large:after {
+        width: @grid-item-width*2; height: @grid-item-height*2;
+        position: absolute; top: ~"calc(-100% - 2px)"; left: -2px;
+        border: 2px solid #ffd700;
+      }
+    }
+
+    /* colorA — gold vinyl */
+    &.grey {
+      &:after  { content: ''; border-top: 1px solid #fff0a8; border-left: 1px solid #fff0a8; }
+      &:before { background: #ffd700; box-shadow: 0 0 18px 5px #ffd700, inset 0 0 12px rgba(255, 215, 0, 0.5);
+                 animation: dscBlockPulse 3.5s ease-in-out infinite; }
+    }
+
+    /* colorB — hot magenta crystal */
+    &.orange {
+      &:after  { content: ''; border-top: 1px solid #ff9bec; border-left: 1px solid #ff9bec; }
+      &:before { background: #ff2bd6; box-shadow: 0 0 18px 5px #ff2bd6, inset 0 0 12px rgba(255, 43, 214, 0.4);
+                 animation: dscBlockPulse 3.5s ease-in-out infinite; }
+    }
+
+    /* placed colorA — bright gold */
+    &.darkGrey {
+      border-bottom: 1px solid #c9a600; border-right: 1px solid #c9a600;
+      box-shadow: 0 0 8px 2px #c9a600;
+      &:after  { content: ''; border-top: 0; border-left: 0; }
+      &:before { background: #c9a600; border-radius: 0; width: 100%; height: 100%;
+                 left: 0; top: 0; transform: none; }
+    }
+
+    /* placed colorB — bright magenta */
+    &.darkOrange {
+      border-bottom: 1px solid #b3179e; border-right: 1px solid #b3179e;
+      box-shadow: 0 0 8px 2px #b3179e;
+      &:after  { content: ''; border-top: 0; border-left: 0; }
+      &:before { background: #b3179e; border-radius: 0; width: 100%; height: 100%;
+                 left: 0; top: 0; transform: none; }
+    }
+
+    &.ghostBlock {
+      background: rgba(255, 215, 0, 0.05);
+      &:before { background: rgba(255, 215, 0, 0.08); border: 2px dashed rgba(255, 43, 214, 0.5); border-radius: 3px; }
+    }
+
+    &.markedForDeletion {
+      animation: dscDeletionPulse 0.6s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    &.beingRecursive {
+      animation: dscRecursivePulse 1.2s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    &.beingSwept {
+      animation: dscSweptFade 1.8s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    img { width: 100%; }
+  }
+}
+
+@keyframes dscBlockPulse {
+  0%, 100% { filter: brightness(1); }
+  50%       { filter: brightness(1.5); }
+}
+
+@keyframes dscDeletionPulse {
+  0%, 100% {
+    box-shadow: 0 0 14px 4px #ffd700, inset 0 0 10px #ffd700;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 0 32px 14px #ffd700, inset 0 0 22px #ffd700;
+    transform: scale(1.06);
+    filter: brightness(1.8);
+  }
+}
+
+@keyframes dscRecursivePulse {
+  0%, 100% { opacity: 0.5; filter: brightness(1); }
+  50%       { opacity: 0.78; filter: brightness(1.4); }
+}
+
+@keyframes dscSweptFade {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 0.15; }
+}

@@ -1,0 +1,29 @@
+@import "Skins/common.less";
+
+.dispenser {
+  width: @grid-item-width * 2; grid-column-start: 1; grid-row-start: 2;
+  margin: 0 auto; align-self: start;
+
+  .cube {
+    margin-bottom: @grid-item-height; position: relative;
+    &:after { clear: both; content: ''; display: block; }
+
+    @keyframes dispenserAurora {
+      from { -webkit-transform: rotate(0deg); top: ~"calc(-310% - 2px)"; left: ~"calc(-310% - 2px)";
+             width: ~"calc(600%)"; height: ~"calc(600%)"; border: 2px solid rgba(57, 255, 157, 50%); }
+      to   { -webkit-transform: rotate(360deg); top: ~"calc(-10% - 2px)"; left: ~"calc(-10% - 2px)";
+             width: ~"calc(120%)"; height: ~"calc(120%)"; border: 2px solid #9d4dff; }
+    }
+
+    &:before {
+      border: 2px solid rgba(57, 255, 157, 50%);
+      position: absolute; content: ' '; display: block;
+      top: ~"calc(-10% - 2px)"; left: ~"calc(-10% - 2px)";
+      width: ~"calc(120%)"; height: ~"calc(120%)";
+      -webkit-animation: dispenserAurora 1.2s ease infinite;
+      animation: dispenserAurora 1.2s ease infinite;
+    }
+
+    .grid-item { border: 0; img { width: 100%; } &:first-child { border: 0; } }
+  }
+}

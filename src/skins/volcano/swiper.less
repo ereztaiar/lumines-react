@@ -1,0 +1,16 @@
+@import "Skins/common.less";
+
+#swiper {
+  position: absolute; bottom: 0; left: 0;
+  height: ((@grid-rows - @ready-board-grid-rows) * @grid-item-height) + 2px;
+  border-right: 2px solid #ff4500;
+  background: linear-gradient(90deg, rgba(255, 69, 0, 0) 0%, rgba(255, 69, 0, 0.35) 100%);
+  width: 0;
+
+  .deleted {
+    position: absolute; top: -25px; right: -2px; height: 25px; width: 50px;
+    border: 2px solid #ff4500; padding-right: 15px;
+    .score { color: #ff4500; text-align: right; }
+    #arrow { position: absolute; right: -15px; top: 50%; transform: translateY(-50%); }
+  }
+}

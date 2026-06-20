@@ -1,0 +1,98 @@
+/* Disco skin — score panels are mirror-tile mosaic surfaces: a repeating
+   diagonal facet texture (like a mirror-ball tile pattern), a diagonal glint
+   sweep crossing at a different angle than other skins' shine, and flickering
+   sparkle dots scattered across the facets. */
+
+@keyframes dscGlintSweep {
+  0%   { transform: translateX(-130%) translateY(-30%) rotate(35deg); opacity: 0; }
+  12%  { opacity: 0.8; }
+  35%  { opacity: 0; }
+  100% { transform: translateX(160%) translateY(30%) rotate(35deg); opacity: 0; }
+}
+
+@keyframes dscSparkleFlicker {
+  0%, 100% { opacity: 0.15; }
+  45%       { opacity: 1; }
+  55%       { opacity: 1; }
+  60%       { opacity: 0.15; }
+}
+
+#score {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 78%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  .data {
+    position: relative;
+    height: 18%;
+    border-radius: 6px;
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(45deg,
+        rgba(255, 255, 255, 0.10) 0px, rgba(255, 255, 255, 0.10) 6px,
+        rgba(255, 255, 255, 0.0) 6px, rgba(255, 255, 255, 0.0) 12px),
+      repeating-linear-gradient(-45deg,
+        rgba(0, 0, 0, 0.18) 0px, rgba(0, 0, 0, 0.18) 6px,
+        rgba(0, 0, 0, 0.0) 6px, rgba(0, 0, 0, 0.0) 12px),
+      linear-gradient(135deg, #d6249f 0%, #3a1a5c 100%);
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: -50%; left: 0;
+      width: 35%; height: 200%;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.65) 50%, rgba(255, 255, 255, 0) 100%);
+      animation: dscGlintSweep 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    &:after {
+      content: '✦';
+      position: absolute;
+      top: 10%; right: 10%;
+      font-size: 0.7rem;
+      color: #ffffff;
+      animation: dscSparkleFlicker 2.4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .title {
+      background: none;
+      padding: 8px 16px 0;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      opacity: 90%;
+      color: #ffd700;
+      position: relative;
+      z-index: 1;
+    }
+
+    .info {
+      text-align: right;
+      color: #ffffff;
+      font-size: 1.9rem;
+      padding: 0 16px 8px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 8px rgba(255, 43, 214, 0.6);
+    }
+
+    &:nth-child(2) { &:before { animation-delay: 0.7s; } &:after { animation-delay: 0.5s; } }
+    &:nth-child(3) {
+      height: 21%;
+      .info { font-size: 2.2rem; }
+      &:before { animation-delay: 1.4s; }
+      &:after { animation-delay: 1.0s; }
+    }
+    &:nth-child(4) { &:before { animation-delay: 2.1s; } &:after { animation-delay: 1.5s; } }
+    &:nth-child(5) { &:before { animation-delay: 2.8s; } &:after { animation-delay: 2.0s; } }
+  }
+}

@@ -1,0 +1,68 @@
+.background {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  transform: scale(1.5);
+
+  &:before, &:after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; content: ''; display: block; }
+
+  &:before {
+    background: linear-gradient(135deg, #5c2e0e 0%, #e2872d 50%, #5c2e0e 100%);
+    background-size: 400% 400%;
+    z-index: -20;
+
+    @keyframes BgMoveAutumn {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 51%; }
+      100% { background-position: 0% 50%; }
+    }
+    -webkit-animation: BgMoveAutumn 10s ease infinite;
+    animation: BgMoveAutumn 10s ease infinite;
+  }
+
+  &:after {
+    z-index: -10;
+    background: url('../../assets/images/scan-mask.png') repeat;
+    opacity: 0.3;
+  }
+}
+
+.scene {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+
+  svg { position: absolute; }
+}
+
+.glow {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.floatSlow {
+  @keyframes floatSlowAutumn { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  -webkit-animation: floatSlowAutumn 6s ease-in-out infinite;
+  animation: floatSlowAutumn 6s ease-in-out infinite;
+}
+
+.pulse {
+  @keyframes pulseAutumn { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  -webkit-animation: pulseAutumn 3.5s ease-in-out infinite;
+  animation: pulseAutumn 3.5s ease-in-out infinite;
+}
+
+/* Falling leaves — drift down with a gentle rotation, looping back to the top */
+.leafFall {
+  @keyframes leafFallAutumn {
+    0%   { transform: translateY(-10vh) rotate(0deg);   opacity: 0; }
+    10%  { opacity: 0.9; }
+    90%  { opacity: 0.9; }
+    100% { transform: translateY(110vh) rotate(340deg); opacity: 0; }
+  }
+  -webkit-animation: leafFallAutumn 11s linear infinite;
+  animation: leafFallAutumn 11s linear infinite;
+}
+
+.driftSlow {
+  @keyframes driftSlowAutumn { 0%,100%{transform:translate(0,0)} 50%{transform:translate(14px,10px)} }
+  -webkit-animation: driftSlowAutumn 9s ease-in-out infinite;
+  animation: driftSlowAutumn 9s ease-in-out infinite;
+}

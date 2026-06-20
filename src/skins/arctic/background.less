@@ -1,0 +1,68 @@
+.background {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  transform: scale(1.5);
+
+  &:before, &:after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; content: ''; display: block; }
+
+  &:before {
+    background: linear-gradient(135deg, #134e7a 0%, #4fc3e0 50%, #134e7a 100%);
+    background-size: 400% 400%;
+    z-index: -20;
+
+    @keyframes BgMoveArctic {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 51%; }
+      100% { background-position: 0% 50%; }
+    }
+    -webkit-animation: BgMoveArctic 10s ease infinite;
+    animation: BgMoveArctic 10s ease infinite;
+  }
+
+  &:after {
+    z-index: -10;
+    background: url('../../assets/images/scan-mask.png') repeat;
+    opacity: 0.3;
+  }
+}
+
+.scene {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+
+  svg { position: absolute; }
+}
+
+.glow {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.floatSlow {
+  @keyframes floatSlowArctic { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  -webkit-animation: floatSlowArctic 6s ease-in-out infinite;
+  animation: floatSlowArctic 6s ease-in-out infinite;
+}
+
+.pulse {
+  @keyframes pulseArctic { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  -webkit-animation: pulseArctic 3.5s ease-in-out infinite;
+  animation: pulseArctic 3.5s ease-in-out infinite;
+}
+
+.driftSlow {
+  @keyframes driftSlowArctic { 0%,100%{transform:translate(0,0)} 50%{transform:translate(10px,8px)} }
+  -webkit-animation: driftSlowArctic 9s ease-in-out infinite;
+  animation: driftSlowArctic 9s ease-in-out infinite;
+}
+
+/* Falling snowflakes — drift down and sway, looping back to the top */
+.snowFall {
+  @keyframes snowFallArctic {
+    0%   { transform: translateY(-10vh) translateX(0); opacity: 0; }
+    10%  { opacity: 0.9; }
+    90%  { opacity: 0.9; }
+    100% { transform: translateY(110vh) translateX(20px); opacity: 0; }
+  }
+  -webkit-animation: snowFallArctic 11s linear infinite;
+  animation: snowFallArctic 11s linear infinite;
+}

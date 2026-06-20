@@ -1,0 +1,90 @@
+/* Volcano skin — obsidian rock panels with glowing internal lava-crack veins.
+   Outline stays a simple rounded rectangle in dark basalt; the gimmick is the
+   crack of lava light running through it and embers drifting upward inside. */
+
+@keyframes volcCrackGlow {
+  0%, 100% { filter: brightness(1); box-shadow: 0 0 10px rgba(255, 69, 0, 0.4); }
+  50%       { filter: brightness(1.6); box-shadow: 0 0 22px rgba(255, 69, 0, 0.75); }
+}
+
+@keyframes volcEmberDrift {
+  0%   { transform: translateY(0); opacity: 0.9; }
+  100% { transform: translateY(-140%); opacity: 0; }
+}
+
+#score {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 78%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  .data {
+    position: relative;
+    height: 17%;
+    border-radius: 4px;
+    background: linear-gradient(160deg, #1a0a05 0%, #3a1208 60%, #1a0a05 100%);
+    overflow: hidden;
+    animation: volcCrackGlow 3.2s ease-in-out infinite;
+
+    /* glowing lava-crack vein running diagonally through the rock */
+    &:before {
+      content: '';
+      position: absolute;
+      top: 45%; left: -10%;
+      width: 120%; height: 3px;
+      background: linear-gradient(90deg, rgba(255, 69, 0, 0) 0%, #ff4500 40%, #ffae00 50%, #ff4500 60%, rgba(255, 69, 0, 0) 100%);
+      transform: rotate(-8deg);
+      box-shadow: 0 0 8px 2px rgba(255, 69, 0, 0.8);
+      pointer-events: none;
+    }
+
+    /* small embers rising inside the panel */
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 6%; right: 14%;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffae00 0%, rgba(255, 69, 0, 0) 70%);
+      animation: volcEmberDrift 2.4s ease-in infinite;
+      pointer-events: none;
+    }
+
+    .title {
+      background: none;
+      padding: 8px 18px 0;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      opacity: 90%;
+      color: #ffae00;
+      position: relative;
+      z-index: 1;
+    }
+
+    .info {
+      text-align: right;
+      color: #ffffff;
+      font-size: 1.9rem;
+      padding: 0 18px 8px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 8px rgba(255, 69, 0, 0.7);
+    }
+
+    &:nth-child(2) { animation-delay: 0.4s; &:before { transform: rotate(6deg); } }
+    &:nth-child(3) {
+      height: 21%;
+      animation-delay: 0.8s;
+      .info { font-size: 2.2rem; }
+      &:after { animation-delay: 0.9s; }
+    }
+    &:nth-child(4) { animation-delay: 1.2s; &:before { transform: rotate(-4deg); } }
+    &:nth-child(5) { animation-delay: 1.6s; &:after { animation-delay: 1.3s; } }
+  }
+}

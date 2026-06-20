@@ -1,0 +1,90 @@
+/* Arcade skin — score panels shaped like blocky 8-bit sprite tiles:
+   stepped pixel-cut corners (top-left and bottom-right), neon
+   green-to-magenta-to-cyan fill, scanline flicker, and a couple of
+   blinking pixel dots in the un-stepped corners. */
+
+@keyframes arcdFlicker {
+  0%, 92%, 100% { filter: brightness(1); }
+  94%            { filter: brightness(1.6); }
+  96%            { filter: brightness(0.85); }
+  98%            { filter: brightness(1.4); }
+}
+
+@keyframes arcdPixelBlink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75%       { opacity: 0; }
+}
+
+#score {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 78%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  .data {
+    position: relative;
+    height: 17%;
+    background: linear-gradient(120deg, #39ff14 0%, #ff00ff 55%, #00eaff 100%);
+    /* stepped pixel-cut corners — top-left and bottom-right */
+    clip-path: polygon(
+      0% 18%, 6% 18%, 6% 12%, 12% 12%, 12% 6%, 18% 6%, 18% 0%,
+      100% 0%, 100% 82%, 94% 82%, 94% 88%, 88% 88%, 88% 94%, 82% 94%, 82% 100%,
+      0% 100%
+    );
+    animation: arcdFlicker 4.4s steps(1) infinite;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 4px; right: 6px;
+      width: 6px; height: 6px;
+      background: #ffe600;
+      animation: arcdPixelBlink 1.2s steps(1) infinite;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 4px; left: 6px;
+      width: 6px; height: 6px;
+      background: #ffffff;
+      animation: arcdPixelBlink 1.6s steps(1) infinite;
+    }
+
+    .title {
+      background: none;
+      padding: 8px 18px 0;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      opacity: 90%;
+      color: #0a0014;
+      position: relative;
+      z-index: 1;
+    }
+
+    .info {
+      text-align: right;
+      color: #0a0014;
+      font-size: 1.9rem;
+      padding: 0 18px 8px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+    }
+
+    &:nth-child(2) { animation-delay: 0.4s; }
+    &:nth-child(3) {
+      height: 21%;
+      animation-delay: 0.8s;
+      .info { font-size: 2.2rem; }
+    }
+    &:nth-child(4) { animation-delay: 1.2s; }
+    &:nth-child(5) { animation-delay: 1.6s; }
+  }
+}

@@ -1,0 +1,126 @@
+@import "Skins/common.less";
+
+/* Palette: #d4af37 (treasure gold map) + #1f7a7a (sea teal anchor) on weathered wood bg */
+
+.board {
+  grid-column-start: 2; grid-row-start: 2; grid-row-end: 2;
+  align-self: start;
+  width: @center-width;
+  max-width: @grid-item-width-max * @grid-columns;
+  position: relative; margin: 0 auto; grid-area: grid;
+}
+
+.grid {
+  position: relative;
+
+  .row0, .row1 {
+    .gridItem { border: 0; background: none; &:first-child { border-left: 0; } }
+  }
+  .row1 { border-bottom: 1px solid rgba(212, 175, 55, 0.22); }
+
+  each(range(0, @grid-rows, 1), { .row@{value} { height: @grid-item-height; } });
+
+  .gridItem {
+    width: @grid-item-width; height: @grid-item-height;
+    max-width: @grid-item-width-max; max-height: @grid-item-height-max;
+    float: left; line-height: @grid-item-height; text-align: center;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.22); border-right: 1px solid rgba(212, 175, 55, 0.22);
+    position: relative; background: rgba(25, 15, 8, 0.50);
+    &:first-child { border-left: 1px solid rgba(212, 175, 55, 0.22); }
+
+    &:after  { width: 75%; height: 75%; display: block; position: absolute; top: 8%; left: 8%; }
+    &:before { width: 90%; height: 90%; display: block; content: ' '; position: absolute;
+               top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%); border-radius: 3px; }
+
+    &.ready {
+      &:before { border-radius: 0; width: 100%; height: 100%; }
+      &.large:after {
+        width: @grid-item-width*2; height: @grid-item-height*2;
+        position: absolute; top: ~"calc(-100% - 2px)"; left: -2px;
+        border: 2px solid #d4af37;
+      }
+    }
+
+    /* colorA — treasure gold map */
+    &.grey {
+      &:after  { content: ''; border-top: 1px solid #f0d98a; border-left: 1px solid #f0d98a; }
+      &:before { background: #d4af37; box-shadow: 0 0 18px 5px #d4af37, inset 0 0 12px rgba(212, 175, 55, 0.5);
+                 animation: pirBlockPulse 3.5s ease-in-out infinite; }
+    }
+
+    /* colorB — sea teal anchor */
+    &.orange {
+      &:after  { content: ''; border-top: 1px solid #6fd6d6; border-left: 1px solid #6fd6d6; }
+      &:before { background: #1f7a7a; box-shadow: 0 0 18px 5px #1f7a7a, inset 0 0 12px rgba(31, 122, 122, 0.4);
+                 animation: pirBlockPulse 3.5s ease-in-out infinite; }
+    }
+
+    /* placed colorA — bright treasure gold */
+    &.darkGrey {
+      border-bottom: 1px solid #a8872c; border-right: 1px solid #a8872c;
+      box-shadow: 0 0 8px 2px #a8872c;
+      &:after  { content: ''; border-top: 0; border-left: 0; }
+      &:before { background: #a8872c; border-radius: 0; width: 100%; height: 100%;
+                 left: 0; top: 0; transform: none; }
+    }
+
+    /* placed colorB — bright sea teal */
+    &.darkOrange {
+      border-bottom: 1px solid #155f5f; border-right: 1px solid #155f5f;
+      box-shadow: 0 0 8px 2px #155f5f;
+      &:after  { content: ''; border-top: 0; border-left: 0; }
+      &:before { background: #155f5f; border-radius: 0; width: 100%; height: 100%;
+                 left: 0; top: 0; transform: none; }
+    }
+
+    &.ghostBlock {
+      background: rgba(212, 175, 55, 0.05);
+      &:before { background: rgba(212, 175, 55, 0.08); border: 2px dashed rgba(31, 122, 122, 0.5); border-radius: 3px; }
+    }
+
+    &.markedForDeletion {
+      animation: pirDeletionPulse 0.6s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    &.beingRecursive {
+      animation: pirRecursivePulse 1.3s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    &.beingSwept {
+      animation: pirSweptFade 1.9s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    img { width: 100%; }
+  }
+}
+
+@keyframes pirBlockPulse {
+  0%, 100% { filter: brightness(1); }
+  50%       { filter: brightness(1.5); }
+}
+
+@keyframes pirDeletionPulse {
+  0%, 100% {
+    box-shadow: 0 0 14px 4px #d4af37, inset 0 0 10px #d4af37;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 0 32px 14px #d4af37, inset 0 0 22px #d4af37;
+    transform: scale(1.06);
+    filter: brightness(1.8);
+  }
+}
+
+@keyframes pirRecursivePulse {
+  0%, 100% { opacity: 0.5; filter: brightness(1); }
+  50%       { opacity: 0.78; filter: brightness(1.4); }
+}
+
+@keyframes pirSweptFade {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 0.15; }
+}

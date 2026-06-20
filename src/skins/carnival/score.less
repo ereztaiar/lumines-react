@@ -1,0 +1,89 @@
+/* Carnival skin — score panels shaped like big-top tent awning flaps:
+   wide triangular peaks along the top edge, red/gold vertical stripes,
+   with a small pennant flag accent flying from one corner. */
+
+@keyframes carnTentGlow {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 59, 59, 0.35), inset 0 0 12px rgba(255, 210, 63, 0.30); }
+  50%       { box-shadow: 0 0 20px rgba(255, 59, 59, 0.6), inset 0 0 18px rgba(255, 210, 63, 0.5); }
+}
+
+@keyframes carnPennantWave {
+  0%, 100% { transform: rotate(0deg); }
+  50%       { transform: rotate(10deg); }
+}
+
+#score {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 78%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  .data {
+    position: relative;
+    height: 18%;
+    margin-top: 10px;
+    clip-path: polygon(0% 22%, 12.5% 0%, 25% 22%, 37.5% 0%, 50% 22%, 62.5% 0%, 75% 22%, 87.5% 0%, 100% 22%, 100% 100%, 0% 100%);
+    background: repeating-linear-gradient(90deg, #ff3b3b 0%, #ff3b3b 12%, #ffd23f 12%, #ffd23f 24%);
+    animation: carnTentGlow 3.2s ease-in-out infinite;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: -14px; left: 6px;
+      width: 2px; height: 16px;
+      background: #ffffff;
+      transform-origin: bottom center;
+      animation: carnPennantWave 2s ease-in-out infinite;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: -14px; left: 8px;
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 5px 0 5px 10px;
+      border-color: transparent transparent transparent #2f6fed;
+      transform-origin: left center;
+      animation: carnPennantWave 2s ease-in-out infinite;
+    }
+
+    .title {
+      background: none;
+      padding: 16px 16px 0;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      opacity: 90%;
+      color: #1f2f6e;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+      position: relative;
+      z-index: 1;
+    }
+
+    .info {
+      text-align: right;
+      color: #1f2f6e;
+      font-size: 1.9rem;
+      padding: 0 16px 8px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    &:nth-child(2) { animation-delay: 0.4s; &:before, &:after { animation-delay: 0.5s; } }
+    &:nth-child(3) {
+      height: 22%;
+      animation-delay: 0.8s;
+      .info { font-size: 2.2rem; }
+      &:before, &:after { animation-delay: 1s; }
+    }
+    &:nth-child(4) { animation-delay: 1.2s; &:before, &:after { animation-delay: 1.5s; } }
+    &:nth-child(5) { animation-delay: 1.6s; &:before, &:after { animation-delay: 2s; } }
+  }
+}

@@ -1,0 +1,75 @@
+/* Desert skin — score panels shaped like rolling sand dunes:
+   broad smooth humps along the bottom edge, sand-to-sunset gradient,
+   a subtle heat-shimmer wobble, and a glowing sun dot in the corner. */
+
+@keyframes dsrtHeatWobble {
+  0%, 100% { transform: skewX(0deg); }
+  50%       { transform: skewX(0.6deg); }
+}
+
+@keyframes dsrtSunGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.2); }
+}
+
+#score {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 78%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  .data {
+    position: relative;
+    height: 18%;
+    background: linear-gradient(160deg, #ffb14d 0%, #e0a85c 55%, #7a3a14 100%);
+    clip-path: polygon(0% 0%, 100% 0%, 100% 78%, 70% 100%, 35% 82%, 0% 100%);
+    animation: dsrtHeatWobble 4s ease-in-out infinite;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 10%; right: 8%;
+      width: 0.5rem; height: 0.5rem;
+      border-radius: 50%;
+      background: #ffe9b0;
+      box-shadow: 0 0 8px 3px #ff7a3c;
+      animation: dsrtSunGlow 2.6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .title {
+      background: none;
+      padding: 6px 16px 0;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      opacity: 88%;
+      color: #3a2008;
+      position: relative;
+      z-index: 1;
+    }
+
+    .info {
+      text-align: right;
+      color: #2a1606;
+      font-size: 2rem;
+      padding: 0 16px 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    &:nth-child(2) { animation-delay: 0.4s; }
+    &:nth-child(3) {
+      height: 22%;
+      animation-delay: 0.8s;
+      .info { font-size: 2.3rem; }
+    }
+    &:nth-child(4) { animation-delay: 1.2s; }
+    &:nth-child(5) { animation-delay: 1.6s; }
+  }
+}

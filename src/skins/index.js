@@ -14,6 +14,21 @@ import * as halloween from 'Skins/halloween';
 import * as galaxy from 'Skins/galaxy';
 import * as time from 'Skins/time';
 import * as notes from 'Skins/notes';
+import * as bubblegum from 'Skins/bubblegum';
+import * as disco from 'Skins/disco';
+import * as volcano from 'Skins/volcano';
+import * as arctic from 'Skins/arctic';
+import * as carnival from 'Skins/carnival';
+import * as desert from 'Skins/desert';
+import * as rainbow from 'Skins/rainbow';
+import * as arcade from 'Skins/arcade';
+import * as safari from 'Skins/safari';
+import * as fireworks from 'Skins/fireworks';
+import * as coralReef from 'Skins/coral-reef';
+import * as autumn from 'Skins/autumn';
+import * as honeycomb from 'Skins/honeycomb';
+import * as pirate from 'Skins/pirate';
+import * as aurora from 'Skins/aurora';
 
 const SKINS = [
     { id: 'default', label: 'DEFAULT', module: defaultSkin },
@@ -32,6 +47,21 @@ const SKINS = [
     { id: 'galaxy', label: 'GALAXY', module: galaxy },
     { id: 'time', label: 'TIME', module: time },
     { id: 'notes', label: 'NOTES', module: notes },
+    { id: 'bubblegum', label: 'BUBBLEGUM', module: bubblegum },
+    { id: 'disco', label: 'DISCO', module: disco },
+    { id: 'volcano', label: 'VOLCANO', module: volcano },
+    { id: 'arctic', label: 'ARCTIC', module: arctic },
+    { id: 'carnival', label: 'CARNIVAL', module: carnival },
+    { id: 'desert', label: 'DESERT', module: desert },
+    { id: 'rainbow', label: 'RAINBOW', module: rainbow },
+    { id: 'arcade', label: 'ARCADE', module: arcade },
+    { id: 'safari', label: 'SAFARI', module: safari },
+    { id: 'fireworks', label: 'FIREWORKS', module: fireworks },
+    { id: 'coral-reef', label: 'CORAL REEF', module: coralReef },
+    { id: 'autumn', label: 'AUTUMN', module: autumn },
+    { id: 'honeycomb', label: 'HONEYCOMB', module: honeycomb },
+    { id: 'pirate', label: 'PIRATE', module: pirate },
+    { id: 'aurora', label: 'AURORA', module: aurora },
 ];
 
 const SKIN_IDS = SKINS.map((skin) => skin.id);

@@ -1,0 +1,62 @@
+.background {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  transform: scale(1.5);
+
+  &:before, &:after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; content: ''; display: block; }
+
+  &:before {
+    background: linear-gradient(135deg, #105a6b 0%, #ff8a75 50%, #105a6b 100%);
+    background-size: 400% 400%;
+    z-index: -20;
+
+    @keyframes BgMoveCoralReef {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 51%; }
+      100% { background-position: 0% 50%; }
+    }
+    -webkit-animation: BgMoveCoralReef 10s ease infinite;
+    animation: BgMoveCoralReef 10s ease infinite;
+  }
+
+  &:after {
+    z-index: -10;
+    background: url('../../assets/images/scan-mask.png') repeat;
+    opacity: 0.3;
+  }
+}
+
+.scene {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+
+  svg { position: absolute; }
+}
+
+.glow {
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.floatSlow {
+  @keyframes floatSlowCoralReef { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  -webkit-animation: floatSlowCoralReef 6s ease-in-out infinite;
+  animation: floatSlowCoralReef 6s ease-in-out infinite;
+}
+
+.pulse {
+  @keyframes pulseCoralReef { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  -webkit-animation: pulseCoralReef 3.5s ease-in-out infinite;
+  animation: pulseCoralReef 3.5s ease-in-out infinite;
+}
+
+.driftSlow {
+  @keyframes driftSlowCoralReef { 0%,100%{transform:translateX(0)} 50%{transform:translateX(22px)} }
+  -webkit-animation: driftSlowCoralReef 9s ease-in-out infinite;
+  animation: driftSlowCoralReef 9s ease-in-out infinite;
+}
+
+.riseUp {
+  @keyframes riseUpCoralReef { 0%{transform:translateY(0); opacity:0.7} 100%{transform:translateY(-100vh); opacity:0} }
+  -webkit-animation: riseUpCoralReef 11s linear infinite;
+  animation: riseUpCoralReef 11s linear infinite;
+}

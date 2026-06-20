@@ -1,0 +1,92 @@
+/* Autumn skin — score panels shaped like a single maple leaf:
+   five pointed lobes, a stem notch at the bottom, thin veins radiating
+   from center, and a gentle pivoting sway as if hanging from a stem. */
+
+@keyframes autLeafSway {
+  0%, 100% { transform: rotate(-2deg); }
+  50%       { transform: rotate(2deg); }
+}
+
+@keyframes autLeafGlow {
+  0%, 100% { box-shadow: 0 0 10px rgba(226, 87, 45, 0.35), inset 0 0 12px rgba(217, 165, 33, 0.30); }
+  50%       { box-shadow: 0 0 20px rgba(226, 87, 45, 0.6), inset 0 0 18px rgba(217, 165, 33, 0.5); }
+}
+
+#score {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  .data {
+    position: relative;
+    height: 18%;
+    background: linear-gradient(160deg, #e2872d 0%, #e2572d 55%, #5c2e0e 100%);
+    clip-path: polygon(
+      50% 0%, 62% 14%, 80% 8%, 78% 26%, 96% 30%, 86% 46%,
+      100% 58%, 82% 62%, 84% 80%, 66% 72%, 58% 92%, 50% 80%,
+      42% 92%, 34% 72%, 16% 80%, 18% 62%, 0% 58%, 14% 46%,
+      4% 30%, 22% 26%, 20% 8%, 38% 14%
+    );
+    transform-origin: top center;
+    animation: autLeafSway 4s ease-in-out infinite, autLeafGlow 3.6s ease-in-out infinite;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 6%; left: 50%;
+      width: 1px; height: 88%;
+      background: rgba(92, 46, 14, 0.55);
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 70%; height: 1px;
+      background: rgba(92, 46, 14, 0.4);
+      transform: translate(-50%, -50%) rotate(35deg);
+      pointer-events: none;
+      box-shadow: 0 18px 0 -17.6px rgba(92, 46, 14, 0.4), 0 -18px 0 -17.6px rgba(92, 46, 14, 0.4);
+    }
+
+    .title {
+      background: none;
+      padding: 10px 14px 0;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      opacity: 90%;
+      color: #fff3d6;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .info {
+      text-align: center;
+      color: #fff3d6;
+      font-size: 1.7rem;
+      padding: 2px 14px 10px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+    }
+
+    &:nth-child(2) { animation-delay: 0.3s, 0.5s; }
+    &:nth-child(3) {
+      height: 22%;
+      animation-delay: 0.6s, 1s;
+      .info { font-size: 2rem; }
+    }
+    &:nth-child(4) { animation-delay: 0.9s, 1.5s; }
+    &:nth-child(5) { animation-delay: 1.2s, 2s; }
+  }
+}

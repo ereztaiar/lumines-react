@@ -1,0 +1,85 @@
+/* Coral-reef skin — score panels edged with small irregular coral-polyp
+   bumps (a zigzag clip-path of many uneven triangular peaks along the
+   top), filled with a teal-to-coral gradient, with tiny bubbles rising
+   inside each panel. */
+
+@keyframes crlReefGlow {
+  0%, 100% { box-shadow: 0 0 10px rgba(31, 194, 194, 0.35), inset 0 0 12px rgba(255, 111, 97, 0.3); }
+  50%       { box-shadow: 0 0 20px rgba(31, 194, 194, 0.6), inset 0 0 18px rgba(255, 111, 97, 0.5); }
+}
+
+@keyframes crlBubbleRise {
+  0%   { transform: translateY(0); opacity: 0; }
+  15%  { opacity: 0.8; }
+  85%  { opacity: 0.4; }
+  100% { transform: translateY(-180%); opacity: 0; }
+}
+
+#score {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 78%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  .data {
+    position: relative;
+    height: 18%;
+    background: linear-gradient(160deg, #1fc2c2 0%, #105a6b 55%, #ff6f61 100%);
+    clip-path: polygon(
+      0% 18%, 4% 6%, 8% 16%, 13% 4%, 18% 18%, 24% 2%, 30% 16%,
+      36% 8%, 42% 18%, 48% 4%, 54% 16%, 60% 6%, 66% 18%,
+      72% 2%, 78% 14%, 84% 6%, 90% 18%, 96% 4%, 100% 16%,
+      100% 100%, 0% 100%
+    );
+    overflow: hidden;
+    animation: crlReefGlow 3.6s ease-in-out infinite;
+
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      bottom: 8%;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.65);
+      animation: crlBubbleRise 4s ease-in infinite;
+    }
+    &:before { left: 20%; animation-delay: 0.4s; }
+    &:after  { left: 55%; width: 4px; height: 4px; animation-delay: 1.8s; }
+
+    .title {
+      background: none;
+      padding: 14px 16px 0;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      opacity: 90%;
+      color: #e8fffc;
+      position: relative;
+      z-index: 1;
+    }
+
+    .info {
+      text-align: right;
+      color: #ffffff;
+      font-size: 1.9rem;
+      padding: 0 16px 6px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 8px rgba(31, 194, 194, 0.7);
+    }
+
+    &:nth-child(2) { animation-delay: 0.3s; }
+    &:nth-child(3) {
+      height: 22%;
+      animation-delay: 0.6s;
+      .info { font-size: 2.2rem; }
+    }
+    &:nth-child(4) { animation-delay: 0.9s; }
+    &:nth-child(5) { animation-delay: 1.2s; }
+  }
+}

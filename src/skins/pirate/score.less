@@ -1,0 +1,82 @@
+/* Pirate skin — score panels are weathered ship-deck planks:
+   a single plank-seam line, a thick dashed rope-stitch border,
+   brass rivet studs at the corners, and a slow ship-deck "creak". */
+
+@keyframes pirCreak {
+  0%, 100% { transform: rotate(-1.2deg); }
+  50%       { transform: rotate(1.2deg); }
+}
+
+@keyframes pirStudGleam {
+  0%, 100% { box-shadow: 0 0 6px rgba(212, 175, 55, 0.25); }
+  50%       { box-shadow: 0 0 14px rgba(212, 175, 55, 0.55); }
+}
+
+#score {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  align-self: stretch;
+  border-left: none;
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  .data {
+    position: relative;
+    height: 17%;
+    /* brass rivet studs at the four corners, baked in as background layers, plus the plank gradient */
+    background:
+      radial-gradient(circle 4px at 10px 9px, #f0d98a 95%, transparent 100%),
+      radial-gradient(circle 4px at ~"calc(100% - 10px)" 9px, #f0d98a 95%, transparent 100%),
+      radial-gradient(circle 4px at 10px ~"calc(100% - 9px)", #f0d98a 95%, transparent 100%),
+      radial-gradient(circle 4px at ~"calc(100% - 10px)" ~"calc(100% - 9px)", #f0d98a 95%, transparent 100%),
+      linear-gradient(160deg, #5a3a1c 0%, #3a2412 100%);
+    border: 3px dashed #8b5a2b;
+    border-radius: 3px;
+    animation: pirCreak 4s ease-in-out infinite, pirStudGleam 2.6s ease-in-out infinite;
+    transform-origin: center;
+
+    /* single plank-seam line */
+    &:before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 4%;
+      width: 92%; height: 2px;
+      background: rgba(0, 0, 0, 0.35);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .title {
+      background: none;
+      padding: 8px 18px 0;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      opacity: 90%;
+      color: #d4af37;
+      position: relative;
+      z-index: 1;
+    }
+
+    .info {
+      text-align: right;
+      color: #f0d98a;
+      font-size: 2rem;
+      padding: 0 18px 8px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 6px rgba(31, 122, 122, 0.6);
+    }
+
+    &:nth-child(2) { animation-delay: 0.4s; }
+    &:nth-child(3) {
+      height: 21%;
+      animation-delay: 0.8s;
+      .info { font-size: 2.3rem; }
+    }
+    &:nth-child(4) { animation-delay: 1.2s; }
+    &:nth-child(5) { animation-delay: 1.6s; }
+  }
+}
