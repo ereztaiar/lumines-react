@@ -1,22 +1,13 @@
 import React, { useState, createContext, useContext, useEffect, useReducer } from 'react';
 import Gamepad from 'react-gamepad'
+import { BUTTON_TO_KEY, axisTransitions } from './gamepadMapping';
 
 const KeysContext = createContext({});
 const { Provider: KeysProvider } = KeysContext;
 
 const keyReducer = (state, action) => {
     const { key, which } = action;
-
-    switch (which) {
-        case 'Start': {
-            return { key: ' ', which: null }
-        }
-        default: {
-            return { key, which };
-        }
-
-    }
-
+    return { key, which };
 }
 
 const Keys = props => {
@@ -48,32 +39,39 @@ const Keys = props => {
         }
     }, []);
 
-    // Gamepad handler placeholders — wired to <Gamepad> props for future controller support
-    const connectHandler = (gamepadIndex) => {}
-    const disconnectHandler = (gamepadIndex) => {}
-    const buttonChangeHandler = (buttonName, down) => {}
+    // Gamepad buttons/sticks are dispatched as real keyboard events so they
+    // flow through the same window keydown/keyup listeners as physical key
+    // presses — both this context and useKey (used directly by the game
+    // loop) pick them up for free, with no separate gamepad-handling path.
+    const dispatchKeyEvent = (type, key) => {
+        window.dispatchEvent(new KeyboardEvent(type, { key, bubbles: true }));
+    };
 
     const buttonDownHandler = (buttonName) => {
-        dispatch({ key: buttonName, which: buttonName })
-    }
+        const key = BUTTON_TO_KEY[buttonName];
+        if (key) {
+            dispatchKeyEvent('keydown', key);
+        }
+    };
 
     const buttonUpHandler = (buttonName) => {
-        dispatch({ key: null, which: null })
-    }
+        const key = BUTTON_TO_KEY[buttonName];
+        if (key) {
+            dispatchKeyEvent('keyup', key);
+        }
+    };
 
-    const axisChangeHandler = (axisName, value, previousValue) => {}
+    const axisChangeHandler = (axisName, value, previousValue) => {
+        axisTransitions(axisName, value, previousValue).forEach(({ type, key }) => {
+            dispatchKeyEvent(type, key);
+        });
+    };
 
     return (
         <Gamepad
-            onConnect={connectHandler}
-            onDisconnect={disconnectHandler}
-
-            onButtonChange={buttonChangeHandler}
             onButtonDown={buttonDownHandler}
             onButtonUp={buttonUpHandler}
-
             onAxisChange={axisChangeHandler}
-
         >
             <KeysProvider value={value}>{children}</KeysProvider>
         </Gamepad>

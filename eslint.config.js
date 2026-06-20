@@ -18,6 +18,7 @@ const browserGlobals = {
     URL: 'readonly',
     localStorage: 'readonly',
     navigator: 'readonly',
+    KeyboardEvent: 'readonly',
 };
 
 const jestGlobals = {
