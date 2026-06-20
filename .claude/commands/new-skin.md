@@ -545,20 +545,17 @@ Run it immediately after completing Step 3 (all files created), before registeri
 
 ## Step 5 — Register the skin
 
-Edit **`src/skins/index.js`** (the single source of truth for all skins):
+Edit **`src/skins/index.js`** (the single source of truth for all skins). It holds metadata only — no eager import — since `loadSkinModule(id)` dynamically imports each skin's folder on demand:
 
 ```js
-// 1. Add import at top:
-import * as <camelName> from 'Skins/<name>';
-
-// 2. Add entry to SKINS array:
+// Add an entry to the SKINS array (metadata only, no module/import):
 const SKINS = [
     /* existing entries... */
-    { id: '<name>', label: '<DISPLAY LABEL>', module: <camelName> },
+    { id: '<name>', label: '<DISPLAY LABEL>' },
 ];
 ```
 
-Do **not** edit `packages/@lumines/core/src/hooks/useSkin.js` — it reads from the registry at `src/skins/index.js` and does not maintain its own list.
+Do **not** edit `packages/@lumines/core/src/hooks/useSkin.js` — it reads from the registry at `src/skins/index.js` and does not maintain its own list. It loads the active skin's module via `loadSkinModule(currentSkinId)` (a `import(\`Skins/${id}\`)` call), so a new skin folder under `src/skins/<name>/` is automatically reachable once its `id` is added to `SKINS` — no per-skin import wiring needed.
 
 ---
 

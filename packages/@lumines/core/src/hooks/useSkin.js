@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {SKINS_BY_ID, SKIN_IDS} from 'Skins/index';
+import {SKIN_IDS, loadSkinModule} from 'Skins/index';
 import {getSkinSettings, normalizeSettings} from 'Util/skinSettings';
 import {getUnlockedSkinIds, unlockSkin} from 'Util/skinUnlocks';
 import {buildPlaylist, advanceIndex, advanceIndexBy} from './skinRotation';
@@ -21,7 +21,9 @@ const useSkin = props => {
     const [playlistIndex, setPlaylistIndex] = useState(0);
 
     const currentSkinId = playlist[playlistIndex % playlist.length];
-    const skin = SKINS_BY_ID[currentSkinId].module;
+    // null until the current skin's chunk resolves — caller renders a
+    // lightweight placeholder for that one async gap (see Game.jsx).
+    const [skin, setSkin] = useState(null);
 
     useKey((key, repeat, code) => {
         if (code === 'KeyS') {
@@ -30,8 +32,25 @@ const useSkin = props => {
     });
 
     useEffect(() => {
+        let isCurrent = true;
+        loadSkinModule(currentSkinId).then((module) => {
+            if (isCurrent) setSkin(module);
+        });
         unlockSkin(currentSkinId);
+        return () => {
+            isCurrent = false;
+        };
     }, [currentSkinId]);
+
+    // Prefetch the next skin in the rotation while the current one is active,
+    // so advancing (on 's' or a score stage) rarely blocks on a chunk fetch.
+    useEffect(() => {
+        const nextIndex = advanceIndex(mode, playlistIndex, playlist.length);
+        const nextSkinId = playlist[nextIndex % playlist.length];
+        if (nextSkinId !== currentSkinId) {
+            loadSkinModule(nextSkinId);
+        }
+    }, [currentSkinId, mode, playlist, playlistIndex]);
 
     // score jumps by the clear size, so it rarely equals a multiple of 100 —
     // advance one skin per 100-point stage boundary crossed instead

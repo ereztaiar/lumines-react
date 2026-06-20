@@ -28,31 +28,35 @@ const Game = (props) => {
   const [score, addOne, multiplier, highScore, deletedBlocks, deleted, resetScore, level, allClearBonus] =
     useScore(mode);
 
-  const {
-    skin,
-    skin: {
-      BackgroundComponent,
-      dispenser: dispenserStyle,
-      grid: gridStyle,
-      score: scoreStyle,
-      character: characterStyle,
-      swiper: swiperStyle,
-      reflection: reflectionStyle,
-      paths,
-    },
-    currentSkinId,
-  } = useSkin({ score });
+  const { skin, currentSkinId } = useSkin({ score });
 
   const speed = getTickSpeed(skin);
 
   useEffect(() => {
-    if (!muted && skin.sounds && skin.sounds.theme) {
+    if (!muted && skin?.sounds && skin.sounds.theme) {
       audioEngine.startTheme(skin.sounds.theme);
     } else {
       audioEngine.stopTheme();
     }
     return () => audioEngine.stopTheme();
-  }, [currentSkinId, muted, skin.sounds]);
+  }, [currentSkinId, muted, skin?.sounds]);
+
+  // skin's chunk is still loading — render nothing rather than destructuring
+  // a module that doesn't exist yet.
+  if (!skin) {
+    return <div className={Classes.root} />;
+  }
+
+  const {
+    BackgroundComponent,
+    dispenser: dispenserStyle,
+    grid: gridStyle,
+    score: scoreStyle,
+    character: characterStyle,
+    swiper: swiperStyle,
+    reflection: reflectionStyle,
+    paths,
+  } = skin;
 
   return (
     <div className={Classes.root}>
