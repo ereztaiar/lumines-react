@@ -118,6 +118,11 @@ const useGameLoop = (props) => {
       cube.setDropCount((prev) => prev + 1);
     }
     return () => { /* placeholder for future cleanup */ };
+    // cube is recreated every render of useCubeState; setDropCount always
+    // writes through dropCountRef regardless of which render's closure called
+    // it, so depending on the live `cube` object here would only make this
+    // effect re-run on every render without changing its behavior.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tick]);
 
   return { tick, currentDeleted, chainCount };

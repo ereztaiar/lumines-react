@@ -108,6 +108,11 @@ const useCubeState = (props) => {
       setNewCube(CUBE_STATES.WAITING);
     }
     return () => { /* placeholder for future cleanup */ };
+    // gridRef is a stable ref and setIsGameOver is a stable useState setter;
+    // setGrid is recreated every GameView render, so adding it here would make
+    // this effect re-run every render instead of only on newCube transitions.
+    // The grid mutated above is always read fresh via gridRef.current.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newCube]);
 
   useEffect(() => {
