@@ -55,7 +55,9 @@ const useGameKeys = (props) => {
           default:
             break;
         }
-        setGrid([...updatedGrid]);
+        if (typeof updatedGrid !== "undefined") {
+          setGrid([...updatedGrid]);
+        }
         if (typeof dest !== "undefined") {
           cube.setCurrentCube({ ...dest });
         }
@@ -86,7 +88,9 @@ const useGameKeys = (props) => {
           default:
             break;
         }
-        setGrid([...updatedGrid]);
+        if (typeof updatedGrid !== "undefined") {
+          setGrid([...updatedGrid]);
+        }
         if (typeof dest !== "undefined") {
           cube.setCurrentCube({ ...dest });
         }
