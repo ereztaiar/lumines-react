@@ -1,0 +1,45 @@
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.tab {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.activeTab {
+  color: #ffd700;
+  border-color: #ffd700;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: white;
+  font-size: 0.85rem;
+
+  th {
+    text-align: left;
+    padding: 4px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    color: #ffd700;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  td {
+    padding: 3px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
