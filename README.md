@@ -3,7 +3,7 @@
 A browser remake of the puzzle game **Lumines**, built with React 17 and Webpack 5.
 Blocks fall in 2×2 cubes; line up same-colored 2×2 squares and a sweeper clears them
 left-to-right in time with the music. Includes multiple skins, Arcade and Time Attack
-modes, and a local leaderboard.
+modes, gamepad support, and a local leaderboard.
 
 ## Tech stack
 
@@ -28,6 +28,8 @@ yarn watch        # dev server with hot reload at http://localhost:8080
 | `yarn watch` | webpack-dev-server, hot reload, history fallback |
 | `yarn build` | production build to `dist/` |
 | `yarn test` | run the Jest test suite |
+| `yarn lint` | ESLint over `src` and `packages` |
+| `yarn format` | Prettier, rewrites `src` and `packages` in place |
 | `yarn storybook` | Storybook on port 6006 |
 
 ## Running with Docker
@@ -86,6 +88,10 @@ types, skin system).
 | ↓ | Hard drop |
 | `p` / Esc | Pause |
 | `s` | Advance to the next skin |
+
+A standard W3C gamepad (Xbox, PS4, Steam Deck in gamepad mode, etc.) also works —
+the left stick and buttons are bridged to the same keyboard events. See the
+CONTROLS panel in the menu for the full keyboard/gamepad mapping.
 
 ## Assets
 
