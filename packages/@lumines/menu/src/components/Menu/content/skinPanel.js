@@ -89,6 +89,9 @@ const skinPanelReducer = (state, action) => {
         case 'focus_skin': {
             return { ...state, row: ROW_SKINS, skinFocusIndex: action.index };
         }
+        case 'unlock_all': {
+            return { ...state, unlockedIds: skinIds };
+        }
         default: {
             return state;
         }

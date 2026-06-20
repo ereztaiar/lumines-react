@@ -143,6 +143,14 @@ describe('skinPanel', () => {
         });
     });
 
+    describe('unlock_all', () => {
+        it('unlocks every registered skin id', () => {
+            const state = makeState({}, { unlockedIds: ['default'] });
+            const result = skinPanelReducer(state, { type: 'unlock_all' });
+            expect(result.unlockedIds).toEqual(SKIN_IDS);
+        });
+    });
+
     describe('unknown actions', () => {
         it('returns the same state', () => {
             const state = makeState();

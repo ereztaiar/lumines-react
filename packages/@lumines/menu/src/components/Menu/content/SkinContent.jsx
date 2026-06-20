@@ -3,7 +3,7 @@ import { FaListOl, FaImage, FaRandom, FaLock, FaCheck } from "react-icons/fa";
 import { useKeys, KEYS } from "@lumines/core";
 import { SKINS, SKIN_IDS } from "Skins/index";
 import { getSkinSettings, normalizeSettings, saveSkinSettings } from "Util/skinSettings";
-import { getUnlockedSkinIds } from "Util/skinUnlocks";
+import { getUnlockedSkinIds, unlockAllSkins } from "Util/skinUnlocks";
 import { MODES, ROW_MODES, ROW_SKINS, initPanelState, skinPanelReducer, settingsForStorage } from "@lumines/menu/src/components/Menu/content/skinPanel";
 import skinStyle from "@lumines/menu/src/styles/skin.less";
 
@@ -18,6 +18,8 @@ const MODE_HINTS = {
     single: 'Pick one skin and stick with it.',
     shuffle: 'Rotate randomly through the skins you check below.',
 };
+
+const CHEAT_CODE = 'skinme';
 
 const initState = () => {
     const unlockedIds = getUnlockedSkinIds();
@@ -37,6 +39,8 @@ const SkinContent = (props) => {
     const firstRunRef = useRef(true);
     // don't write storage just for opening the panel
     const firstSaveRef = useRef(true);
+    // rolling buffer of recently typed letters, checked against the cheat code
+    const cheatBufferRef = useRef('');
 
     useEffect(() => {
         if (firstRunRef.current) {
@@ -62,6 +66,13 @@ const SkinContent = (props) => {
                 dispatch({ type: 'activate' });
                 break;
             default:
+                if (key && key.length === 1) {
+                    cheatBufferRef.current = (cheatBufferRef.current + key.toLowerCase()).slice(-CHEAT_CODE.length);
+                    if (cheatBufferRef.current === CHEAT_CODE) {
+                        unlockAllSkins(SKIN_IDS);
+                        dispatch({ type: 'unlock_all' });
+                    }
+                }
                 break;
         }
     }, [key]);

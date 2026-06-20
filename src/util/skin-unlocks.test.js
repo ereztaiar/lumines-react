@@ -1,4 +1,4 @@
-const { getUnlockedSkinIds, unlockSkin, isUnlocked } = require('./skinUnlocks');
+const { getUnlockedSkinIds, unlockSkin, isUnlocked, unlockAllSkins } = require('./skinUnlocks');
 
 const fakeStorage = (initial = {}) => {
     const data = { ...initial };
@@ -61,6 +61,28 @@ describe('skinUnlocks', () => {
             unlockSkin('purple', storage);
             unlockSkin('yellow', storage);
             expect(getUnlockedSkinIds(storage)).toEqual(['default', 'purple', 'yellow']);
+        });
+    });
+
+    describe('unlockAllSkins', () => {
+        it('unlocks every id passed in and persists the result', () => {
+            const storage = fakeStorage();
+            const result = unlockAllSkins(['default', 'purple', 'yellow'], storage);
+            expect(result).toEqual(['default', 'purple', 'yellow']);
+            expect(JSON.parse(storage.data.skinUnlocks)).toEqual(['default', 'purple', 'yellow']);
+        });
+
+        it('merges with already-unlocked ids instead of overwriting them', () => {
+            const storage = fakeStorage({ skinUnlocks: JSON.stringify(['sakura']) });
+            const result = unlockAllSkins(['default', 'purple'], storage);
+            expect(result).toEqual(['default', 'sakura', 'purple']);
+        });
+
+        it('is idempotent when called again with the same ids', () => {
+            const storage = fakeStorage();
+            unlockAllSkins(['default', 'purple'], storage);
+            const result = unlockAllSkins(['default', 'purple'], storage);
+            expect(result).toEqual(['default', 'purple']);
         });
     });
 

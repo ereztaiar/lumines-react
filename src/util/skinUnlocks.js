@@ -31,4 +31,16 @@ const unlockSkin = (id, storage = defaultStorage()) => {
 
 const isUnlocked = (id, storage = defaultStorage()) => getUnlockedSkinIds(storage).includes(id);
 
-export { getUnlockedSkinIds, unlockSkin, isUnlocked };
+const unlockAllSkins = (skinIds, storage = defaultStorage()) => {
+    const unlocked = new Set(getUnlockedSkinIds(storage));
+    skinIds.forEach((id) => unlocked.add(id));
+    const result = [...unlocked];
+    try {
+        if (storage) storage.setItem(STORAGE_KEY, JSON.stringify(result));
+    } catch {
+        // localStorage read/write failure is best-effort — silently ignore
+    }
+    return result;
+};
+
+export { getUnlockedSkinIds, unlockSkin, isUnlocked, unlockAllSkins };
