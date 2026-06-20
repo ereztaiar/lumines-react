@@ -23,7 +23,7 @@ const GameView = (props) => {
   const sounds = useGameSounds(skinSounds, muted);
   const cube = useCubeState({ gridRef, setGrid, setIsGameOver });
   const { tick, currentDeleted, chainCount } = useGameLoop({ gridRef, setGrid, pause, isGameOver, cube, speed, scoring: { deletedBlocks, multiplier, allClearBonus }, sounds });
-  useGameKeys({ gridRef, setGrid, cube, pause, togglePause, sounds });
+  useGameKeys({ gridRef, setGrid, cube, pause, togglePause, sounds, speed });
   const timeRemaining = useCountdown({ mode, pause, isGameOver, tick, onTimeUp: () => setIsGameOver(true) });
 
   return (
