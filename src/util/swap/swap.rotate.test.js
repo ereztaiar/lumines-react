@@ -1,5 +1,5 @@
 import "babel-polyfill";
-import { rotate, errors } from './index.js';
+import { rotate } from './index.js';
 import { g, s } from '../grid-test-helpers.js';
 
 

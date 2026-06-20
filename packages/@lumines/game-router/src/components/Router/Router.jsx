@@ -1,14 +1,12 @@
-import React, { lazy, Suspense, useEffect, useReducer } from 'react';
+import React, { lazy, Suspense } from 'react';
 import Splash from "@lumines/splash";
-import { default as RouterProvider, useRouter } from "@lumines/game-router/src/context/routerContext";
+import { useRouter } from "@lumines/game-router/src/context/routerContext";
 
 const Menu = lazy(() => import("@lumines/menu"));
 const Game = lazy(() => import("@lumines/game-components/src/components/Game/Game"));
 
 
-const Router = props => {
-
-    const { children } = props;
+const Router = () => {
 
     const { state } = useRouter();
 

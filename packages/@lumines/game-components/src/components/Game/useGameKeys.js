@@ -1,6 +1,5 @@
 import useKey from "@lumines/core/src/hooks/useKey";
 import { KEYS } from "@lumines/core";
-import { CUBE_STATES } from "@lumines/game-components/src/components/Dispenser";
 import * as swap from "Util/swap";
 import { nop } from "./nop";
 

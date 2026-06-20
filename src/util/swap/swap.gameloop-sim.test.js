@@ -6,7 +6,7 @@ import {
     commitColumnAsSweeping,
     clearAllSweptCells,
 } from '../clear-blocks';
-import { g, s } from '../grid-test-helpers.js';
+import { g } from '../grid-test-helpers.js';
 
 
 // One iteration of useGameLoop's tick % 10 === 0 branch.

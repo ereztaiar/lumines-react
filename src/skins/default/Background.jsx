@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 // import Parallax from 'parallax-js';
 
 import {background as BackgroundStyle} from "Skins/default";

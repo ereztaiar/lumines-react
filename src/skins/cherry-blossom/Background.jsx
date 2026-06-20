@@ -37,15 +37,6 @@ const blossoms = [
     {x: 900,  y: 330, s: 0.4,  r: -45, c: "#FF85B8", c2: "#E866A8"},
 ];
 
-const driftingPetals = [
-    {x: 380,  y: 120, cls: "petalDrift",  delay: 0},
-    {x: 520,  y: 80,  cls: "petalDrift2", delay: 0},
-    {x: 660,  y: 100, cls: "petalDrift3", delay: 0},
-    {x: 180,  y: 160, cls: "petalDrift2", delay: 0},
-    {x: 1020, y: 130, cls: "petalDrift",  delay: 0},
-    {x: 750,  y: 90,  cls: "petalDrift3", delay: 0},
-];
-
 const Blossom = ({x, y, s, r, c, c2}) => (
     <g transform={`translate(${x}, ${y}) scale(${s}) rotate(${r})`}>
         <ellipse cx="0" cy="-9" rx="5" ry="9" fill={c} opacity="0.92"/>

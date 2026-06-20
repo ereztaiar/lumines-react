@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import useTimer from "@lumines/core/src/hooks/useTimer";
-import useScore from "@lumines/game-components/src/hooks/useScore";
 
 
 const Score = props => {
