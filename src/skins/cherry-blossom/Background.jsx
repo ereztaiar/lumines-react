@@ -1,6 +1,11 @@
 import React from 'react';
 import {background as BackgroundStyle} from "Skins/cherry-blossom";
 
+/* Unlike most skins this background is NOT scaled 1.5x — the SVG scene is
+   composed for the full 1200x700 viewBox (framing trees at both edges), so
+   the whole composition must stay visible. Only the topmost ~25px of the
+   viewBox is sliced off on 16:9 screens (bottom-anchored slice). */
+
 const blossoms = [
     // Left tree cluster
     {x: 55,   y: 195, s: 1.1,  r: 15,  c: "#FF85B8", c2: "#E866A8"},
@@ -53,6 +58,29 @@ const Blossom = ({x, y, s, r, c, c2}) => (
         <circle cx="0" cy="0" r="1.8" fill="#FF9FCC"/>
     </g>
 );
+
+// full-height falling petals: [left %, size px, duration s, delay s]
+const petals = [
+    ['4%',  12, 10,   0],   ['11%', 9,  13,   4.5], ['18%', 14, 9,    2],
+    ['26%', 10, 12,   7],   ['34%', 13, 10.5, 1],   ['42%', 9,  13.5, 5.5],
+    ['50%', 12, 9.5,  3],   ['58%', 15, 11,   8],   ['66%', 10, 12.5, 0.5],
+    ['73%', 13, 10,   6],   ['80%', 9,  13,   2.5], ['87%', 14, 9.8,  9],
+    ['93%', 11, 11.5, 4],   ['22%', 8,  14,   10],  ['62%', 8,  14.5, 11],
+    ['96%', 10, 12,   6.5],
+];
+
+// rising paper lanterns: [left %, width px, height px, duration s, delay s]
+const lanterns = [
+    ['13%', 24, 32, 26, 0],
+    ['56%', 18, 25, 30, 11],
+    ['85%', 28, 37, 24, 19],
+];
+
+// fireflies near the garden floor: [left %, top %, size px, delay s]
+const fireflies = [
+    ['20%', '68%', 5, 0],   ['33%', '75%', 4, 2.2], ['47%', '70%', 5, 4.1],
+    ['61%', '78%', 4, 1.3], ['74%', '66%', 5, 5.5], ['88%', '73%', 4, 3.4],
+];
 
 const Background = () => (
     <div className={BackgroundStyle.background}>
@@ -128,7 +156,7 @@ const Background = () => (
             </g>
 
             {/* Moon */}
-            <circle cx="920" cy="90" r="55" fill="#FF85B8" filter="url(#cb-moon-glow)" opacity="0.35"/>
+            <circle className={BackgroundStyle.moonPulse} cx="920" cy="90" r="55" fill="#FF85B8" filter="url(#cb-moon-glow)"/>
             <circle cx="920" cy="90" r="38" fill="#FFE8F4" opacity="0.9"/>
             <circle cx="920" cy="90" r="38" fill="url(#cb-moon-halo)"/>
             {/* Moon craters (subtle) */}
@@ -175,20 +203,40 @@ const Background = () => (
                 <path d="M 1086,178 Q 1082,155 1078,125" strokeWidth="6"/>
             </g>
 
-            {/* === CHERRY BLOSSOMS (28) === */}
-            <g filter="url(#cb-blossom-glow)">
+            {/* === DISTANT PAGODA (clear strip between NEXT column and the grid) === */}
+            <g>
+                <rect x="216" y="430" width="38" height="20" fill="#1a0038"/>
+                <polygon points="198,430 272,430 256,414 214,414" fill="#26004d"/>
+                <line x1="198" y1="430" x2="272" y2="430" stroke="#FF6FA8" strokeWidth="1.6" opacity="0.75" filter="url(#cb-gp)"/>
+                <rect x="223" y="398" width="24" height="16" fill="#1a0038"/>
+                <polygon points="206,398 264,398 250,384 220,384" fill="#26004d"/>
+                <line x1="206" y1="398" x2="264" y2="398" stroke="#FF6FA8" strokeWidth="1.4" opacity="0.7" filter="url(#cb-gp)"/>
+                <rect x="228" y="370" width="14" height="14" fill="#1a0038"/>
+                <polygon points="214,370 256,370 244,357 226,357" fill="#26004d"/>
+                <line x1="214" y1="370" x2="256" y2="370" stroke="#FF6FA8" strokeWidth="1.2" opacity="0.7" filter="url(#cb-gp)"/>
+                <line x1="235" y1="357" x2="235" y2="344" stroke="#26004d" strokeWidth="3"/>
+                {/* warm window glow */}
+                <rect className={BackgroundStyle.blinkSlow} x="231" y="434" width="8" height="7" fill="#ffce7a" opacity="0.9" filter="url(#cb-gp)"/>
+                <rect x="229" y="402" width="5" height="6" fill="#ffce7a" opacity="0.6"/>
+                <rect x="237" y="402" width="5" height="6" fill="#ffce7a" opacity="0.6"/>
+                <rect x="232" y="373" width="6" height="6" fill="#ffce7a" opacity="0.55"/>
+            </g>
+
+            {/* === TORII GATE (clear strip between the grid and the score panel) === */}
+            <g>
+                <rect x="827" y="392" width="7" height="58" fill="#2a0050" stroke="#FF3D7F" strokeWidth="0.8" opacity="0.9"/>
+                <rect x="877" y="392" width="7" height="58" fill="#2a0050" stroke="#FF3D7F" strokeWidth="0.8" opacity="0.9"/>
+                <rect x="821" y="402" width="69" height="6" fill="#2a0050" stroke="#FF3D7F" strokeWidth="0.8" opacity="0.9"/>
+                <path d="M 813,388 Q 855,378 898,388 L 896,396 Q 855,387 815,396 Z" fill="#2a0050" stroke="#FF3D7F" strokeWidth="0.8" opacity="0.9"/>
+                <path d="M 813,388 Q 855,378 898,388" stroke="#FF3D7F" strokeWidth="2" fill="none" opacity="0.85" filter="url(#cb-gp)"/>
+            </g>
+
+            {/* === CHERRY BLOSSOMS (28) — canopy sways in the wind === */}
+            <g className={BackgroundStyle.swayCanopy} filter="url(#cb-blossom-glow)">
                 {blossoms.map((b, i) => (
                     <Blossom key={i} {...b}/>
                 ))}
             </g>
-
-            {/* === DRIFTING PETALS (single ellipses) === */}
-            <ellipse className={BackgroundStyle.petalDrift}  cx="380"  cy="120" rx="5" ry="3" fill="#FF85B8" opacity="0.85" transform="rotate(20, 380, 120)"/>
-            <ellipse className={BackgroundStyle.petalDrift2} cx="520"  cy="80"  rx="4" ry="2.5" fill="#FFB6D5" opacity="0.8" transform="rotate(-15, 520, 80)"/>
-            <ellipse className={BackgroundStyle.petalDrift3} cx="660"  cy="100" rx="5" ry="3" fill="#E866A8" opacity="0.85" transform="rotate(35, 660, 100)"/>
-            <ellipse className={BackgroundStyle.petalDrift}  cx="180"  cy="160" rx="4" ry="2.5" fill="#FF6FA8" opacity="0.8" transform="rotate(-25, 180, 160)"/>
-            <ellipse className={BackgroundStyle.petalDrift2} cx="1020" cy="130" rx="5" ry="3" fill="#FF85B8" opacity="0.85" transform="rotate(40, 1020, 130)"/>
-            <ellipse className={BackgroundStyle.petalDrift3} cx="750"  cy="90"  rx="4" ry="2.5" fill="#FFB6D5" opacity="0.8" transform="rotate(-10, 750, 90)"/>
 
             {/* === GROUND PLANE === */}
             <polygon points="0,700 280,700 510,450 0,450"       fill="url(#cb-ground)"/>
@@ -231,6 +279,28 @@ const Background = () => (
             {/* Ground line glow */}
             <line x1="280" y1="700" x2="920" y2="700" stroke="#FF3D7F" strokeWidth="1" opacity="0.12"/>
         </svg>
+
+        {/* HTML particle layer — full-height petals, lanterns, fireflies */}
+        <div className={BackgroundStyle.scene}>
+            {petals.map(([left, size, dur, delay], i) => (
+                <div key={`petal-${i}`}
+                     className={BackgroundStyle.petalFall}
+                     style={{ left, width: `${size}px`, height: `${size * 0.7}px`,
+                              animationDuration: `${dur}s`, animationDelay: `${delay}s` }}/>
+            ))}
+            {lanterns.map(([left, w, h, dur, delay], i) => (
+                <div key={`lantern-${i}`}
+                     className={BackgroundStyle.lanternRise}
+                     style={{ left, width: `${w}px`, height: `${h}px`,
+                              animationDuration: `${dur}s`, animationDelay: `${delay}s` }}/>
+            ))}
+            {fireflies.map(([left, top, size, delay], i) => (
+                <div key={`firefly-${i}`}
+                     className={BackgroundStyle.firefly}
+                     style={{ left, top, width: `${size}px`, height: `${size}px`,
+                              animationDelay: `${delay}s` }}/>
+            ))}
+        </div>
     </div>
 );
 

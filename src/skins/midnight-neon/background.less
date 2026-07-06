@@ -4,7 +4,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  transform: scale(1.5);
 
   &:before, &:after {
     position: absolute;
@@ -50,6 +49,17 @@
   pointer-events: none;
 }
 
+/* HTML layer above the SVG scene — rain + flying traffic */
+.scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
 .blinkSlow {
   @keyframes blinkSlow {
     0%, 44%, 56%, 100% { opacity: 1; }
@@ -77,12 +87,109 @@
   animation: blinkGreen 3.5s ease-in-out infinite;
 }
 
-.rainAnim {
-  @keyframes rainDriftNeon {
-    0%   { transform: translateY(-8px) translateX(4px);  opacity: 0.07; }
-    50%  { transform: translateY(10px)  translateX(-5px); opacity: 0.14; }
-    100% { transform: translateY(-8px) translateX(4px);  opacity: 0.07; }
+/* buzzing neon tube — stutters off in short bursts like a dying sign */
+.neonFlicker {
+  @keyframes neonFlickerNeon {
+    0%, 100% { opacity: 0.9; }
+    7%       { opacity: 0.2; }
+    9%       { opacity: 0.9; }
+    11%      { opacity: 0.35; }
+    13%      { opacity: 0.9; }
+    54%      { opacity: 0.9; }
+    56%      { opacity: 0.25; }
+    58%      { opacity: 0.9; }
+    76%      { opacity: 0.5; }
+    78%      { opacity: 0.9; }
   }
-  -webkit-animation: rainDriftNeon 3.2s ease-in-out infinite;
-  animation: rainDriftNeon 3.2s ease-in-out infinite;
+  -webkit-animation: neonFlickerNeon 6.5s linear infinite;
+  animation: neonFlickerNeon 6.5s linear infinite;
+}
+
+/* gentle window twinkle (softer than the antenna blinks) */
+.windowTwinkle {
+  @keyframes windowTwinkleNeon {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.25; }
+  }
+  -webkit-animation: windowTwinkleNeon 5s ease-in-out infinite;
+  animation: windowTwinkleNeon 5s ease-in-out infinite;
+}
+
+.headlightPulse {
+  @keyframes headlightPulseNeon {
+    0%, 100% { opacity: 0.75; }
+    50%      { opacity: 0.35; }
+  }
+  -webkit-animation: headlightPulseNeon 2.6s ease-in-out infinite;
+  animation: headlightPulseNeon 2.6s ease-in-out infinite;
+}
+
+.puddleShimmer {
+  @keyframes puddleShimmerNeon {
+    0%, 100% { opacity: 0.06; }
+    50%      { opacity: 0.18; }
+  }
+  -webkit-animation: puddleShimmerNeon 4s ease-in-out infinite;
+  animation: puddleShimmerNeon 4s ease-in-out infinite;
+}
+
+/* full-height slanted rain streaks */
+.rainDrop {
+  position: absolute;
+  top: -10%;
+  width: 1.5px;
+  background: linear-gradient(180deg, rgba(0, 229, 255, 0) 0%, rgba(0, 229, 255, 0.45) 100%);
+
+  @keyframes rainFallNeon {
+    0%   { transform: translate(0, -10vh) rotate(9deg); opacity: 0; }
+    6%   { opacity: 0.55; }
+    88%  { opacity: 0.55; }
+    100% { transform: translate(-5vw, 115vh) rotate(9deg); opacity: 0; }
+  }
+  -webkit-animation: rainFallNeon 1.3s linear infinite;
+  animation: rainFallNeon 1.3s linear infinite;
+}
+
+/* hover-car light streak crossing the sky right-to-left (magenta/amber) */
+.hoverCar {
+  position: absolute;
+  top: 12%;
+  left: 0;
+  width: 62px;
+  height: 5px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, rgba(255, 0, 229, 0) 0%, rgba(255, 0, 229, 0.65) 70%, #ffe066 100%);
+  box-shadow: 0 0 10px rgba(255, 0, 229, 0.6);
+
+  @keyframes hoverCarNeon {
+    0%   { transform: translateX(110vw); opacity: 0; }
+    4%   { opacity: 1; }
+    56%  { transform: translateX(-18vw); opacity: 1; }
+    57%  { opacity: 0; }
+    100% { transform: translateX(110vw); opacity: 0; }
+  }
+  -webkit-animation: hoverCarNeon 13s linear infinite;
+  animation: hoverCarNeon 13s linear infinite;
+}
+
+/* second hover-car crossing left-to-right, lower and cyan */
+.hoverCarReverse {
+  position: absolute;
+  top: 22%;
+  left: 0;
+  width: 48px;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #ffe066 0%, rgba(0, 229, 255, 0.6) 30%, rgba(0, 229, 255, 0) 100%);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.55);
+
+  @keyframes hoverCarReverseNeon {
+    0%   { transform: translateX(-15vw); opacity: 0; }
+    4%   { opacity: 1; }
+    62%  { transform: translateX(112vw); opacity: 1; }
+    63%  { opacity: 0; }
+    100% { transform: translateX(-15vw); opacity: 0; }
+  }
+  -webkit-animation: hoverCarReverseNeon 17s linear 6s infinite;
+  animation: hoverCarReverseNeon 17s linear 6s infinite;
 }

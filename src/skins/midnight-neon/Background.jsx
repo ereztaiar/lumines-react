@@ -1,6 +1,11 @@
 import React from 'react';
 import {background as BackgroundStyle} from "Skins/midnight-neon";
 
+/* Unlike most skins this background is NOT scaled 1.5x — the SVG city is
+   composed for the full 1200x700 viewBox (buildings flanking both edges), so
+   the whole composition must stay visible. Only the topmost ~25px of the
+   viewBox is sliced off on 16:9 screens (bottom-anchored slice). */
+
 const trackTies = [
     [465, 695, 738, 695],
     [470, 678, 735, 678],
@@ -14,7 +19,20 @@ const trackTies = [
     [553, 476, 682, 476],
 ];
 
-const rainXCoords = [90,185,275,365,455,545,635,725,815,905,995,1085,1160,140,320,490,660,830,1010];
+// full-height rain streaks: [left %, height vh, duration s, delay s, opacity]
+const rainDrops = [
+    ['3%',  9,  1.15, 0,    0.5],  ['8%',  7,  1.4,  0.6,  0.35],
+    ['14%', 10, 1.05, 0.2,  0.55], ['20%', 8,  1.3,  0.9,  0.4],
+    ['26%', 9,  1.2,  0.4,  0.5],  ['32%', 7,  1.45, 1.1,  0.35],
+    ['38%', 10, 1.1,  0.7,  0.55], ['44%', 8,  1.35, 0.1,  0.4],
+    ['50%', 9,  1.15, 1.0,  0.5],  ['56%', 7,  1.4,  0.5,  0.35],
+    ['62%', 10, 1.05, 0.85, 0.55], ['68%', 8,  1.25, 0.3,  0.4],
+    ['74%', 9,  1.2,  1.15, 0.5],  ['80%', 7,  1.45, 0.65, 0.35],
+    ['86%', 10, 1.1,  0.15, 0.55], ['92%', 8,  1.3,  0.95, 0.4],
+    ['97%', 9,  1.2,  0.45, 0.5],  ['11%', 6,  1.55, 1.25, 0.3],
+    ['35%', 6,  1.5,  0.75, 0.3],  ['59%', 6,  1.6,  1.35, 0.3],
+    ['77%', 6,  1.5,  0.25, 0.3],  ['89%', 6,  1.55, 1.05, 0.3],
+];
 
 const Background = () => {
     return (
@@ -54,9 +72,6 @@ const Background = () => {
                     <filter id="mn-gwm" x="-200%" y="-200%" width="500%" height="500%">
                         <feGaussianBlur stdDeviation="12" result="b"/>
                         <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-                    </filter>
-                    <filter id="mn-rain">
-                        <feGaussianBlur stdDeviation="0.4"/>
                     </filter>
                     <filter id="mn-aurora" x="-20%" y="-50%" width="140%" height="200%">
                         <feGaussianBlur stdDeviation="22"/>
@@ -149,8 +164,8 @@ const Background = () => {
                     <rect x="95"  y="55"  width="8" height="5"/>
                     <rect x="110" y="42"  width="8" height="5"/>
                     <rect x="80"  y="120" width="8" height="5"/>
-                    <rect x="12"  y="135" width="8" height="5"/>
-                    <rect x="40"  y="135" width="8" height="5"/>
+                    <rect className={BackgroundStyle.windowTwinkle} x="12" y="135" width="8" height="5"/>
+                    <rect className={BackgroundStyle.windowTwinkle} x="40" y="135" width="8" height="5" style={{ animationDelay: '2.1s' }}/>
                     <rect x="135" y="100" width="8" height="5"/>
                     <rect x="150" y="100" width="8" height="5"/>
                     <rect x="165" y="100" width="8" height="5"/>
@@ -209,7 +224,7 @@ const Background = () => {
                 </g>
 
                 {/* Left neon signs */}
-                <rect x="138" y="205" width="60" height="4" rx="1" fill="#00e5ff"  filter="url(#mn-gc)" opacity="0.9"/>
+                <rect className={BackgroundStyle.neonFlicker} x="138" y="205" width="60" height="4" rx="1" fill="#00e5ff"  filter="url(#mn-gc)"/>
                 <rect x="138" y="248" width="44" height="3" rx="1" fill="#ff00e5"  filter="url(#mn-gm)" opacity="0.8"/>
                 <rect x="248" y="270" width="50" height="4" rx="1" fill="#39ff14"  filter="url(#mn-gg)" opacity="0.85"/>
                 <rect x="342" y="310" width="38" height="3" rx="1" fill="#ffe066"  filter="url(#mn-gy)" opacity="0.8"/>
@@ -252,8 +267,8 @@ const Background = () => {
                     <rect x="1097" y="55"  width="8" height="5"/>
                     <rect x="1052" y="68"  width="8" height="5"/>
                     <rect x="1067" y="68"  width="8" height="5"/>
-                    <rect x="1052" y="135" width="8" height="5"/>
-                    <rect x="1082" y="135" width="8" height="5"/>
+                    <rect className={BackgroundStyle.windowTwinkle} x="1052" y="135" width="8" height="5" style={{ animationDelay: '1.2s' }}/>
+                    <rect className={BackgroundStyle.windowTwinkle} x="1082" y="135" width="8" height="5" style={{ animationDelay: '3.4s' }}/>
                 </g>
 
                 {/* Right — magenta windows */}
@@ -299,10 +314,20 @@ const Background = () => {
                     <rect x="1125" y="55"  width="8" height="5"/>
                 </g>
 
+                {/* Vertical neon sign — ルミネス, buzzing like a tired tube */}
+                <text className={BackgroundStyle.neonFlicker}
+                      x="912" y="215" fontSize="30" fill="#ff00e5" filter="url(#mn-gm)"
+                      style={{ fontFamily: "'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif", fontWeight: 700 }}>
+                    <tspan x="912" dy="0">ル</tspan>
+                    <tspan x="912" dy="34">ミ</tspan>
+                    <tspan x="912" dy="34">ネ</tspan>
+                    <tspan x="912" dy="34">ス</tspan>
+                </text>
+
                 {/* Right neon signs */}
-                <rect x="1002" y="205" width="60" height="4" rx="1" fill="#ff00e5"  filter="url(#mn-gm)" opacity="0.9"/>
+                <rect className={BackgroundStyle.neonFlicker} x="1002" y="205" width="60" height="4" rx="1" fill="#ff00e5" filter="url(#mn-gm)" style={{ animationDelay: '3.2s' }}/>
                 <rect x="1018" y="248" width="44" height="3" rx="1" fill="#00e5ff"  filter="url(#mn-gc)" opacity="0.8"/>
-                <rect x="900"  y="270" width="50" height="4" rx="1" fill="#ffe066"  filter="url(#mn-gy)" opacity="0.85"/>
+                <rect x="845"  y="270" width="50" height="4" rx="1" fill="#ffe066"  filter="url(#mn-gy)" opacity="0.85"/>
                 <rect x="818"  y="310" width="38" height="3" rx="1" fill="#39ff14"  filter="url(#mn-gg)" opacity="0.8"/>
                 <rect x="1137" y="320" width="55" height="4" rx="1" fill="#ff5500"  filter="url(#mn-go)" opacity="0.85"/>
 
@@ -352,12 +377,12 @@ const Background = () => {
                 {/* Yellow — right sidewalk sign reflection */}
                 <polygon points="940,700 1000,700 705,450 680,450" fill="url(#mn-ry)" opacity="0.2"/>
 
-                {/* Streetlight puddle reflections */}
-                <ellipse cx="390" cy="640" rx="40" ry="12" fill="#00e5ff" opacity="0.07"/>
-                <ellipse cx="810" cy="640" rx="40" ry="12" fill="#00e5ff" opacity="0.07"/>
+                {/* Streetlight puddle reflections — shimmering in the rain */}
+                <ellipse className={BackgroundStyle.puddleShimmer} cx="390" cy="640" rx="40" ry="12" fill="#00e5ff"/>
+                <ellipse className={BackgroundStyle.puddleShimmer} cx="810" cy="640" rx="40" ry="12" fill="#00e5ff" style={{ animationDelay: '1.4s' }}/>
                 {/* Neon sign puddles */}
-                <ellipse cx="200" cy="660" rx="30" ry="8" fill="#39ff14" opacity="0.06"/>
-                <ellipse cx="1000" cy="660" rx="30" ry="8" fill="#ffe066" opacity="0.06"/>
+                <ellipse className={BackgroundStyle.puddleShimmer} cx="200" cy="660" rx="30" ry="8" fill="#39ff14" style={{ animationDelay: '2.3s' }}/>
+                <ellipse className={BackgroundStyle.puddleShimmer} cx="1000" cy="660" rx="30" ry="8" fill="#ffe066" style={{ animationDelay: '0.8s' }}/>
 
                 {/* Tram light wash */}
                 <polygon points="430,700 770,700 650,450 550,450" fill="url(#mn-tram-glow)" opacity="0.5"/>
@@ -387,7 +412,7 @@ const Background = () => {
                 <rect x="614" y="448" width="8" height="4" rx="1" fill="#ff00e5" filter="url(#mn-gwm)" opacity="1"/>
                 <rect x="627" y="448" width="8" height="4" rx="1" fill="#ff00e5" filter="url(#mn-gwm)" opacity="1"/>
                 {/* Headlight (cyan) */}
-                <ellipse cx="600" cy="450" rx="22" ry="7" fill="#00e5ff" filter="url(#mn-gc)" opacity="0.7"/>
+                <ellipse className={BackgroundStyle.headlightPulse} cx="600" cy="450" rx="22" ry="7" fill="#00e5ff" filter="url(#mn-gc)"/>
                 {/* Brake light road reflections */}
                 <polygon points="558,454 592,454 570,700 520,700" fill="#ff00e5" opacity="0.04"/>
                 <polygon points="608,454 642,454 680,700 630,700" fill="#ff00e5" opacity="0.04"/>
@@ -404,16 +429,21 @@ const Background = () => {
                 <ellipse cx="808" cy="324" rx="16" ry="6" fill="#00e5ff" filter="url(#mn-gc)" opacity="0.85"/>
                 <polygon points="792,332 824,332 875,600 745,600" fill="#00e5ff" opacity="0.022"/>
 
-                {/* === RAIN STREAKS === */}
-                <g className={BackgroundStyle.rainAnim} stroke="#00e5ff" strokeWidth="0.7" filter="url(#mn-rain)">
-                    {rainXCoords.map((x, i) => (
-                        <line key={i} x1={x} y1={0} x2={x - 18} y2={210 + (i % 3) * 30}/>
-                    ))}
-                </g>
-
                 {/* Ground line glow */}
                 <line x1="300" y1="700" x2="900" y2="700" stroke="#00e5ff" strokeWidth="1" opacity="0.15"/>
             </svg>
+
+            {/* HTML layer — full-height rain and hover-car fly-bys */}
+            <div className={BackgroundStyle.scene}>
+                {rainDrops.map(([left, h, dur, delay, op], i) => (
+                    <div key={`rain-${i}`}
+                         className={BackgroundStyle.rainDrop}
+                         style={{ left, height: `${h}vh`, opacity: op,
+                                  animationDuration: `${dur}s`, animationDelay: `${delay}s` }}/>
+                ))}
+                <div className={BackgroundStyle.hoverCar}/>
+                <div className={BackgroundStyle.hoverCarReverse}/>
+            </div>
         </div>
     );
 };
