@@ -66,3 +66,38 @@
   -webkit-animation: dripHoneycomb 4s ease-in-out infinite;
   animation: dripHoneycomb 4s ease-in-out infinite;
 }
+
+.latticePulse {
+  @keyframes latticePulseHoneycomb { 0%,100%{opacity:0.35; transform:scale(1)} 50%{opacity:1; transform:scale(1.08)} }
+  -webkit-animation: latticePulseHoneycomb 6s ease-in-out infinite;
+  animation: latticePulseHoneycomb 6s ease-in-out infinite;
+}
+
+/* golden droplet stretching then falling from a honey drip */
+.dropletFall {
+  position: absolute;
+  border-radius: 50% 50% 55% 55% / 40% 40% 60% 60%;
+  background: #f5a623;
+  box-shadow: 0 0 6px rgba(245, 166, 35, 0.8);
+
+  @keyframes dropletFallHoneycomb {
+    0%, 55% { transform: translateY(0) scaleY(0.4); opacity: 0; }
+    62%     { transform: translateY(2px) scaleY(1); opacity: 0.95; }
+    100%    { transform: translateY(95vh) scaleY(1.15); opacity: 0; }
+  }
+  -webkit-animation: dropletFallHoneycomb 6.5s ease-in infinite;
+  animation: dropletFallHoneycomb 6.5s ease-in infinite;
+}
+
+.beeCross {
+  @keyframes beeCrossHoneycomb {
+    0%   { transform: translateX(-12vw) translateY(0) scaleX(1); opacity: 0; }
+    6%   { opacity: 0.9; }
+    30%  { transform: translateX(30vw) translateY(-5vh) scaleX(1); }
+    60%  { transform: translateX(68vw) translateY(4vh) scaleX(1); }
+    94%  { opacity: 0.9; }
+    100% { transform: translateX(114vw) translateY(-2vh) scaleX(1); opacity: 0; }
+  }
+  -webkit-animation: beeCrossHoneycomb 15s linear infinite;
+  animation: beeCrossHoneycomb 15s linear infinite;
+}

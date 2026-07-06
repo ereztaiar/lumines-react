@@ -66,3 +66,50 @@
   -webkit-animation: driftSlowDisco 8s ease-in-out infinite;
   animation: driftSlowDisco 8s ease-in-out infinite;
 }
+
+/* light cone sweeping from the mirror ball */
+.lightBeam {
+  position: absolute;
+  width: 7rem;
+  height: 55%;
+  clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%);
+  transform-origin: top center;
+
+  @keyframes lightBeamDisco {
+    0%, 100% { opacity: 0.55; margin-left: 0; }
+    50%      { opacity: 1; margin-left: 1.4rem; }
+  }
+  -webkit-animation: lightBeamDisco 3.6s ease-in-out infinite;
+  animation: lightBeamDisco 3.6s ease-in-out infinite;
+}
+
+.noteRise {
+  @keyframes noteRiseDisco {
+    0%   { transform: translateY(0) rotate(-8deg); opacity: 0; }
+    10%  { opacity: 0.85; }
+    85%  { opacity: 0.85; }
+    100% { transform: translateY(-60vh) rotate(10deg); opacity: 0; }
+  }
+  -webkit-animation: noteRiseDisco 7s linear infinite;
+  animation: noteRiseDisco 7s linear infinite;
+}
+
+.danceBob {
+  transform-origin: bottom center;
+  @keyframes danceBobDisco {
+    0%, 100% { transform: translateY(0) rotate(-5deg) scaleY(1); }
+    25%      { transform: translateY(-8px) rotate(0deg) scaleY(1.04); }
+    50%      { transform: translateY(0) rotate(5deg) scaleY(0.97); }
+    75%      { transform: translateY(-8px) rotate(0deg) scaleY(1.04); }
+  }
+  -webkit-animation: danceBobDisco 1.6s ease-in-out infinite;
+  animation: danceBobDisco 1.6s ease-in-out infinite;
+}
+
+.tileBlink {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  @keyframes tileBlinkDisco { 0%,100%{opacity:0.75} 50%{opacity:0.12} }
+  -webkit-animation: tileBlinkDisco 2.8s ease-in-out infinite;
+  animation: tileBlinkDisco 2.8s ease-in-out infinite;
+}

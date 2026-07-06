@@ -60,3 +60,66 @@
   -webkit-animation: riseSlowDeepSea 12s linear infinite;
   animation: riseSlowDeepSea 12s linear infinite;
 }
+
+.whaleGlide {
+  @keyframes whaleGlideDeepSea {
+    0%   { transform: translateX(-30vw) translateY(0) scaleX(1); opacity: 0; }
+    6%   { opacity: 0.8; }
+    45%  { transform: translateX(45vw) translateY(-4vh) scaleX(1); }
+    94%  { opacity: 0.8; }
+    100% { transform: translateX(125vw) translateY(2vh) scaleX(1); opacity: 0; }
+  }
+  -webkit-animation: whaleGlideDeepSea 60s linear infinite;
+  animation: whaleGlideDeepSea 60s linear infinite;
+}
+
+/* jellyfish bob with a bell-contraction squash */
+.jellyPulse {
+  @keyframes jellyPulseDeepSea {
+    0%, 100% { transform: translateY(0) scaleY(1) scaleX(1); }
+    40%      { transform: translateY(-14px) scaleY(1.08) scaleX(0.94); }
+    55%      { transform: translateY(-18px) scaleY(0.92) scaleX(1.06); }
+  }
+  -webkit-animation: jellyPulseDeepSea 6s ease-in-out infinite;
+  animation: jellyPulseDeepSea 6s ease-in-out infinite;
+}
+
+/* anglerfish drifting with its glowing lure flashing */
+.lureBlink {
+  @keyframes lureBlinkDeepSea {
+    0%, 100% { transform: translateX(0);   filter: drop-shadow(0 0 2px #9be8e0); }
+    20%      { filter: drop-shadow(0 0 14px #c4f1ff); }
+    24%      { filter: drop-shadow(0 0 3px #9be8e0); }
+    28%      { filter: drop-shadow(0 0 16px #c4f1ff); }
+    50%      { transform: translateX(-22px); filter: drop-shadow(0 0 2px #9be8e0); }
+    78%      { filter: drop-shadow(0 0 12px #c4f1ff); }
+  }
+  -webkit-animation: lureBlinkDeepSea 9s ease-in-out infinite;
+  animation: lureBlinkDeepSea 9s ease-in-out infinite;
+}
+
+.tentacleSway {
+  transform-origin: top center;
+  @keyframes tentacleSwayDeepSea {
+    0%, 100% { transform: rotate(-2deg) translateY(0); }
+    50%      { transform: rotate(2.5deg) translateY(-8px); }
+  }
+  -webkit-animation: tentacleSwayDeepSea 8s ease-in-out infinite;
+  animation: tentacleSwayDeepSea 8s ease-in-out infinite;
+}
+
+.snowSink {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(200, 235, 240, 0.5);
+
+  @keyframes snowSinkDeepSea {
+    0%   { transform: translateY(0) translateX(0); opacity: 0; }
+    10%  { opacity: 0.55; }
+    50%  { transform: translateY(55vh) translateX(10px); }
+    90%  { opacity: 0.55; }
+    100% { transform: translateY(115vh) translateX(-6px); opacity: 0; }
+  }
+  -webkit-animation: snowSinkDeepSea 18s linear infinite;
+  animation: snowSinkDeepSea 18s linear infinite;
+}

@@ -66,3 +66,49 @@
   -webkit-animation: twinkleBubblegum 2.6s ease-in-out infinite;
   animation: twinkleBubblegum 2.6s ease-in-out infinite;
 }
+
+/* pink gum bubble slowly inflates, pops, and starts over */
+.gumBubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.75) 0%, rgba(255, 138, 200, 0.85) 30%, rgba(255, 45, 149, 0.7) 100%);
+  box-shadow: 0 0 30px rgba(255, 138, 200, 0.5);
+
+  @keyframes gumBubbleBubblegum {
+    0%   { transform: scale(0.15); opacity: 0.9; }
+    70%  { transform: scale(1); opacity: 0.95; }
+    88%  { transform: scale(1.12); opacity: 1; }
+    92%  { transform: scale(1.35); opacity: 0; }
+    100% { transform: scale(0.15); opacity: 0; }
+  }
+  -webkit-animation: gumBubbleBubblegum 9s ease-in infinite;
+  animation: gumBubbleBubblegum 9s ease-in infinite;
+}
+
+.spinFloat {
+  @keyframes spinFloatBubblegum {
+    0%   { transform: rotate(0deg) translateY(0); }
+    50%  { transform: rotate(180deg) translateY(-20px); }
+    100% { transform: rotate(360deg) translateY(0); }
+  }
+  -webkit-animation: spinFloatBubblegum 28s linear infinite;
+  animation: spinFloatBubblegum 28s linear infinite;
+}
+
+.tumbleFall {
+  @keyframes tumbleFallBubblegum {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 0.85; }
+    90%  { opacity: 0.85; }
+    100% { transform: translateY(115vh) rotate(720deg); opacity: 0; }
+  }
+  -webkit-animation: tumbleFallBubblegum 11s linear infinite;
+  animation: tumbleFallBubblegum 11s linear infinite;
+}
+
+.wobble {
+  transform-origin: bottom center;
+  @keyframes wobbleBubblegum { 0%,100%{transform:rotate(-3deg) scale(1)} 50%{transform:rotate(3deg) scale(1.05)} }
+  -webkit-animation: wobbleBubblegum 4.5s ease-in-out infinite;
+  animation: wobbleBubblegum 4.5s ease-in-out infinite;
+}

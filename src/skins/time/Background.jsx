@@ -59,6 +59,30 @@ const Background = () => (
             <FaClock
                 className={`${BackgroundStyle.glow} ${BackgroundStyle.floatSlow}`}
                 style={{ left: '68%', top: '25%', fontSize: '8rem', color: '#F4C430' }} />
+
+            {/* meshing gear pair — big cog spins one way, small cog the other */}
+            <FaCog
+                className={BackgroundStyle.spinSlow}
+                style={{ left: '22%', top: '20%', fontSize: '7rem', color: '#A78BFA', opacity: 0.5 }} />
+            <FaCog
+                className={BackgroundStyle.spinReverse}
+                style={{ left: '27.5%', top: '31%', fontSize: '4rem', color: '#A78BFA', opacity: 0.55 }} />
+
+            {/* pendulum swinging from the top */}
+            <div className={BackgroundStyle.pendulum} style={{ left: '50%', top: '-2%' }}>
+                <div className={BackgroundStyle.pendulumRod} />
+                <div className={BackgroundStyle.pendulumBob} />
+            </div>
+
+            {/* roman numerals drifting upward */}
+            {['XII', 'III', 'VI', 'IX', 'IV', 'XI'].map((numeral, i) => (
+                <div key={`numeral-${i}`}
+                     className={BackgroundStyle.numeralRise}
+                     style={{ left: `${22 + i * 11}%`, bottom: '-6%',
+                              animationDelay: `${i * 3.2}s` }}>
+                    {numeral}
+                </div>
+            ))}
         </div>
     </div>
 );

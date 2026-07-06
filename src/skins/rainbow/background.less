@@ -70,7 +70,33 @@
 
 /* Slow hue sweep across the arch bands, mimicking shimmering rainbow light */
 .hueSweep {
-  @keyframes hueSweepRainbow { 0%,100%{filter:hue-rotate(0deg)} 50%{filter:hue-rotate(25deg)} }
-  -webkit-animation: hueSweepRainbow 8s ease-in-out infinite;
-  animation: hueSweepRainbow 8s ease-in-out infinite;
+  @keyframes hueSweepRainbow {
+    0%,100% { filter: hue-rotate(0deg) brightness(1); }
+    25%      { filter: hue-rotate(15deg) brightness(1.12); }
+    50%      { filter: hue-rotate(28deg) brightness(1); }
+    75%      { filter: hue-rotate(12deg) brightness(1.1); }
+  }
+  -webkit-animation: hueSweepRainbow 9s ease-in-out infinite;
+  animation: hueSweepRainbow 9s ease-in-out infinite;
+}
+
+.cloudCross {
+  @keyframes cloudCrossRainbow {
+    0%   { transform: translateX(-14vw); opacity: 0; }
+    6%   { opacity: 1; }
+    94%  { opacity: 1; }
+    100% { transform: translateX(114vw); opacity: 0; }
+  }
+  -webkit-animation: cloudCrossRainbow 45s linear infinite;
+  animation: cloudCrossRainbow 45s linear infinite;
+}
+
+.balloonDrift {
+  @keyframes balloonDriftRainbow {
+    0%, 100% { transform: translate(0, 0) rotate(-2deg); }
+    33%      { transform: translate(18px, -22px) rotate(2deg); }
+    66%      { transform: translate(-12px, -8px) rotate(-1deg); }
+  }
+  -webkit-animation: balloonDriftRainbow 13s ease-in-out infinite;
+  animation: balloonDriftRainbow 13s ease-in-out infinite;
 }

@@ -75,3 +75,18 @@
   -webkit-animation: burstPopFireworks 2.6s ease-out infinite;
   animation: burstPopFireworks 2.6s ease-out infinite;
 }
+
+/* expanding shockwave ring behind each burst */
+.burstRing {
+  position: absolute;
+  border: 2px solid;
+  border-radius: 50%;
+
+  @keyframes burstRingFireworks {
+    0%, 72% { transform: scale(0.3); opacity: 0; }
+    80%     { transform: scale(1.6); opacity: 0.8; }
+    100%    { transform: scale(2.6); opacity: 0; }
+  }
+  -webkit-animation: burstRingFireworks 2.6s ease-out infinite;
+  animation: burstRingFireworks 2.6s ease-out infinite;
+}

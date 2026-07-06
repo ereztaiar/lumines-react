@@ -63,3 +63,67 @@
   -webkit-animation: flickerVolcano 1.4s ease-in-out infinite;
   animation: flickerVolcano 1.4s ease-in-out infinite;
 }
+
+.cone {
+  position: absolute;
+}
+
+.craterGlow {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #ff7800 0%, rgba(255, 69, 0, 0.35) 55%, rgba(255, 69, 0, 0) 80%);
+  filter: blur(3px);
+
+  @keyframes craterGlowVolcano { 0%,100%{opacity:0.8; transform:scale(1)} 50%{opacity:1; transform:scale(1.18)} }
+  -webkit-animation: craterGlowVolcano 2.4s ease-in-out infinite;
+  animation: craterGlowVolcano 2.4s ease-in-out infinite;
+}
+
+/* fireball repeatedly blasting out of the crater */
+.eruptBurst {
+  @keyframes eruptBurstVolcano {
+    0%, 55% { transform: translateY(10px) scale(0.3); opacity: 0; }
+    62%     { transform: translateY(-30px) scale(1.25); opacity: 1; }
+    74%     { transform: translateY(-46px) scale(1); opacity: 0.9; }
+    88%     { transform: translateY(-24px) scale(0.75); opacity: 0.4; }
+    100%    { transform: translateY(10px) scale(0.3); opacity: 0; }
+  }
+  -webkit-animation: eruptBurstVolcano 5.5s ease-out infinite;
+  animation: eruptBurstVolcano 5.5s ease-out infinite;
+}
+
+.smokePlume {
+  position: absolute;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(70, 50, 45, 0.55) 0%, rgba(70, 50, 45, 0) 70%);
+  filter: blur(4px);
+
+  @keyframes smokePlumeVolcano {
+    0%   { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
+    15%  { opacity: 0.8; }
+    60%  { transform: translateY(-30vh) translateX(18px) scale(1.6); opacity: 0.5; }
+    100% { transform: translateY(-52vh) translateX(-10px) scale(2.4); opacity: 0; }
+  }
+  -webkit-animation: smokePlumeVolcano 9s ease-out infinite;
+  animation: smokePlumeVolcano 9s ease-out infinite;
+}
+
+/* molten streak glowing down the volcano flank */
+.lavaFlow {
+  position: absolute;
+  width: 0.9rem;
+  height: 30%;
+  border-radius: 45%;
+  background: linear-gradient(175deg, #ffae00 0%, #ff4500 45%, rgba(255, 69, 0, 0.15) 100%);
+  transform: rotate(9deg);
+  filter: blur(2px);
+
+  @keyframes lavaFlowVolcano {
+    0%, 100% { opacity: 0.65; box-shadow: 0 0 10px rgba(255, 69, 0, 0.6); }
+    50%      { opacity: 1; box-shadow: 0 0 22px rgba(255, 120, 0, 0.9); }
+  }
+  -webkit-animation: lavaFlowVolcano 3s ease-in-out infinite;
+  animation: lavaFlowVolcano 3s ease-in-out infinite;
+}

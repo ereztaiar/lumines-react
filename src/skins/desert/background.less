@@ -70,3 +70,32 @@
   -webkit-animation: walkSlowDesert 22s ease-in-out infinite;
   animation: walkSlowDesert 22s ease-in-out infinite;
 }
+
+.sway {
+  transform-origin: bottom center;
+  @keyframes swayDesert { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2.5deg)} }
+  -webkit-animation: swayDesert 5.5s ease-in-out infinite;
+  animation: swayDesert 5.5s ease-in-out infinite;
+}
+
+.walkAcross {
+  @keyframes walkAcrossDesert {
+    0%   { transform: translateX(-20vw); }
+    100% { transform: translateX(115vw); }
+  }
+  -webkit-animation: walkAcrossDesert 55s linear infinite;
+  animation: walkAcrossDesert 55s linear infinite;
+}
+
+.tumbleweed {
+  @keyframes tumbleweedDesert {
+    0%   { transform: translateX(115vw) translateY(0) rotate(0deg); }
+    20%  { transform: translateX(88vw) translateY(-10px) rotate(-260deg); }
+    40%  { transform: translateX(62vw) translateY(0) rotate(-500deg); }
+    60%  { transform: translateX(38vw) translateY(-14px) rotate(-760deg); }
+    80%  { transform: translateX(14vw) translateY(0) rotate(-1020deg); }
+    100% { transform: translateX(-15vw) translateY(-6px) rotate(-1280deg); }
+  }
+  -webkit-animation: tumbleweedDesert 17s linear infinite;
+  animation: tumbleweedDesert 17s linear infinite;
+}

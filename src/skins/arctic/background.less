@@ -60,9 +60,50 @@
   @keyframes snowFallArctic {
     0%   { transform: translateY(-10vh) translateX(0); opacity: 0; }
     10%  { opacity: 0.9; }
+    35%  { transform: translateY(28vh) translateX(-16px); }
+    60%  { transform: translateY(62vh) translateX(18px); }
     90%  { opacity: 0.9; }
-    100% { transform: translateY(110vh) translateX(20px); opacity: 0; }
+    100% { transform: translateY(110vh) translateX(-8px); opacity: 0; }
   }
   -webkit-animation: snowFallArctic 11s linear infinite;
   animation: snowFallArctic 11s linear infinite;
+}
+
+/* aurora ribbon undulating across the sky */
+.auroraWave {
+  position: absolute;
+  height: 3.2rem;
+  border-radius: 50%;
+  filter: blur(10px);
+
+  @keyframes auroraWaveArctic {
+    0%, 100% { transform: translateY(0) skewX(-8deg) scaleY(1); opacity: 0.7; }
+    33%      { transform: translateY(-12px) skewX(4deg) scaleY(1.35); opacity: 1; }
+    66%      { transform: translateY(8px) skewX(-3deg) scaleY(0.85); opacity: 0.8; }
+  }
+  -webkit-animation: auroraWaveArctic 9s ease-in-out infinite;
+  animation: auroraWaveArctic 9s ease-in-out infinite;
+}
+
+.iceDrift {
+  @keyframes iceDriftArctic {
+    0%   { transform: translateX(-12vw); opacity: 0; }
+    8%   { opacity: 0.75; }
+    92%  { opacity: 0.75; }
+    100% { transform: translateX(112vw); opacity: 0; }
+  }
+  -webkit-animation: iceDriftArctic 55s linear infinite;
+  animation: iceDriftArctic 55s linear infinite;
+}
+
+.waddle {
+  transform-origin: bottom center;
+  @keyframes waddleArctic {
+    0%, 100% { transform: rotate(-4deg) translateY(0); }
+    25%      { transform: rotate(0deg) translateY(-3px); }
+    50%      { transform: rotate(4deg) translateY(0); }
+    75%      { transform: rotate(0deg) translateY(-3px); }
+  }
+  -webkit-animation: waddleArctic 1.8s ease-in-out infinite;
+  animation: waddleArctic 1.8s ease-in-out infinite;
 }

@@ -83,3 +83,48 @@
   -webkit-animation: floatGhostHalloween 5s ease-in-out infinite;
   animation: floatGhostHalloween 5s ease-in-out infinite;
 }
+
+/* rare full-sky lightning flash */
+.lightning {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(ellipse at 30% 0%, rgba(232, 224, 255, 0.9) 0%, rgba(200, 180, 255, 0.4) 45%, rgba(200, 180, 255, 0) 75%);
+  opacity: 0;
+
+  @keyframes lightningHalloween {
+    0%, 86%, 92%, 100% { opacity: 0; }
+    87%  { opacity: 0.9; }
+    88%  { opacity: 0.15; }
+    89%  { opacity: 0.7; }
+    90.5% { opacity: 0; }
+  }
+  -webkit-animation: lightningHalloween 13s linear infinite;
+  animation: lightningHalloween 13s linear infinite;
+}
+
+.witchFly {
+  @keyframes witchFlyHalloween {
+    0%   { transform: translateX(-15vw) translateY(0) scaleX(1); opacity: 0; }
+    5%   { opacity: 0.9; }
+    30%  { transform: translateX(35vw) translateY(-5vh) scaleX(1); }
+    60%  { transform: translateX(75vw) translateY(2vh) scaleX(1); }
+    95%  { opacity: 0.9; }
+    100% { transform: translateX(115vw) translateY(-3vh) scaleX(1); opacity: 0; }
+  }
+  -webkit-animation: witchFlyHalloween 21s linear infinite;
+  animation: witchFlyHalloween 21s linear infinite;
+}
+
+.fogDrift {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(212, 200, 248, 0.22) 0%, rgba(212, 200, 248, 0) 70%);
+  filter: blur(4px);
+
+  @keyframes fogDriftHalloween {
+    0%, 100% { transform: translateX(0); opacity: 0.8; }
+    50%      { transform: translateX(60px); opacity: 1; }
+  }
+  -webkit-animation: fogDriftHalloween 12s ease-in-out infinite;
+  animation: fogDriftHalloween 12s ease-in-out infinite;
+}

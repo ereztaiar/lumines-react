@@ -60,3 +60,55 @@
   -webkit-animation: driftSlowSafari 9s ease-in-out infinite;
   animation: driftSlowSafari 9s ease-in-out infinite;
 }
+
+.sway {
+  transform-origin: bottom center;
+  @keyframes swaySafari { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2.5deg)} }
+  -webkit-animation: swaySafari 5.5s ease-in-out infinite;
+  animation: swaySafari 5.5s ease-in-out infinite;
+}
+
+.sunHalo {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 233, 176, 0.85) 0%, rgba(255, 190, 80, 0.35) 45%, rgba(255, 233, 176, 0) 70%);
+}
+
+.sunDisc {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffe9b0 0%, #ffca5f 75%, rgba(255, 202, 95, 0) 100%);
+}
+
+.ground {
+  position: absolute;
+  left: 0; bottom: 14%;
+  width: 100%; height: 7%;
+  background: linear-gradient(180deg, rgba(122, 74, 18, 0) 0%, rgba(90, 54, 12, 0.55) 40%, rgba(70, 42, 10, 0.75) 100%);
+}
+
+.walkAcross {
+  @keyframes walkAcrossSafari {
+    0%   { transform: translateX(-25vw) scaleX(1); }
+    49%  { transform: translateX(115vw) scaleX(1); }
+    50%  { transform: translateX(115vw) scaleX(-1); }
+    99%  { transform: translateX(-25vw) scaleX(-1); }
+    100% { transform: translateX(-25vw) scaleX(1); }
+  }
+  -webkit-animation: walkAcrossSafari 70s linear infinite;
+  animation: walkAcrossSafari 70s linear infinite;
+}
+
+.flyAcross {
+  @keyframes flyAcrossSafari {
+    0%   { transform: translateX(-15vw) translateY(0); opacity: 0; }
+    8%   { opacity: 0.75; }
+    25%  { transform: translateX(20vw) translateY(-14px); }
+    50%  { transform: translateX(55vw) translateY(6px); }
+    75%  { transform: translateX(85vw) translateY(-10px); }
+    92%  { opacity: 0.75; }
+    100% { transform: translateX(115vw) translateY(0); opacity: 0; }
+  }
+  -webkit-animation: flyAcrossSafari 26s linear infinite;
+  animation: flyAcrossSafari 26s linear infinite;
+}

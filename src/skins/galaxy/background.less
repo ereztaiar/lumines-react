@@ -66,3 +66,47 @@
   -webkit-animation: spinSlowGalaxy 60s linear infinite;
   animation: spinSlowGalaxy 60s linear infinite;
 }
+
+.nebulaDrift {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(6px);
+
+  @keyframes nebulaDriftGalaxy {
+    0%, 100% { transform: translate(0, 0) scale(1); filter: blur(6px) hue-rotate(0deg); }
+    50%      { transform: translate(24px, -14px) scale(1.12); filter: blur(6px) hue-rotate(40deg); }
+  }
+  -webkit-animation: nebulaDriftGalaxy 16s ease-in-out infinite;
+  animation: nebulaDriftGalaxy 16s ease-in-out infinite;
+}
+
+/* comet head + gradient tail streaking down-right */
+.comet {
+  position: absolute;
+  width: 9rem;
+  height: 3px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ffffff 96%);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+
+  @keyframes cometGalaxy {
+    0%, 62%  { transform: translate(-12vw, 0) rotate(14deg); opacity: 0; }
+    65%      { opacity: 1; }
+    82%      { transform: translate(60vw, 18vh) rotate(14deg); opacity: 0.9; }
+    88%, 100% { transform: translate(115vw, 32vh) rotate(14deg); opacity: 0; }
+  }
+  -webkit-animation: cometGalaxy 14s ease-in infinite;
+  animation: cometGalaxy 14s ease-in infinite;
+}
+
+.rocketDrift {
+  @keyframes rocketDriftGalaxy {
+    0%   { transform: translateX(-10vw) translateY(0) rotate(6deg); opacity: 0; }
+    8%   { opacity: 0.8; }
+    50%  { transform: translateX(52vw) translateY(-8vh) rotate(6deg); }
+    92%  { opacity: 0.8; }
+    100% { transform: translateX(114vw) translateY(-14vh) rotate(6deg); opacity: 0; }
+  }
+  -webkit-animation: rocketDriftGalaxy 38s linear infinite;
+  animation: rocketDriftGalaxy 38s linear infinite;
+}

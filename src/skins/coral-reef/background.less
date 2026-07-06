@@ -60,3 +60,60 @@
   -webkit-animation: riseUpCoralReef 11s linear infinite;
   animation: riseUpCoralReef 11s linear infinite;
 }
+
+.lightRay {
+  position: absolute;
+  top: -5%;
+  width: 5rem;
+  height: 70%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 90%);
+  transform: skewX(-12deg);
+
+  @keyframes lightRayCoralReef {
+    0%, 100% { opacity: 0.5; transform: skewX(-12deg) translateX(0); }
+    50%      { opacity: 1; transform: skewX(-9deg) translateX(14px); }
+  }
+  -webkit-animation: lightRayCoralReef 7s ease-in-out infinite;
+  animation: lightRayCoralReef 7s ease-in-out infinite;
+}
+
+.swimAcross {
+  @keyframes swimAcrossCoralReef {
+    0%   { transform: translateX(-15vw) translateY(0) scaleX(1); }
+    25%  { transform: translateX(18vw) translateY(-12px) scaleX(1); }
+    50%  { transform: translateX(50vw) translateY(8px) scaleX(1); }
+    75%  { transform: translateX(84vw) translateY(-8px) scaleX(1); }
+    100% { transform: translateX(115vw) translateY(0) scaleX(1); }
+  }
+  -webkit-animation: swimAcrossCoralReef 24s linear infinite;
+  animation: swimAcrossCoralReef 24s linear infinite;
+}
+
+.swimAcrossReverse {
+  @keyframes swimAcrossReverseCoralReef {
+    0%   { transform: translateX(115vw) translateY(0) scaleX(-1); }
+    25%  { transform: translateX(84vw) translateY(10px) scaleX(-1); }
+    50%  { transform: translateX(50vw) translateY(-8px) scaleX(-1); }
+    75%  { transform: translateX(18vw) translateY(6px) scaleX(-1); }
+    100% { transform: translateX(-15vw) translateY(0) scaleX(-1); }
+  }
+  -webkit-animation: swimAcrossReverseCoralReef 24s linear infinite;
+  animation: swimAcrossReverseCoralReef 24s linear infinite;
+}
+
+.swayCoral {
+  transform-origin: bottom center;
+  @keyframes swayCoralCoralReef { 0%,100%{transform:rotate(-1.5deg)} 50%{transform:rotate(2deg)} }
+  -webkit-animation: swayCoralCoralReef 6s ease-in-out infinite;
+  animation: swayCoralCoralReef 6s ease-in-out infinite;
+}
+
+.scuttle {
+  @keyframes scuttleCoralReef {
+    0%, 100% { transform: translateX(0); }
+    25%      { transform: translateX(28px); }
+    60%      { transform: translateX(-20px); }
+  }
+  -webkit-animation: scuttleCoralReef 9s ease-in-out infinite;
+  animation: scuttleCoralReef 9s ease-in-out infinite;
+}

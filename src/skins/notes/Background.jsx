@@ -53,9 +53,17 @@ const noteColor = (i) => (i % 2 === 0 ? '#F4C430' : '#38bdf8');
 // A few notes get a gentle glow animation
 const glowNoteIndices = new Set([2, 5, 8, 11]);
 
+/* the playhead sweeps 6%→94% in PLAYHEAD_SECONDS; each note flares when the
+   sweep line reaches its x position */
+const PLAYHEAD_SECONDS = 14;
+const playDelay = (x) => `${((parseFloat(x) - 6) / 88) * PLAYHEAD_SECONDS}s`;
+
 const Background = () => (
   <div className={BackgroundStyle.background}>
     <div className={BackgroundStyle.scene}>
+      {/* sweeping playhead */}
+      <div className={BackgroundStyle.playhead} />
+
       {staveData.map((stave) => (
         <React.Fragment key={stave.topPct}>
           {/* 5-line staff */}
@@ -81,19 +89,20 @@ const Background = () => (
             />
           ))}
 
-          {/* Notes on the staff */}
+          {/* Notes on the staff — each flares as the playhead passes it */}
           {stave.notes.map(({ x, offset }, i) => {
             const isGlow = glowNoteIndices.has(i);
             return (
               <MdMusicNote
                 key={`${stave.topPct}-${i}`}
-                className={isGlow ? `${BackgroundStyle.glow} ${BackgroundStyle.pulse}` : undefined}
+                className={`${isGlow ? BackgroundStyle.glow : ''} ${BackgroundStyle.notePlay}`}
                 style={{
                   left: x,
                   top: `calc(${stave.topPct}% + ${offset - HEAD_OFFSET}px)`,
                   fontSize: '0.95rem',
                   color: noteColor(i),
                   opacity: isGlow ? 0.75 : 0.55,
+                  animationDelay: playDelay(x),
                 }}
               />
             );

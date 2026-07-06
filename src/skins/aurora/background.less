@@ -69,9 +69,28 @@
   border-radius: 50%;
 
   @keyframes ribbonWaveAurora {
-    0%,100% { transform: translateX(-6%) skewY(-2deg) scaleY(1); }
-    50%      { transform: translateX(6%) skewY(2deg) scaleY(1.15); }
+    0%,100% { transform: translateX(-6%) skewY(-2deg) scaleY(1);    filter: blur(18px) hue-rotate(0deg); }
+    33%      { transform: translateX(2%) skewY(1deg) scaleY(1.2);    filter: blur(18px) hue-rotate(28deg); }
+    66%      { transform: translateX(6%) skewY(2deg) scaleY(1.05);   filter: blur(18px) hue-rotate(-18deg); }
   }
-  -webkit-animation: ribbonWaveAurora 9s ease-in-out infinite;
-  animation: ribbonWaveAurora 9s ease-in-out infinite;
+  -webkit-animation: ribbonWaveAurora 11s ease-in-out infinite;
+  animation: ribbonWaveAurora 11s ease-in-out infinite;
+}
+
+/* streak with a bright head racing across the sky */
+.shootingStar {
+  position: absolute;
+  width: 7rem;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ffffff 95%);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+
+  @keyframes shootingStarAurora {
+    0%, 74%  { transform: translate(-10vw, 0) rotate(10deg); opacity: 0; }
+    77%      { opacity: 1; }
+    90%      { transform: translate(70vw, 14vh) rotate(10deg); opacity: 0.9; }
+    94%, 100% { transform: translate(112vw, 22vh) rotate(10deg); opacity: 0; }
+  }
+  -webkit-animation: shootingStarAurora 17s ease-in infinite;
+  animation: shootingStarAurora 17s ease-in infinite;
 }

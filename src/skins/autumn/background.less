@@ -66,3 +66,25 @@
   -webkit-animation: driftSlowAutumn 9s ease-in-out infinite;
   animation: driftSlowAutumn 9s ease-in-out infinite;
 }
+
+.swayTree {
+  transform-origin: bottom center;
+  @keyframes swayTreeAutumn { 0%,100%{transform:rotate(-1deg)} 50%{transform:rotate(1.5deg)} }
+  -webkit-animation: swayTreeAutumn 7s ease-in-out infinite;
+  animation: swayTreeAutumn 7s ease-in-out infinite;
+}
+
+/* a leaf caught in a wind gust — races across with loops */
+.gustSwirl {
+  @keyframes gustSwirlAutumn {
+    0%   { transform: translate(-10vw, 0) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.9; }
+    30%  { transform: translate(28vw, -8vh) rotate(240deg); }
+    55%  { transform: translate(58vw, 2vh) rotate(500deg); }
+    80%  { transform: translate(88vw, -6vh) rotate(760deg); }
+    92%  { opacity: 0.9; }
+    100% { transform: translate(115vw, -2vh) rotate(920deg); opacity: 0; }
+  }
+  -webkit-animation: gustSwirlAutumn 9s ease-in infinite;
+  animation: gustSwirlAutumn 9s ease-in infinite;
+}

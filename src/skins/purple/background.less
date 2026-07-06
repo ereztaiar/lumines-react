@@ -20,6 +20,13 @@
     background: url('./paths/background.svg');
     background-size: 100%;
     opacity: .6;
+
+    @keyframes bgDriftPurple {
+      0%, 100% { transform: scale(1.04) translate(0, 0); }
+      50%      { transform: scale(1.1) translate(-1.5%, 1%); }
+    }
+    -webkit-animation: bgDriftPurple 26s ease-in-out infinite;
+    animation: bgDriftPurple 26s ease-in-out infinite;
   }
 
   &:after {
@@ -33,8 +40,101 @@
   }
 }
 
+.scene {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
 
-#outer {
-
+  > div { position: absolute; }
 }
 
+/* full-screen violet<->magenta wash that slowly shifts hue */
+.hueShimmer {
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(120deg, rgba(168, 85, 247, 0.14) 0%, rgba(217, 70, 239, 0.1) 50%, rgba(99, 102, 241, 0.14) 100%);
+  background-size: 300% 300%;
+
+  @keyframes hueShimmerPurple {
+    0%   { background-position: 0% 50%; filter: hue-rotate(0deg); }
+    50%  { background-position: 100% 50%; filter: hue-rotate(-25deg); }
+    100% { background-position: 0% 50%; filter: hue-rotate(0deg); }
+  }
+  -webkit-animation: hueShimmerPurple 18s ease-in-out infinite;
+  animation: hueShimmerPurple 18s ease-in-out infinite;
+}
+
+.orb {
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.tile {
+  border-radius: 18%;
+  box-shadow: 0 0 24px rgba(217, 70, 239, 0.35);
+}
+
+.spark {
+  border-radius: 50%;
+  background: #f0abfc;
+  box-shadow: 0 0 8px #f0abfc;
+}
+
+.floatSlow {
+  @keyframes floatSlowPurple {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(-30px) scale(1.06); }
+  }
+  -webkit-animation: floatSlowPurple 9s ease-in-out infinite;
+  animation: floatSlowPurple 9s ease-in-out infinite;
+}
+
+.driftSlow {
+  @keyframes driftSlowPurple {
+    0%, 100% { transform: translateX(0) translateY(0); }
+    33%      { transform: translateX(40px) translateY(-16px); }
+    66%      { transform: translateX(-24px) translateY(12px); }
+  }
+  -webkit-animation: driftSlowPurple 14s ease-in-out infinite;
+  animation: driftSlowPurple 14s ease-in-out infinite;
+}
+
+.breathe {
+  @keyframes breathePurple {
+    0%, 100% { transform: scale(0.9); opacity: 0.6; }
+    50%      { transform: scale(1.15); opacity: 1; }
+  }
+  -webkit-animation: breathePurple 6s ease-in-out infinite;
+  animation: breathePurple 6s ease-in-out infinite;
+}
+
+.spinDrift {
+  @keyframes spinDriftPurple {
+    0%   { transform: rotate(0deg) translateY(0); }
+    50%  { transform: rotate(180deg) translateY(-24px); }
+    100% { transform: rotate(360deg) translateY(0); }
+  }
+  -webkit-animation: spinDriftPurple 32s linear infinite;
+  animation: spinDriftPurple 32s linear infinite;
+}
+
+.spinDriftReverse {
+  @keyframes spinDriftReversePurple {
+    0%   { transform: rotate(0deg) translateY(0); }
+    50%  { transform: rotate(-180deg) translateY(20px); }
+    100% { transform: rotate(-360deg) translateY(0); }
+  }
+  -webkit-animation: spinDriftReversePurple 26s linear infinite;
+  animation: spinDriftReversePurple 26s linear infinite;
+}
+
+.blinkSlow {
+  @keyframes blinkSlowPurple { 0%, 100% { opacity: 0.9; } 50% { opacity: 0.15; } }
+  -webkit-animation: blinkSlowPurple 4.2s ease-in-out infinite;
+  animation: blinkSlowPurple 4.2s ease-in-out infinite;
+}
+
+.blinkFast {
+  @keyframes blinkFastPurple { 0%, 100% { opacity: 1; } 50% { opacity: 0.1; } }
+  -webkit-animation: blinkFastPurple 2.1s ease-in-out infinite;
+  animation: blinkFastPurple 2.1s ease-in-out infinite;
+}

@@ -60,3 +60,44 @@
   -webkit-animation: bobUpCarnival 5s ease-in-out infinite;
   animation: bobUpCarnival 5s ease-in-out infinite;
 }
+
+.spinSlow {
+  @keyframes spinSlowCarnival { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+  -webkit-animation: spinSlowCarnival 24s linear infinite;
+  animation: spinSlowCarnival 24s linear infinite;
+}
+
+.riseLoop {
+  @keyframes riseLoopCarnival {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+    6%   { opacity: 0.9; }
+    50%  { transform: translateY(-60vh) rotate(5deg); }
+    94%  { opacity: 0.9; }
+    100% { transform: translateY(-120vh) rotate(-4deg); opacity: 0; }
+  }
+  -webkit-animation: riseLoopCarnival 16s linear infinite;
+  animation: riseLoopCarnival 16s linear infinite;
+}
+
+/* striped bunting ribbon */
+.bunting {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  width: 80%;
+  height: 1.2rem;
+  background: repeating-linear-gradient(90deg,
+    #ff3b3b 0, #ff3b3b 2rem,
+    #ffd23f 2rem, #ffd23f 4rem,
+    #2f6fed 4rem, #2f6fed 6rem,
+    #3ec46a 6rem, #3ec46a 8rem);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  opacity: 0.75;
+}
+
+.buntingSway {
+  transform-origin: top center;
+  @keyframes buntingSwayCarnival { 0%,100%{transform:skewX(-1deg)} 50%{transform:skewX(1.5deg)} }
+  -webkit-animation: buntingSwayCarnival 6s ease-in-out infinite;
+  animation: buntingSwayCarnival 6s ease-in-out infinite;
+}
