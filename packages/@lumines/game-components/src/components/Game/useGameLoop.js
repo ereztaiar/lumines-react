@@ -18,6 +18,7 @@ const useGameLoop = (props) => {
   const { gridRef, setGrid, pause, isGameOver, cube, speed = 35, scoring, sounds } = props;
   const { deletedBlocks, multiplier, allClearBonus } = scoring;
   const playDeletion = sounds && sounds.playDeletion ? sounds.playDeletion : () => {};
+  const playAllClear = sounds && sounds.playAllClear ? sounds.playAllClear : () => {};
 
   const [tick, setTick] = useState(INITIAL_TICK);
   const [currentDeleted, setCurrentDeleted] = useState(0);
@@ -57,12 +58,16 @@ const useGameLoop = (props) => {
       // toward a bigger payoff, mirroring the original game's chain bonus.
       const registerClear = (cleared) => {
         if (cleared <= 0) return;
-        playDeletion();
         lapHadClearRef.current = true;
         chainCountRef.current = advanceChain(chainCountRef.current);
+        // The clear sound scales with the chain level being scored.
+        playDeletion(chainCountRef.current);
         setChainCount(chainCountRef.current);
         multiplier(cleared, chainCountRef.current);
-        if (isGridEmpty(grid, anchorCube())) allClearBonus();
+        if (isGridEmpty(grid, anchorCube())) {
+          allClearBonus();
+          playAllClear();
+        }
       };
 
       await revertUncommittedMarks(grid);
