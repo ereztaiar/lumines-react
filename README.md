@@ -7,6 +7,19 @@ modes, gamepad support, and a local leaderboard.
 
 **▶ Play it live:** https://ereztaiar.github.io/lumines-react/ (deployed from `env/refactor-claude`)
 
+> This is a non-commercial fan project. If you enjoy it, please **support the original
+> game** — [lumines.game](https://lumines.game/).
+
+## Play on Steam Deck
+
+The live build runs great on a Steam Deck — open the link above in the Deck's browser
+(or add it as a non-Steam game) and play with the built-in gamepad controls.
+
+<p align="center">
+  <img src="docs/images/steam-deck-gameplay.jpg" alt="Lumines React gameplay on a Steam Deck (forest skin, chain x3)" width="49%" />
+  <img src="docs/images/steam-deck-pause.jpg" alt="Lumines React pause menu on a Steam Deck (ocean skin)" width="49%" />
+</p>
+
 ## Tech stack
 
 - **React 17** + **Webpack 5**
