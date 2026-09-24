@@ -6,6 +6,7 @@ import { default as splashMidnightNeon } from "@lumines/splash/src/styles/midnig
 import { default as sunset } from "@lumines/splash/src/styles/sunset.less";
 import useTimer from "@lumines/core/src/hooks/useTimer";
 import useKey from "@lumines/core/src/hooks/useKey";
+import favicon from "Assets/paths/favicon.svg";
 
 const COLORS_SWATCH = 5;
 const SPLASH_STYLES = [iceAndEmber, splashDefault, splashMidnightNeon, sunset];
@@ -74,7 +75,7 @@ const Splash = (props) => {
         </h1>
         <h3>
           PUZZLE
-          <img src={"/favicon.svg"} />
+          <img src={favicon} />
           FUSION
         </h3>
       </div>
