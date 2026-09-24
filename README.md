@@ -5,6 +5,8 @@ Blocks fall in 2×2 cubes; line up same-colored 2×2 squares and a sweeper clear
 left-to-right in time with the music. Includes multiple skins, Arcade and Time Attack
 modes, gamepad support, and a local leaderboard.
 
+**▶ Play it live:** https://ereztaiar.github.io/lumines-react/ (deployed from `env/refactor-claude`)
+
 ## Tech stack
 
 - **React 17** + **Webpack 5**
